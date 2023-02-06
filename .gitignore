@@ -138,3 +138,6 @@ preload.php
 phpunit.xml.dist
 LICENSE
 builds
+public/assets/
+public/node_modules/
+public/package-lock.json

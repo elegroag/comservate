@@ -8,7 +8,7 @@ class ZonaMunicipioModel extends Model
 {
     protected $table = 'zonas_municipios';
     protected $primaryKey = 'id';
-    protected $returnType = ZonaMunicipio::class;
+    protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
 

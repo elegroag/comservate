@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Models\ClientModel;
+use App\Models\ClienteModel;
 
 class ClienteService
 {
@@ -9,7 +9,7 @@ class ClienteService
 
     public function __construct()
     {
-        $this->clientModel = new ClientModel;
+        $this->clientModel = new ClienteModel;
     }
 
     public function getClients()

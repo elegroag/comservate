@@ -4,11 +4,11 @@ namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class ZonasMunicipios extends Seeder
+class TiposIdentificacion extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/zonas_mun.csv';
+        $filepath = 'C:/tmp/tipoidentificacion.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;
@@ -36,10 +36,10 @@ class ZonasMunicipios extends Seeder
                     {
                         $data = [
                             'id' => trim($fila[0]),
-                            'id_zona' => trim($fila[1]),
-                            'id_municipio' => trim($fila[2])
+                            'sigla' => trim($fila[1]),
+                            'descripcion' => trim($fila[2])
                         ];
-                        $this->db->table('zonas_municipios')->insert($data);
+                        $this->db->table('tipos_identificacion')->insert($data);
                     }
                 }
                 $ai++;
@@ -49,6 +49,5 @@ class ZonasMunicipios extends Seeder
         echo 'OK Proceso completado'."\t\n";
         var_export($headers);
         echo '_______________________'."\t\n";
-
     }
 }

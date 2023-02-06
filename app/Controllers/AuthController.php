@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\UsuarioModel;
 use App\Libraries\JwtLibrary;
 
 class AuthController extends BaseController
@@ -12,7 +12,7 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-        $this->userModel = new UserModel;
+        $this->userModel = new UsuarioModel;
         $this->jwtLibrary = new JwtLibrary;
     }
 

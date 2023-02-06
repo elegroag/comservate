@@ -8,7 +8,7 @@ class ZonaModel extends Model
 {
     protected $table = 'zonas';
     protected $primaryKey = 'id';
-    protected $returnType = Zona::class;
+    protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $useTimestamps = true;
     protected $createdField  = 'fecha_creacion';

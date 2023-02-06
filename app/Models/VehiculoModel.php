@@ -8,7 +8,7 @@ class VehiculoModel extends Model
 {
     protected $table = 'vehiculos';
     protected $primaryKey = 'id';
-    protected $returnType = Vehiculo::class;
+    protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
 

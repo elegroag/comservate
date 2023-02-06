@@ -8,7 +8,7 @@ class TipoResiduoModel extends Model
 {
     protected $table = 'tiporesiduo';
     protected $primaryKey = 'id';
-    protected $returnType = TipoResiduo::class;
+    protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
 

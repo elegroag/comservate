@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Libraries\JwtLibrary;
-use App\Models\ClientModel;
+use App\Models\ClienteModel;
 
 class ClientController extends BaseController
 {
@@ -25,7 +25,7 @@ class ClientController extends BaseController
 
     public function show(int $id)
     {
-        $model = new ClientModel();
+        $model = new ClienteModel();
         $client = $model->getClientById($id);
 
         return view('clients/show', ['client' => $client]);

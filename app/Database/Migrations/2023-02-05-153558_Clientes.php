@@ -58,7 +58,7 @@ class Clientes extends Migration
                 'null' => false
             ],
             'fecha_finalizacion' => [
-                'type' => 'datetime',
+                'type' => 'date',
                 'null' => true
             ],
             'valor_kilo' => [

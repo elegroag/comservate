@@ -90,7 +90,6 @@ class ForeingKeys extends Seeder
         $this->forge->processIndexes('zonas');
     }
 
-
     public function zonasMunicipios()
     {
         $this->forge->addForeignKey('id_municipio','municipios', 'id','NO ACTION', 'NO ACTION','zonas_municipios_id_municipio_FK');        
