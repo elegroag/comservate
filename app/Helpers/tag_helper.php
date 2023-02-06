@@ -247,3 +247,51 @@ if (! function_exists('password_field')) {
         }
     }
 }
+
+if (! function_exists('linkTo')) {
+    
+    function linkTo($action, ?string $text)
+    {
+        if(func_num_args() > 2) {
+			$numberArguments = func_num_args();
+			$action = utils_params(func_get_args(), $numberArguments);
+		}
+
+		if(is_array($action))
+        {
+			if(isset($action['confirm']) && $action['confirm'])
+            {
+				if(!isset($action['onclick'])) $action['onclick'] = "";
+				$action['onclick'] = 'Swal.fire({'."title: \"¿Puedes comfirmar la acción? Por favor.\", ".
+                "text: \"¡No podrás revertir esto!\",icon: \"warning\",showCancelButton: true, ".
+                "confirmButtonColor: \"#3085d6\",".
+                "cancelButtonColor: \"#d33\",confirmButtonText:\"SI, está de acuerdo!\"".'}).then('.
+                'function(result){ if (result.isConfirmed){'." Swal.fire(\"Comfirmado!\",\"Se procede a ejecutar el proceso.\",\"success\"); ".$action['onclick'].' }else{ return false; });';
+				unset($action['confirm']);
+			}
+
+			$code = "<a href='".site_url($action)."' ";
+			if(!isset($action['text']) || !$action['text'])
+            {
+				$action['text'] = $action[1];
+			}
+
+			foreach($action as $key => $value)
+            {
+				if(!is_integer($key) && $key!='text'){
+					$code.=" $key='$value' ";
+				}
+			}
+			$code.='>'.$action['text'].'</a>';
+			return $code;
+		} else {
+            if($text === "")
+            {
+				$text = str_replace('_', ' ', $action);
+				$text = str_replace('/', ' ', $text);
+				$text = ucwords($text);
+			}
+			return "<a href='".site_url($action)."'>".$text."</a>";
+		}
+    }
+}
