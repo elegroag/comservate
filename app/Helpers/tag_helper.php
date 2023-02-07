@@ -38,10 +38,8 @@ if (! function_exists('text_upper_field')) {
             $params['name'] = $params[0];
         }
 
-        if(isset($params['value'])){
-            $value = $params['value'];
-            unset($params['value']);
-        }
+        $value ='';
+        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "text-uppercase form-control" : "text-uppercase form-control ".$params['class'];
 
@@ -278,5 +276,30 @@ if (! function_exists('linkTo')) {
         }
         $code.='>'.$params['text'].'</a>';
         return $code;
+    }
+}
+
+if (! function_exists('formBoostrap')) 
+{
+    function formBoostrap(string $content, string $label)
+    {
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+
+        $params['action'] = (isset($params['action']))? $params['action'] : '#';
+        $params['class'] = (isset($params['class']))? $params['class']: '';
+        $params['label'] = (isset($params['label']))? $params['label'] : '';
+        $params['id'] = (isset($params['id']))? $params['id'] : '';
+
+        $out = "".
+        "<div class=\"row {$params['class']}\">".
+            "<label class=\"col-md-3 col-form-label\">{$params['label']}:</label>".
+            "<div class=\"col-md-9\">".
+                "<div class=\"form-group\" data-toggle=\"help-{$params['id']}\">".$content."</div>".
+                "<label id=\"has_error_{$params['id']}\" class=\"error txt-primary\" for=\"required\">El valor {$params['label']} ingresado no es válido.</label>".
+                "<div class=\"category form-category\">* Campo requerido</div>".
+            "</div>".
+        "</div>";
+        return $out;
     }
 }

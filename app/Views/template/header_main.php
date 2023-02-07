@@ -1,7 +1,7 @@
 <?=link_tag('fonts/monserrat.woff2')?>
 <?=link_tag('assets/font-awesome/css/font-awesome.min.css')?>
 <?=link_tag('assets/bootstrap/bootstrap.css')?>
-<?=link_tag('assets/paper/paper-dashboard.css')?>
+<?=link_tag('css/paper-dashboard.css')?>
 <?=link_tag('img/favicon.ico','shortcut icon', 'image/ico')?>
 <?=link_tag('css/paper.css')?>
 
