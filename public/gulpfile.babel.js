@@ -4,6 +4,93 @@ var minify = require('gulp-minify');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
+var gulpCopy = require('gulp-copy');
+
+function copyFileBootstrap()
+{
+    return src([
+        'node_modules/bootstrap/dist/js/bootstrap.bundle.js', 
+        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+        'node_modules/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+        'node_modules/bootstrap-datetimepicker/src/js/locales/bootstrap-datetimepicker.es.js',
+        'node_modules/bootstrap-notify/bootstrap-notify.min.js',
+        'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js',
+        'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js.map',
+        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js',
+        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js.map',
+        'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'
+    ])
+    .pipe(dest('assets/bootstrap/'));
+};
+
+function copyFileJquery()
+{
+    return src([
+        'node_modules/jquery/dist/jquery.js',
+        'node_modules/jquery-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+    ])
+    .pipe(dest('assets/jquery/'));
+};
+
+function copyFileNouislider()
+{
+    return src([
+        'node_modules/nouislider/dist/nouislider.min.js',
+        'node_modules/nouislider/dist/nouislider.min.css',
+    ])
+    .pipe(dest('assets/nouislider/'));
+};
+
+function copyFilePerfectScrollbar()
+{
+    return src([
+        'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js',
+        'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js.map',
+        'node_modules/perfect-scrollbar/css/perfect-scrollbar.css',
+    ])
+    .pipe(dest('assets/perfect-scrollbar/'));
+};
+
+function copyFileMoment()
+{
+    return src([
+        'node_modules/moment/min/moment.min.js',
+        'node_modules/moment/min/moment.min.js.map',
+        'node_modules/moment/dist/locale/es.js'
+    ])
+    .pipe(dest('assets/moment/'));
+};
+
+function copyFileChart()
+{
+    return src([
+        'node_modules/chart.js/dist/chart.js',
+        'node_modules/chart.js/dist/chart.js.map',
+    ])
+    .pipe(dest('assets/chart/'));
+};
+
+function copyFramework()
+{
+    return src([
+        'node_modules/backbone/backbone-min.js',
+        'node_modules/backbone/backbone-min.js.map',
+        'node_modules/underscore/underscore-min.js',
+        'node_modules/underscore/underscore-min.js.map',
+    ])
+    .pipe(dest('assets/framework/'));
+};
+
+function copySweetalert2()
+{
+    return src([
+        'node_modules/sweetalert2/dist/sweetalert2.min.js',
+        'node_modules/sweetalert2/dist/sweetalert2.min.css',
+    ])
+    .pipe(dest('assets/sweetalert2/'));
+};
+
 
 function clientes(){
     return src([
@@ -16,11 +103,18 @@ function clientes(){
     ])
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('build.clientes.js'))    
+    .pipe(concat('build.clientes.js'))
     .pipe(minify())
     .pipe(dest('js/comserva/'));
 };
 
 exports.default = series(
-    clientes
+    copyFileBootstrap,
+    copyFileJquery,
+    copyFileNouislider,
+    copyFilePerfectScrollbar,
+    copyFileMoment,
+    copyFileChart,
+    copyFramework,
+    copySweetalert2
 );
