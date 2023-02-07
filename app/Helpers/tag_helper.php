@@ -250,48 +250,33 @@ if (! function_exists('password_field')) {
 
 if (! function_exists('linkTo')) {
     
-    function linkTo($action, ?string $text)
+    function linkTo($action, string $text='')
     {
-        if(func_num_args() > 2) {
-			$numberArguments = func_num_args();
-			$action = utils_params(func_get_args(), $numberArguments);
-		}
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+        $params['action'] = (isset($params[0]))? $params[0] : '#';
+        $params['text'] = (isset($params[1]))? $params[1] : '';
+        $params['class'] = (isset($params['class']))? $params['class']: '';
 
-		if(is_array($action))
+        if(isset($params['confirm']) && $params['confirm'])
         {
-			if(isset($action['confirm']) && $action['confirm'])
-            {
-				if(!isset($action['onclick'])) $action['onclick'] = "";
-				$action['onclick'] = 'Swal.fire({'."title: \"¿Puedes comfirmar la acción? Por favor.\", ".
-                "text: \"¡No podrás revertir esto!\",icon: \"warning\",showCancelButton: true, ".
-                "confirmButtonColor: \"#3085d6\",".
-                "cancelButtonColor: \"#d33\",confirmButtonText:\"SI, está de acuerdo!\"".'}).then('.
-                'function(result){ if (result.isConfirmed){'." Swal.fire(\"Comfirmado!\",\"Se procede a ejecutar el proceso.\",\"success\"); ".$action['onclick'].' }else{ return false; });';
-				unset($action['confirm']);
-			}
+            if(!isset($params['onclick'])) $params['onclick'] = "";
+            $params['onclick'] = 'Swal.fire({'."title: \"¿Puedes comfirmar la acción? Por favor.\", ".
+            "text: \"¡No podrás revertir esto!\",icon: \"warning\",showCancelButton: true, ".
+            "confirmButtonColor: \"#3085d6\",".
+            "cancelButtonColor: \"#d33\",confirmButtonText:\"SI, está de acuerdo!\"".'}).then('.
+            'function(result){ if (result.isConfirmed){'." Swal.fire(\"Comfirmado!\",\"Se procede a ejecutar el proceso.\",\"success\"); ".$params['onclick'].' }else{ return false; });';
+            unset($params['confirm']);
+        }
 
-			$code = "<a href='".site_url($action)."' ";
-			if(!isset($action['text']) || !$action['text'])
-            {
-				$action['text'] = $action[1];
-			}
-
-			foreach($action as $key => $value)
-            {
-				if(!is_integer($key) && $key!='text'){
-					$code.=" $key='$value' ";
-				}
-			}
-			$code.='>'.$action['text'].'</a>';
-			return $code;
-		} else {
-            if($text === "")
-            {
-				$text = str_replace('_', ' ', $action);
-				$text = str_replace('/', ' ', $text);
-				$text = ucwords($text);
-			}
-			return "<a href='".site_url($action)."'>".$text."</a>";
-		}
+        $code = "<a href='".site_url($params['action'])."' ";
+        foreach($params as $key => $value)
+        {
+            if(!is_integer($key) && $key!='text'){
+                $code.=" $key='$value' ";
+            }
+        }
+        $code.='>'.$params['text'].'</a>';
+        return $code;
     }
 }

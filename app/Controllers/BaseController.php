@@ -55,4 +55,14 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
     }
+
+    public function renderLayout(string $layout='index', $content, ?string $title="", ?string $ruta="")
+    {
+        $data = array(
+			"ruta"    => $ruta,
+			"content" => $content,
+			"title"   => $title
+		);
+		return view($layout, $data, ['saveData' => false]);
+    }
 }
