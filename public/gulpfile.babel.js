@@ -6,21 +6,34 @@ var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var gulpCopy = require('gulp-copy');
 
+function copyFileBootstrapCss()
+{
+    return src([
+        'node_modules/bootstrap/dist/css/bootstrap.css',
+        'node_modules/bootstrap/dist/css/bootstrap.css.map',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+        'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js.map',
+        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js.map',
+    ])
+    .pipe(dest('assets/bootstrap/'));
+};
+
 function copyFileBootstrap()
 {
     return src([
+        'node_modules/bootstrap/dist/js/bootstrap.js', 
         'node_modules/bootstrap/dist/js/bootstrap.bundle.js', 
-        'node_modules/bootstrap/dist/css/bootstrap.min.css',
-        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
         'node_modules/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
         'node_modules/bootstrap-datetimepicker/src/js/locales/bootstrap-datetimepicker.es.js',
         'node_modules/bootstrap-notify/bootstrap-notify.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js',
-        'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js.map',
         'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js',
-        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js.map',
         'node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'
     ])
+    .pipe(babel({
+        presets: ['@babel/env']
+    }))
     .pipe(dest('assets/bootstrap/'));
 };
 
@@ -30,15 +43,28 @@ function copyFileJquery()
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jquery-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
     ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
     .pipe(dest('assets/jquery/'));
+};
+
+function copyFileNouisliderCss()
+{
+    return src([
+        'node_modules/nouislider/dist/nouislider.min.css',
+    ])
+    .pipe(dest('assets/nouislider/'));
 };
 
 function copyFileNouislider()
 {
     return src([
-        'node_modules/nouislider/dist/nouislider.min.js',
-        'node_modules/nouislider/dist/nouislider.min.css',
+        'node_modules/nouislider/dist/nouislider.min.js'
     ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
     .pipe(dest('assets/nouislider/'));
 };
 
@@ -46,6 +72,16 @@ function copyFilePerfectScrollbar()
 {
     return src([
         'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js',
+    ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
+    .pipe(dest('assets/perfect-scrollbar/'));
+};
+
+function copyFilePerfectScrollbarCss()
+{
+    return src([
         'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js.map',
         'node_modules/perfect-scrollbar/css/perfect-scrollbar.css',
     ])
@@ -55,42 +91,95 @@ function copyFilePerfectScrollbar()
 function copyFileMoment()
 {
     return src([
-        'node_modules/moment/min/moment.min.js',
-        'node_modules/moment/min/moment.min.js.map',
+        'node_modules/moment/moment.js',
         'node_modules/moment/dist/locale/es.js'
     ])
+    .pipe(babel())
     .pipe(dest('assets/moment/'));
+};
+
+function copyFileMomentMap()
+{
+    return src([
+        'node_modules/moment/min/moment.min.js.map'
+    ])
+    .pipe(dest('assets/moment/'));
+};
+
+function copyFileChartMap()
+{
+    return src([
+        'node_modules/chart.js/dist/chart.js.map',
+    ])
+    .pipe(dest('assets/chart/'));
 };
 
 function copyFileChart()
 {
     return src([
         'node_modules/chart.js/dist/chart.js',
-        'node_modules/chart.js/dist/chart.js.map',
     ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
     .pipe(dest('assets/chart/'));
+};
+
+function copyFrameworkMap()
+{
+    return src([
+        'node_modules/backbone/backbone-min.js.map',
+        'node_modules/underscore/underscore-min.js.map',
+    ])
+    .pipe(dest('assets/framework/'));
 };
 
 function copyFramework()
 {
     return src([
         'node_modules/backbone/backbone-min.js',
-        'node_modules/backbone/backbone-min.js.map',
-        'node_modules/underscore/underscore-min.js',
-        'node_modules/underscore/underscore-min.js.map',
+        'node_modules/underscore/underscore-min.js'
     ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
     .pipe(dest('assets/framework/'));
 };
 
-function copySweetalert2()
+function copySweetalert2Css()
 {
     return src([
-        'node_modules/sweetalert2/dist/sweetalert2.min.js',
         'node_modules/sweetalert2/dist/sweetalert2.min.css',
     ])
     .pipe(dest('assets/sweetalert2/'));
 };
 
+function copySweetalert2()
+{
+    return src([
+        'node_modules/sweetalert2/dist/sweetalert2.min.js'
+    ])
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
+    .pipe(dest('assets/sweetalert2/'));
+};
+
+function copyFontAwesomeCss()
+{
+    return src([
+        'node_modules/font-awesome/css/font-awesome.min.css'
+    ])
+    .pipe(dest('assets/font-awesome/css/'));
+};
+
+function copyFontAwesomeFonts()
+{
+    return src([
+        'node_modules/font-awesome/fonts/*.*'
+    ])
+    .pipe(dest('assets/font-awesome/fonts/'));
+};
 
 function clientes(){
     return src([
@@ -101,7 +190,9 @@ function clientes(){
         'src/views/clientes.js',
         'src/routers/clientes.js'
     ])
-    .pipe(babel())
+    .pipe(babel({
+            presets: ['@babel/env']
+        }))
     .pipe(uglify())
     .pipe(concat('build.clientes.js'))
     .pipe(minify())
@@ -110,11 +201,20 @@ function clientes(){
 
 exports.default = series(
     copyFileBootstrap,
+    copyFileBootstrapCss,
     copyFileJquery,
     copyFileNouislider,
+    copyFileNouisliderCss,
     copyFilePerfectScrollbar,
+    copyFilePerfectScrollbarCss,
+    copyFileMomentMap,
     copyFileMoment,
+    copyFileChartMap,
     copyFileChart,
     copyFramework,
-    copySweetalert2
+    copyFrameworkMap,
+    copySweetalert2,
+    copySweetalert2Css,
+    copyFontAwesomeCss,
+    copyFontAwesomeFonts
 );
