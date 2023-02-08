@@ -1,5 +1,19 @@
 @charset "UTF-8"; 
 
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/monserrat.woff2') format('woff');
+}
+
+@font-face {
+    font-family: 'Lato-Montserrat';
+    font-style: bold;
+    font-weight: 900;
+    src: url('../fonts/monserrat.woff2') format('woff2');
+}
+
 .bootstrap-switch {
     display: inline-block;
     direction: ltr;
@@ -10650,9 +10664,9 @@ img {
 }
 
 .off-canvas-sidebar:after,.sidebar:after {
-    background: #66615b;
-    background: linear-gradient(#66615b,#000 80%);
-    z-index: 3
+    background: #000;
+    background: linear-gradient(#e79639,#000 95%);
+    z-index: 1
 }
 
 .off-canvas-sidebar[data-color=white]:after,.sidebar[data-color=white]:after {

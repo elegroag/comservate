@@ -34,7 +34,7 @@ class CargosEmpleados extends Migration
             ],
             'fecha_modificacion' => [
                 'type' => 'timestamp',
-                'null' => false
+                'null' => true
             ],
             'syncros' => [
                 'type' => 'VARCHAR',

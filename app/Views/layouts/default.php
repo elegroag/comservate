@@ -7,9 +7,9 @@
     <div class="sidebar">
         <div class="logo">
             <a href="#" class="simple-text logo-mini">
-                <div class="logo-image-small"></div>
+                <div class="logo-image-small"><?=img(['src'=> 'assets/img/logo.png', 'width'=>'100%'])?> </div>
             </a>
-            <a href="" class="simple-text logo-normal" style='color:#FFF;'> COMSERVA</a>
+            <a href="" class="simple-text logo-normal" style='color:#FFF;'> COMSERVA <?=img(['src'=> 'assets/img/logo.png', 'width'=>'20%'])?></a>
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav list-unstyled ps-0">
@@ -31,29 +31,16 @@
 <?= script_tag('js/paper.js') ?>
 
 <style>
-
-.sidebar-wrapper {
-  background-color: #000;
-  opacity: 0.77;
-  background-image: url("<?=base_url()?>/assets/img/sidebar1.jpg") !important;
-  background-size: cover;
-  background-position: top;
-}
-
-.sidebar .logo {
-  background-color: #000;
-  opacity: 0.80;
-  background-image: url("<?=base_url()?>/assets/img/sidebar2.jpg") !important;
-  background-size: cover;
-  background-position: bottom;
-}
-.sidebar .nav li>a{
-    opacity: 1;
-}
 .sidebar .nav li>a .nc-icon {
     color: #fff;
 }
 
+.sidebar .nav li>a {
+    font-size: 0.85rem;
+    color: #fff;
+    font-family: 'Montserrat', Helvetica Neue, Arial, sans-serif;
+    box-shadow: initial;
+}
 </style>
 </body>
 </html>
