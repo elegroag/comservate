@@ -11,8 +11,8 @@
                     <div class="card-body">
                         <div class="chartjs-size-monitor">
                             <div class="chartjs-size-monitor-shrink">
-                                <div class="">
-
+                                <div class="form-horizontal">
+                                    <?=formBoostrap(text_upper_field("nombre"), "label: Nombre", "id: nombre", "class: has-valid");?>
                                 </div>
                             </div>
                         </div>

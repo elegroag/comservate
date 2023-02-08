@@ -36,10 +36,22 @@
             </form>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a href="#" role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Right-aligned
+                    <a id="dropdown_menu_link1" href="#" role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Right
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdown_menu_link1">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown btn-rotate">
+                    <a id="dropdown_menu_link2" href="#" role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" >
+                        <i class="nc-icon nc-bell-55"></i>
+                        <p><span class="d-lg-none d-md-block">Some Actions</span></p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdown_menu_link2">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -53,18 +65,6 @@
                             <span class="d-lg-none d-md-block">Stats</span>
                         </p>
                     </a>
-                </li>
-
-                <li class="nav-item dropdown btn-rotate">
-                    <a role="button" class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="nc-icon nc-bell-55"></i>
-                        <p><span class="d-lg-none d-md-block">Some Actions</span></p>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
                 </li>
 
                 <li class="nav-item">
