@@ -37,6 +37,10 @@ $routes->get('/auth', 'AuthController::index');
 $routes->get('/clientes_create', 'ClientController::create');
 $routes->get('/inicio', 'Inicio::index');
 
+$routes->get('/clientes_admin', 'ClientesManager::index');
+$routes->get('/cliente_create', 'ClientesManager::create');
+
+
 // $routes->group('clients', ['filter' => 'jwt'], static function($routes) {
 //     $routes->get('/', 'ClientController::index');
 //     $routes->get('/(:num)', 'ClientController::show/$1');

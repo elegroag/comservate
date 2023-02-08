@@ -7,7 +7,7 @@
         <?= $this->include('template/navbar_main') ?>
         <div class="content">
             <div class="row">
-                <?= $content ?>
+                <?= $this->renderSection('content') ?>
             </div>
         </div>
     </div>

@@ -1,83 +1,99 @@
 <?php
 namespace App\Libraries;
 
-use App\Models\SysSidebarModel;
-
 class MenuSidebar 
 {
-    static $htmlSidebarMenu ='';
 
-    function _drop_simple_menu($data)
+    public static $treeMenuSidebar = array();
+    public static $itemsDrop = array();
+
+    static function dropSimpleItem($data)
     {
-        $url =  site_url($data['resource_router']);
-        return "<li><a class='dropdown-item' href='{$url}'>{$data['label']}</a></li>";
+        return "".
+        "<li>".linkTo($data['resource_router'], 
+            '<span class="sidebar-mini-icon">'.$data['icon'].'</span><span class="sidebar-normal"> '.$data['label'].'</span>', 
+            'class: link-warning ps-2 pb-0 fs-6')."
+        </li>";
     }
 
-    function _drop_compuesto_menu($data, $item='')
+    static function dropMultipleItems($data, $item='')
     {
-        return "<li class='nav-item dropdown drop-down02'>
-                    <a class='nav-link dropdown-toggle nx' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                        {$data['label']}
-                    </a>
-                    <ul class='dropdown-menu sub-drop-submenu' aria-labelledby='navbarDropdown'>
-                        {$item}
-                    </ul>
-                </li>";
+        $name = str_replace(" ","_", trim(strtolower($data['label'])));
+        self::$itemsDrop[] = $name; 
+        return ""."
+        <li class=\"mb-1\" data-collapse-item=\"{$name}\">
+            <a type='button' data-toggle=\"collapse\" class=\"btn-toggle align-items-center collapsed fs-7\" data-bs-toggle=\"collapse\" data-bs-target=\"#{$name}-collapse\" aria-expanded=\"false\">
+                <i class=\"{$data['icon']}\"></i>
+                <p>{$data['label']} <b class=\"caret\"></b></p>
+            </a>
+            <div class=\"collapse\" id=\"{$name}-collapse\">
+                <ul class=\"btn-toggle-nav list-unstyled pb-0\">
+                    {$item}
+                </ul>
+            </div>
+        </li>";
     }
 
-    function _drop_sidebar($data)
+    static function dropSidebar($data)
     {
         $code="";
         if($data['submenu'] == false){
-            $code.= $this->_drop_simple_menu($data);
-        }else{
+            $code.= self::dropSimpleItem($data);
+        } else {
             $item="";
             foreach ($data['submenu'] as $ai => $row) {
-                $item.= $this->_drop_sidebar($row);    
+                $item.= self::dropSidebar($row);    
             }
-            $code.= $this->_drop_compuesto_menu($data, $item);                
-        }      
+            $code.= self::dropMultipleItems($data, $item);                
+        }
         return $code;
     }
 
-    public function prepareTreeData(array $sysSidebars, int $id)
+    public static function prepareTreeData(array $sysSidebars, int $id)
     {
         $datos = array();
         foreach ($sysSidebars as $row)
         {
-            if($row['estado'] == '0' || $row['estado'] == 'I') continue;
-            if($id == $row['sys_sidebar_id'])
-            {
-                $datos[] = array(
-                    "id"=> $row['id'],
-                    "label"=> $row['label'],
-                    "resource_router"=> $row['resource_router'],
-                    'submenu' => $this->prepareTreeData($sysSidebars, $row['id'])
-                );
-            }
+            if($row['estado'] == 'O' || $row['estado'] == 'I') continue;
+            if($id != $row['sys_sidebar_id']) continue;
+           
+            $datos[] = [
+                "id"=> $row['id'],
+                "label"=> $row['label'],
+                "resource_router"=> $row['resource_router'],
+                "icon"=> $row['icon'],
+                "estado"=> $row['estado'],
+                'submenu' => self::prepareTreeData($sysSidebars, $row['id'])
+            ];
         }
         return (count($datos) == 0)? false : $datos;
     }
     
-    public function main(array $sysSidebars): string
+    public static function mainGenerate(array $sysSidebars): string
     {  
-        $treeMenuSidebar = array();
+        self::$treeMenuSidebar = array();
+        self::$itemsDrop = array();
+
         foreach ($sysSidebars as $row)
         {
-            if($row['estado'] == '0' || $row['estado'] == 'I') continue;
+            if($row['estado'] == 'O' || $row['estado'] == 'I') continue;
             if(!$row['sys_sidebar_id'])
             {
-                $datos[] = array(
+                self::$treeMenuSidebar[] = [
                     "id"=> $row['id'],
                     "label"=> $row['label'],
                     "resource_router"=> $row['resource_router'],
-                    'submenu' => $this->prepareTreeData($sysSidebars, $row['id'])
-                );
+                    "icon"=> $row['icon'],
+                    "estado"=> $row['estado'],
+                    'submenu' => self::prepareTreeData($sysSidebars, $row['id'])
+                ];
             }
         }
+
         $htmlSidebarMenu ='';
-        foreach ($treeMenuSidebar as $ai => $row) {
-            $htmlSidebarMenu.= $this->_drop_sidebar($row, "");
+        foreach (self::$treeMenuSidebar as $row) 
+        {
+            $htmlSidebarMenu.= self::dropSidebar($row, "");
         }
         return $htmlSidebarMenu;
     }

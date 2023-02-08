@@ -40,16 +40,14 @@ class SysSidebarService
 
     public function createMenuEscritorio()
     {
-        $sysSidebars = $this->getSysSidebars();      
-        $menuSidebar = new MenuSidebar();
-        return $menuSidebar->main($sysSidebars);
+        $sysSidebars = $this->sysSidebarModel->asArray()->whereIn('ambiente', ['E','T'])->findAll();      
+        return MenuSidebar::mainGenerate($sysSidebars);
     }
 
     public function createMenuMobile()
     {
-        $sysSidebars = $this->getSysSidebars();      
-        $menuSidebar = new MenuSidebar();
-        return $menuSidebar->main($sysSidebars);
+        $sysSidebars = $this->sysSidebarModel->asArray()->where('ambiente', 'M')->findAll(); 
+        return MenuSidebar::mainGenerate($sysSidebars);
     }
     
 }
