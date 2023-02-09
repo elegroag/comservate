@@ -22,6 +22,7 @@ $routes->set404Override();
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
 // $routes->setAutoRoute(false);
 
+
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -33,13 +34,21 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 $routes->get('/clients', 'ClientController::index');
 $routes->get('/clients/(:num)', 'ClientController::show/$1');
-$routes->get('/auth', 'AuthController::index');
+
 $routes->get('/clientes_create', 'ClientController::create');
 $routes->get('/inicio', 'Inicio::index');
 
 $routes->get('/clientes_admin', 'ClientesManager::index');
 $routes->get('/cliente_create', 'ClientesManager::create');
 
+$routes->post('/api_token', 'Auth::autenticar', ['namespace' => 'App\Controllers\RestApi']);
+
+$routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtauth'], static function($routes) {
+    $routes->get('clientes', 'Clientes::index');
+    $routes->post('clientes/create', 'Clientes::create');
+    $routes->put('clientes/edita/(:num)', 'Clientes::editCliente/$1');
+    $routes->get('clientes/(:num)', 'Clientes::showCliente/$1');
+});
 
 // $routes->group('clients', ['filter' => 'jwt'], static function($routes) {
 //     $routes->get('/', 'ClientController::index');

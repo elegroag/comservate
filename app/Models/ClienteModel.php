@@ -52,11 +52,11 @@ class ClienteModel extends Model
 
     protected $validationRules      = [
         'cedula' => 'required|numeric|min_length[6]|max_length[16]',
-        'correo' => 'required|valid_email|is_unique[clientes.correo]|min_length[6]|max_length[180]',
-        'nit' => 'required|numeric|is_unique[clientes.nit]|min_length[6]|max_length[16]',
+        'correo' => 'required|valid_email[clientes.correo]|min_length[6]|max_length[180]',
+        'nit' => 'required|numeric[clientes.nit]|min_length[6]|max_length[16]',
         'id_municipio' => 'required|numeric|min_length[1]',
-        'afiliado' => 'required|alpha_numeric|min_length[4]|max_length[180]',
-        'representante' => 'required|alpha_numeric|min_length[4]|max_length[180]',
+        'afiliado' => 'required|min_length[4]|max_length[180]',
+        'representante' => 'required|min_length[4]|max_length[180]',
         'telefono' => 'required|numeric|min_length[7]|max_length[10]',
         'direccion' => 'required|min_length[5]|max_length[200]',
         'barrio' => 'required|min_length[5]|max_length[180]',

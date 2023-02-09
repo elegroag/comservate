@@ -10,7 +10,14 @@
 @font-face {
     font-family: 'Lato-Montserrat';
     font-style: bold;
-    font-weight: 900;
+    font-weight: 700;
+    src: url('../fonts/monserrat.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Montserrat-Light';
+    font-style: normal;
+    font-weight: 400;
     src: url('../fonts/monserrat.woff2') format('woff2');
 }
 
@@ -7593,7 +7600,7 @@ textarea.form-control {
 }
 
 button,input,optgroup,select,textarea {
-    font-family: Montserrat,Helvetica Neue,Arial,sans-serif
+    font-family: 'Montserrat',Helvetica Neue,Arial,sans-serif
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -7757,7 +7764,7 @@ p.description {
 body {
     color: #2c2c2c;
     font-size: 14px;
-    font-family: Montserrat,Helvetica Neue,Arial,sans-serif;
+    font-family: 'Montserrat',Helvetica Neue,Arial,sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased
 }

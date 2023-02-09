@@ -17,7 +17,7 @@ class Cliente extends Entity
     protected $fecha_finalizacion;
     protected $valor_kilo;
     protected $kilos;
-    protected $valo_kilo_adicional;
+    protected $valor_kilo_adicional;
     protected $direccion;
     protected $telefono;
     protected $barrio;

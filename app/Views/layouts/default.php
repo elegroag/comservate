@@ -29,18 +29,5 @@
 </div>
 <?= script_tag('assets/paper/paper-dashboard.min.js') ?>
 <?= script_tag('js/paper.js') ?>
-
-<style>
-.sidebar .nav li>a .nc-icon {
-    color: #fff;
-}
-
-.sidebar .nav li>a {
-    font-size: 0.85rem;
-    color: #fff;
-    font-family: 'Montserrat', Helvetica Neue, Arial, sans-serif;
-    box-shadow: initial;
-}
-</style>
 </body>
 </html>
