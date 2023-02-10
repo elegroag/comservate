@@ -355,3 +355,33 @@ if ( ! function_exists('sanetizar'))
 		return $string;
   	}
 }
+
+if ( ! function_exists('js_notify')){
+    function js_notify(){
+        return script_tag('assets/bootstrap/bootstrap-notify.min.js');
+    }
+}
+
+if ( ! function_exists('js_datetimepicker')){
+    function jsdatetimepicker(){
+        return script_tag('assets/bootstrap/bootstrap-datetimepicker.js');
+    }
+}
+
+if ( ! function_exists('js_bootstrap_select')){
+    function js_bootstrap_select(){
+        return script_tag('assets/bootstrap/bootstrap-select.min.js');
+    }
+}
+
+if ( ! function_exists('js_moment')){
+    function js_moment(){
+        return script_tag('assets/moment/moment.js');
+    }
+}
+
+if ( ! function_exists('js_sweetalert2')){
+    function js_sweetalert2(){
+        return script_tag('assets/sweetalert2/sweetalert2.min.js');
+    }
+}

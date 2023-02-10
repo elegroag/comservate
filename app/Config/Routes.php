@@ -31,29 +31,31 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
-$routes->get('/clients', 'ClientController::index');
-$routes->get('/clients/(:num)', 'ClientController::show/$1');
+$routes->get('/', 'InicioController::index');
+$routes->get('login', 'LoginController::index');
 
-$routes->get('/clientes_create', 'ClientController::create');
-$routes->get('/inicio', 'Inicio::index');
-
-$routes->get('/clientes_admin', 'ClientesManager::index');
-$routes->get('/cliente_create', 'ClientesManager::create');
-
-$routes->post('/api_token', 'Auth::autenticar', ['namespace' => 'App\Controllers\RestApi']);
-
-$routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtauth'], static function($routes) {
-    $routes->get('clientes', 'Clientes::index');
-    $routes->post('clientes/create', 'Clientes::create');
-    $routes->put('clientes/edita/(:num)', 'Clientes::editCliente/$1');
-    $routes->get('clientes/(:num)', 'Clientes::showCliente/$1');
+$routes->group('/web', static function($routes) {
+    $routes->get('clientes', 'ClienteManagerController::index');
+    $routes->get('clientes/create', 'ClienteManagerController::create');
 });
 
-// $routes->group('clients', ['filter' => 'jwt'], static function($routes) {
-//     $routes->get('/', 'ClientController::index');
-//     $routes->get('/(:num)', 'ClientController::show/$1');
-// });
+$routes->get('perfil', 'PerfilController::index');
+
+$routes->group('/conf', ['namespace'=> 'App\Controllers\Configuration'], static function($routes) {
+    $routes->get('municipios', 'MunicipiosController::index');
+    $routes->get('residuos', 'ResiduosController::index');
+    $routes->get('usuarios', 'UsuariosController::index');
+    $routes->get('empleados', 'EmpleadosController::index');
+});
+
+$routes->post('/api_token', 'AuthController::autenticar', ['namespace' => 'App\Controllers\RestApi']);
+
+$routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtauth'], static function($routes) {
+    $routes->get('clientes', 'ClientesController::index');
+    $routes->post('clientes/salvar', 'ClientesController::salvarCliente');
+    $routes->put('clientes/edita/(:num)', 'ClientesController::editaCliente/$1');
+    $routes->get('clientes/(:num)', 'ClientesController::showCliente/$1');
+});
 
 /*
  * --------------------------------------------------------------------

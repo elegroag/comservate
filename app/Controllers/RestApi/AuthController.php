@@ -7,7 +7,7 @@ use App\Services\HashService;
 use CodeIgniter\RESTful\ResourceController;
 use Exception;
 
-class Auth extends ResourceController
+class AuthController extends ResourceController
 {
     private $userModel;
     private $jwtLibrary;

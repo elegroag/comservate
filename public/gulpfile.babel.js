@@ -200,21 +200,21 @@ function clientes(){
 };
 
 exports.default = series(
-    copyFileBootstrap,
-    copyFileBootstrapCss,
-    copyFileJquery,
-    copyFileNouislider,
-    copyFileNouisliderCss,
-    copyFilePerfectScrollbar,
-    copyFilePerfectScrollbarCss,
-    copyFileMomentMap,
-    copyFileMoment,
-    copyFileChartMap,
-    copyFileChart,
-    copyFramework,
-    copyFrameworkMap,
-    copySweetalert2,
-    copySweetalert2Css,
-    copyFontAwesomeCss,
-    copyFontAwesomeFonts
+    // copyFileBootstrap,
+    // copyFileBootstrapCss,
+    // copyFileJquery,
+    // copyFileNouislider,
+    // copyFileNouisliderCss,
+    // copyFilePerfectScrollbar,
+    // copyFilePerfectScrollbarCss,
+    // copyFileMomentMap,
+    // copyFileMoment,
+    // copyFileChartMap,
+    // copyFileChart,
+    // copyFramework,
+    // copyFrameworkMap,
+    // copySweetalert2,
+    // copySweetalert2Css,
+    // copyFontAwesomeCss,
+    // copyFontAwesomeFonts
 );

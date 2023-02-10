@@ -13,7 +13,7 @@
     </div>
     <?= $this->include('template/footer_main') ?>
 </div>
-<?= script_tag('assets/paper/paper-dashboard.min.js') ?>
+<?= script_tag('assets/paper/paper-dashboard.min.js', 'preload') ?>
 <?= script_tag('js/paper.js') ?>
 </body>
 </html>

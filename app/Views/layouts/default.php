@@ -7,9 +7,9 @@
     <div class="sidebar">
         <div class="logo">
             <a href="#" class="simple-text logo-mini">
-                <div class="logo-image-small"><?=img(['src'=> 'assets/img/logo.png', 'width'=>'100%'])?> </div>
+                <div class="logo-image-small"><?=img(['src'=> 'assets/img/mini-logo.png', 'width'=>'60px'])?> </div>
             </a>
-            <a href="" class="simple-text logo-normal" style='color:#FFF;'> COMSERVA <?=img(['src'=> 'assets/img/logo.png', 'width'=>'20%'])?></a>
+            <a href="" class="simple-text logo-normal" style='color:#FFF;'> COMSERVA <?=img(['src'=> 'assets/img/mini-logo.png', 'width'=>'40px'])?></a>
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav list-unstyled ps-0">

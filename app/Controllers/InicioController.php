@@ -1,10 +1,17 @@
 <?php
 namespace App\Controllers;
 
-class Inicio extends BaseController
+class InicioController extends BaseController
 {
 
     public function index()
+    {
+        helper('tag');
+        helper('html');
+        return view('inicio/index', ['title'=> 'Inicio']);
+    }
+
+    public function dash()
     {
         helper('tag');
         helper('html');

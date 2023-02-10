@@ -5,7 +5,7 @@ namespace App\Controllers\RestApi;
 use App\Services\ClienteService;
 use CodeIgniter\RESTful\ResourceController;
 
-class Clientes extends ResourceController
+class ClientesController extends ResourceController
 {
 
 	private $clienteService;
@@ -20,7 +20,7 @@ class Clientes extends ResourceController
 		return $this->respond($this->clienteService->getClients());
 	}
 
-	public function create()
+	public function salvarCliente()
 	{
 		try {
 			$cliente = $this->request->getJSON();
@@ -39,7 +39,7 @@ class Clientes extends ResourceController
 		}
 	}
 
-	public function editCliente($id)
+	public function editaCliente($id)
 	{
 		try {
 			if ($id == null)

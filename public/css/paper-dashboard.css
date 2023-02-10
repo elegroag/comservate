@@ -4,21 +4,37 @@
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/monserrat.woff2') format('woff');
+    src: local('../fonts/monserrat.woff2') format('woff');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Lato-Montserrat';
     font-style: bold;
     font-weight: 700;
-    src: url('../fonts/monserrat.woff2') format('woff2');
+    src: local('../fonts/monserrat.woff2') format('woff2');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Montserrat-Light';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/monserrat.woff2') format('woff2');
+    src: local('../fonts/monserrat.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: nucleo-icons;
+    src: url(../assets/fonts/nucleo-icons.eot);
+    src: url(../assets/fonts/nucleo-icons.eot) format("embedded-opentype"),
+    url(../assets/fonts/nucleo-icons.woff2) format("woff2"),
+    url(../assets/fonts/nucleo-icons.woff) format("woff"),
+    url(../assets/fonts/nucleo-icons.ttf) format("truetype"),
+    url(../assets/fonts/nucleo-icons.svg) format("svg");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 .bootstrap-switch {
@@ -5580,14 +5596,6 @@ tr:first-child>td>.fc-day-grid-event {
     border-bottom-color: transparent
 }
 
-@font-face {
-    font-family: nucleo-icons;
-    src: url(../assets/fonts/nucleo-icons.eot);
-    src: url(../assets/fonts/nucleo-icons.eot) format("embedded-opentype"),url(../assets/fonts/nucleo-icons.woff2) format("woff2"),url(../assets/fonts/nucleo-icons.woff) format("woff"),url(../assets/fonts/nucleo-icons.ttf) format("truetype"),url(../assets/fonts/nucleo-icons.svg) format("svg");
-    font-weight: 400;
-    font-style: normal
-}
-
 .nc-icon {
     display: inline-block;
     font: normal normal normal 14px/1 nucleo-icons;
@@ -10672,7 +10680,7 @@ img {
 
 .off-canvas-sidebar:after,.sidebar:after {
     background: #000;
-    background: linear-gradient(#e79639,#000 95%);
+    background: linear-gradient(#f44336,#000 95%);
     z-index: 1
 }
 
