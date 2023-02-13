@@ -216,6 +216,19 @@ function copyFileAxios()
     .pipe(dest('assets/axios/'));
 };
 
+function copyFileDatatable()
+{
+    return src([
+        'node_modules/datatables.net/js/jquery.dataTables.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/datatable/'));
+};
+
+
+
 function login(){
     return src([
         'src/models/core.js',
@@ -231,10 +244,11 @@ function login(){
 }
 
 exports.default = series(
-    // login,
-    clientes
+    login,
+    clientes,
+    copyFileDatatable
     // copyFileAxios,
-    // copyFileAxiosMap
+    // copyFileAxiosMap,
     // copyFileBootstrap,
     // copyFileBootstrapCss,
     // copyFileJquery,
@@ -248,7 +262,7 @@ exports.default = series(
     // copyFileChart,
     // copyFramework,
     // copyFrameworkMap,
-    // copySweetalert2
+    // copySweetalert2,
     // copySweetalert2Css,
     // copyFontAwesomeCss,
     // copyFontAwesomeFonts
