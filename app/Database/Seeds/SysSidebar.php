@@ -73,7 +73,7 @@ class SysSidebar extends Seeder
                 'id'=> 7,
                 'label' => 'Perfil',
                 'estado' => 'A', #Oculto activo
-                'resource_router' => 'perfil',
+                'resource_router' => 'web/perfil',
                 'orden' => 1,
                 'sys_sidebar_id' => 1,
                 'ambiente' => 'T',

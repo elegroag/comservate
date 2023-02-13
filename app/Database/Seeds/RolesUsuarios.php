@@ -8,6 +8,15 @@ class RolesUsuarios extends Seeder
 {
     public function run()
     {
+        $data = [
+            "id_usuario" => 18,
+            "id_rol" => 1
+        ];
+        $this->db->table('roles_usuarios')->insert($data);
+    }
+
+    public function useFile()
+    {
         $filepath = 'C:/tmp/roles_usuario.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';

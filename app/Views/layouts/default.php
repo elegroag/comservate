@@ -28,6 +28,5 @@
     </div>
 </div>
 <?= script_tag('assets/paper/paper-dashboard.min.js') ?>
-<?= script_tag('js/paper.js') ?>
 </body>
 </html>

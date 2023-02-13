@@ -33,15 +33,17 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'InicioController::index');
 $routes->get('login', 'LoginController::index');
+$routes->get('logout', 'LoginController::logout');
 
 $routes->group('/web', static function($routes) {
-    $routes->get('clientes', 'ClienteManagerController::index');
-    $routes->get('clientes/create', 'ClienteManagerController::create');
+    $routes->get('validation/(:any)', 'LoginController::validation/$1');
+    $routes->get('clientes', 'ClienteManagerController::index',  ['filter'=> 'webauth']);
+    $routes->get('clientes/create', 'ClienteManagerController::create',  ['filter'=> 'webauth']);
+    $routes->get('perfil', 'PerfilController::index', ['filter'=> 'webauth']);
+    $routes->get('inicio', 'InicioController::index', ['filter'=> 'webauth']);
 });
 
-$routes->get('perfil', 'PerfilController::index');
-
-$routes->group('/conf', ['namespace'=> 'App\Controllers\Configuration'], static function($routes) {
+$routes->group('/conf', ['namespace'=> 'App\Controllers\Configuration', 'filter'=> 'webauth'], static function($routes) {
     $routes->get('municipios', 'MunicipiosController::index');
     $routes->get('residuos', 'ResiduosController::index');
     $routes->get('usuarios', 'UsuariosController::index');
@@ -52,9 +54,10 @@ $routes->post('/api_token', 'AuthController::autenticar', ['namespace' => 'App\C
 
 $routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtauth'], static function($routes) {
     $routes->get('clientes', 'ClientesController::index');
-    $routes->post('clientes/salvar', 'ClientesController::salvarCliente');
-    $routes->put('clientes/edita/(:num)', 'ClientesController::editaCliente/$1');
-    $routes->get('clientes/(:num)', 'ClientesController::showCliente/$1');
+    $routes->post('cliente/salvar', 'ClientesController::salvarCliente');
+    $routes->put('cliente/edita/(:num)', 'ClientesController::editaCliente/$1');
+    $routes->delete('cliente/remove/(:num)', 'ClientesController::removeCliente/$1');
+    $routes->get('cliente/show/(:num)', 'ClientesController::showCliente/$1');
 });
 
 /*

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RolUsuarioModel extends Model
 {
-    protected $table = 'roles';
+    protected $table = 'roles_usuarios';
     protected $primaryKey = 'id';
     protected $returnType = RolUsuario::class;
     protected $useSoftDeletes = false;

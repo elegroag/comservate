@@ -23,6 +23,45 @@ if (! function_exists('utils_params')) {
     }
 }
 
+if (! function_exists('text_field')) {
+    
+    function text_field($params)
+    {
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+        
+        if(!isset($params[0])){
+            $params[0] = $params['id'];
+        }
+        
+        if(!isset($params['name'])||$params['name']==""){
+            $params['name'] = $params[0];
+        }
+
+        $value ='';
+        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+
+        $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
+
+        $params['type'] = (!isset($params['type']))? "text" : $params['type'];
+
+        $params['onblur']= (isset($params['onblur']))? $params['onblur']."" : "";
+
+        $value = str_replace("'","",$value);
+        $code = "<input type='{$params['type']}' id='{$params[0]}' value='{$value}' ";
+        
+        foreach($params as $_key => $_value)
+        {
+            if(!is_integer($_key))
+            {
+                $code.=" {$_key}='{$_value}' ";
+            }
+        }
+        $code.=" />\r\n";
+        return $code;
+    }
+}
+
 if (! function_exists('text_upper_field')) {
     
     function text_upper_field($params)
@@ -304,6 +343,30 @@ if (! function_exists('formBoostrap'))
     }
 }
 
+if (! function_exists('showBoostrap')) 
+{
+    function showBoostrap(string $content, string $label)
+    {
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+        
+        $params['class'] = (isset($params['class']))? $params['class']: '';
+        $params['label'] = (isset($params['label']))? $params['label'] : '';
+        $params['value'] = (isset($params['value']))? $params['value'] : '';
+       
+        $out = "".
+        "<div class=\"row {$params['class']}\">
+            <label class=\"col-sm-5 col-form-label\">{$params['label']}</label>
+            <div class=\"col-sm-7\">
+                <div class=\"form-group has-success\">
+                    <input type=\"text\" class=\"form-control form-static\" value=\"{$params['value']}\" readonly>
+                </div>
+            </div>
+        </div>";
+        return $out;
+    }
+}
+
 if ( ! function_exists('sanetizar'))
 {
     function sanetizar($string)
@@ -382,6 +445,28 @@ if ( ! function_exists('js_moment')){
 
 if ( ! function_exists('js_sweetalert2')){
     function js_sweetalert2(){
-        return script_tag('assets/sweetalert2/sweetalert2.min.js');
+        return script_tag('assets/sweetalert2/sweetalert2-min.js');
     }
 }
+
+if ( ! function_exists('js_axios')){
+    function js_axios(){
+        return script_tag('assets/axios/axios.min.js');
+    }
+}
+
+if ( ! function_exists('js_datatable')){
+    function js_datatable(){
+        return script_tag('assets/datatable/jquery.dataTables.min.js');
+    }
+}
+
+if ( ! function_exists('tokenBearer')){
+    function tokenBearer()
+    {
+        $session = session();
+        $auth = $session->get('auth');
+        return 'Bearer '.$auth['token'];
+    }
+}
+

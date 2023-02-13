@@ -16,7 +16,7 @@ class ClienteService
 
 	public function getClients()
 	{
-		return $this->clientModel->findAll();
+		return $this->clientModel->whereNotIn('estado',['X'])->findAll();
 	}
 
 	public function getClientById($id)
@@ -44,9 +44,15 @@ class ClienteService
 		endif;
 	}
 
-	public function deleteClient($id)
+	public function deleteClient($id, $cliente)
 	{
-		return $this->clientModel->delete($id);
+		$cliente->estado = 'X';
+		if ($this->clientModel->update($id, $cliente) === TRUE) :
+			return true;
+		else :
+			$this->errors = $this->clientModel->errors();
+			return false;
+		endif;
 	}
 
 	public function getErrors(){

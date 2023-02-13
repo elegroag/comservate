@@ -125,61 +125,36 @@
     }
 }
 
-
-
-/* ----------------
-Dropdown
-------------- */
-.dropdown>.dropdown-menu:first-of-type,
-.dropup>.dropdown-menu:first-of-type {
-    transition: all .3s cubic-bezier(.215,.61,.355,1) 0s,opacity .3s ease 0s,height 0s linear .35s
+.login-page {
+    font-family: 'Montserrat', Helvetica, sans-serif;
 }
-
-.dropdown-menu {
-    background-color: #fff;
-    border: 0 none;
-    border-radius: 12px;
-    padding: 0
+.login-page .full-page {
+    background: #000;
+    background: linear-gradient(#f44336,#000 95%);
 }
+.login-page .footer {
+    background: #000;
 
-.dropdown .dropdown-menu,
-.dropup .dropdown-menu {
-    box-shadow: 1px 2px 7px 1px rgba(0,0,0,.125);
-    margin-top: 3.1rem;
 }
-
-.dropdown-menu .divider {
-    background-color: #f1eae0;
-    margin: 0
+.login-page .navbar.navbar-transparent {
+    border-bottom: none;
+    padding: 2rem;
+}
+.login-page .content .container {
+    margin-top: 5vh;
+}
+.login-page .card-login {
+    margin: 0px 8px;
+    padding: 1rem;
 }
 
-.dropdown-menu .dropdown-header {
-    color: #9a9a9a;
-    font-size: .8571em;
-    padding: 10px 15px
-}
-.navbar .dropdown-menu .dropdown-item:focus,
-.navbar .dropdown-menu .dropdown-item:hover {
-    color: #fff
-} 
-.dropdown-menu .dropdown-item:focus,
-.dropdown-menu .dropdown-item:hover {
-    color: #fff!important;
-    opacity: 1;
-    text-decoration: none;
-    background-color: #aca092
-}
-.sidebar .nav li>a .nc-icon {
-    color: #fff;
-}
-.sidebar .nav li>a {
-    font-size: 0.85rem;
-    color: #fff;
-    font-family: 'Montserrat', Helvetica Neue, Arial, sans-serif;
-    box-shadow: initial;
+.login-page span[data-notify="message"]{
+    margin-left: 2.5rem;
 }
 
-.table>thead>tr,
-.table>tbody>tr {
-    font-size: .75rem !important;
+div[data-notify="container"]  button.close {
+    margin-top: 0.5rem;
+    border: none;
+    background-color: transparent;
+    font-size: 1.8rem;
 }

@@ -41,11 +41,11 @@ function copyFileJquery()
 {
     return src([
         'node_modules/jquery/dist/jquery.js',
-        'node_modules/jquery-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+        'node_modules/jquery-bootstrap-wizard/jquery.bootstrap.wizard.min.js'
     ])
     .pipe(babel({
-            presets: ['@babel/env']
-        }))
+        presets: ['@babel/env']
+    }))
     .pipe(dest('assets/jquery/'));
 };
 
@@ -157,11 +157,11 @@ function copySweetalert2Css()
 function copySweetalert2()
 {
     return src([
-        'node_modules/sweetalert2/dist/sweetalert2.min.js'
+        'node_modules/sweetalert2/dist/sweetalert2.js'
     ])
-    .pipe(babel({
-            presets: ['@babel/env']
-        }))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
     .pipe(dest('assets/sweetalert2/'));
 };
 
@@ -190,16 +190,51 @@ function clientes(){
         'src/views/clientes.js',
         'src/routers/clientes.js'
     ])
-    .pipe(babel({
-            presets: ['@babel/env']
-        }))
+    .pipe(babel())
     .pipe(uglify())
     .pipe(concat('build.clientes.js'))
     .pipe(minify())
-    .pipe(dest('js/comserva/'));
+    .pipe(dest('resource/cliente/'));
 };
 
+function copyFileAxiosMap()
+{
+    return src([
+        'node_modules/axios/dist/axios.min.js.map'
+    ])
+    .pipe(dest('assets/axios/'));
+};
+
+function copyFileAxios()
+{
+    return src([
+        'node_modules/axios/dist/axios.min.js'
+    ])
+    .pipe(babel({
+        presets: ['@babel/env']
+    }))
+    .pipe(dest('assets/axios/'));
+};
+
+function login(){
+    return src([
+        'src/models/core.js',
+        'src/models/login.js',
+        'src/views/login.js',
+        'src/routers/login.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(concat('build.login.js'))
+    .pipe(minify())
+    .pipe(dest('resource/login/'));
+}
+
 exports.default = series(
+    // login,
+    clientes
+    // copyFileAxios,
+    // copyFileAxiosMap
     // copyFileBootstrap,
     // copyFileBootstrapCss,
     // copyFileJquery,
@@ -213,7 +248,7 @@ exports.default = series(
     // copyFileChart,
     // copyFramework,
     // copyFrameworkMap,
-    // copySweetalert2,
+    // copySweetalert2
     // copySweetalert2Css,
     // copyFontAwesomeCss,
     // copyFontAwesomeFonts
