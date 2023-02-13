@@ -3,6 +3,7 @@ namespace App\Libraries;
 
 use App\Services\JwtService;
 use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 class JwtLibrary
 {
@@ -45,19 +46,15 @@ class JwtLibrary
 
     public function validateToken($token)
     {
-        try
-        {
-            $decoded = JWT::decode($token, $this->key, array('HS256'));
-            //si el cliente es diferente al cliente se debe rechazar el acceso
-            if($decoded->aud !== self::$aud){
-                throw new \Exception("Invalido el ingreso del api cliente.", 404);
-            }
-            return (array) $decoded;
+        $decoded = JWT::decode($token, new Key($this->key, 'HS256'));
+        if(!$decoded){
+            throw new \Exception("Invalido el ingreso del api cliente.", 404);
         }
-        catch (\Exception $e)
-        {
-            return false;
+        //si el cliente es diferente al cliente se debe rechazar el acceso
+        if($decoded->aud !== self::$aud){
+            throw new \Exception("Invalido el ingreso del api cliente.", 404);
         }
+        return (array) $decoded;
     }
 
     private function locationClient()

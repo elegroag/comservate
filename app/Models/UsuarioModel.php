@@ -32,4 +32,9 @@ class UsuarioModel extends Model
     {
         return $this->find($id);
     }
+
+    public function getfindByUsername(string $username)
+    {
+        return $this->where('usuario', $username)->first(); 
+    }
 }

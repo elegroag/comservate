@@ -106,7 +106,7 @@
                 _loader.setAttribute('class','loader');
                 _loader.setAttribute('id','loader');
                 $(_loader).append(_tmp.loading());
-                document.body.appendChild(loader);
+                document.body.appendChild(_loader);
                 _loader.setAttribute('style','display:block');
             }
             _status = true;

@@ -7,6 +7,7 @@ use App\Services\JwtService;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Exception;
 
 class JwtAuth implements FilterInterface
 {
@@ -26,11 +27,13 @@ class JwtAuth implements FilterInterface
         try {
             $payload = $jwtLibrary->validateToken($jwt);
             $jwtIngreso = $jwtService->getJwtIngresoById($jwt);
-            if(!$payload){
+            if(!$payload)
+            {
                 if($jwtIngreso){
                     $jwtService->updateJwtIngreso($jwt, [ "estado"=> "I"]);
                 }
-            }else{
+                throw new Exception('Error no es valido el token');
+            } else {
                 if($jwtIngreso){
                     $jwtService->updateJwtIngreso($jwt, [ "consumo"=> $jwtIngreso->consumo + 1]);
                 }

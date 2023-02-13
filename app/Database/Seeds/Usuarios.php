@@ -9,6 +9,20 @@ class Usuarios extends Seeder
 {
     public function run()
     {
+        $hashService = new HashService();
+        $password = $hashService->getClaveHash('elegroAg$1989.', 'elegroag');
+        $data = [
+            "nombres" => 'Edwin Andres Legro Agudelo',
+            "usuario" => 'elegroag',
+            "correo" => 'maxedwwin@gmail.com',
+            "estado" => 'A',
+            "password" => $password
+        ];
+        $this->db->table('usuarios')->insert($data);
+    }
+
+    public function useFile()
+    {
         $filepath = 'C:/tmp/usuarios.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';

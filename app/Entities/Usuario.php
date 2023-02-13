@@ -14,10 +14,4 @@ class Usuario extends Entity
     protected $correo;
     protected $estado;
     protected $syncros;
-
-    public function setPassword(string $pass)
-    {
-        $this->attributes['Password'] = password_hash($pass, PASSWORD_BCRYPT);
-        return $this;
-    }
 }

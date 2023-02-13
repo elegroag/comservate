@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\JwtAuth;
+use App\Filters\WebAuth;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -22,7 +23,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'jwtauth'       => JwtAuth::class
+        'jwtauth'       => JwtAuth::class,
+        'webauth'       => WebAuth::class
     ];
 
     /**
@@ -63,6 +65,7 @@ class Filters extends BaseConfig
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
     public array $filters = [
-        'jwtauth' => ['before' => ['clients']]
+        'jwtauth' => ['before' => ['clients']],
+        'webauth' => ['before' => ['perfil']]
     ];
 }

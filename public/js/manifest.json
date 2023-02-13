@@ -1,0 +1,32 @@
+{
+	"name": "Comserva Enterprise App",
+	"short_name": "Comserva",
+	"start_url": "http://localhost:8080",
+	"display": "fullscreen",
+	"background_color": "#000000",
+	"theme_color": "#f44336",
+	"icons": [
+		{
+			"src": "../assets/img/mini-logo.png",
+			"sizes": "80x50",
+			"type": "image/png"
+		},
+		{
+			"src": "../assets/img/logo.png",
+			"sizes": "512x361",
+			"type": "image/png"
+		},
+		{
+			"src": "../assets/img/logo.png",
+			"sizes": "196x196",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	],
+	"related_applications": [
+		{
+			"platform": "web",
+			"url": "https://localhost:8080"
+		}
+	]
+}

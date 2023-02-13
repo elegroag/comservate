@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class JwtIngresoModel extends Model
 {
-    protected $table = 'jwt_ingreso';
+    protected $table = 'jwt_ingresos';
     protected $primaryKey = 'token';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;

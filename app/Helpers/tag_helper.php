@@ -23,6 +23,45 @@ if (! function_exists('utils_params')) {
     }
 }
 
+if (! function_exists('text_field')) {
+    
+    function text_field($params)
+    {
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+        
+        if(!isset($params[0])){
+            $params[0] = $params['id'];
+        }
+        
+        if(!isset($params['name'])||$params['name']==""){
+            $params['name'] = $params[0];
+        }
+
+        $value ='';
+        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+
+        $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
+
+        $params['type'] = (!isset($params['type']))? "text" : $params['type'];
+
+        $params['onblur']= (isset($params['onblur']))? $params['onblur']."" : "";
+
+        $value = str_replace("'","",$value);
+        $code = "<input type='{$params['type']}' id='{$params[0]}' value='{$value}' ";
+        
+        foreach($params as $_key => $_value)
+        {
+            if(!is_integer($_key))
+            {
+                $code.=" {$_key}='{$_value}' ";
+            }
+        }
+        $code.=" />\r\n";
+        return $code;
+    }
+}
+
 if (! function_exists('text_upper_field')) {
     
     function text_upper_field($params)
@@ -303,3 +342,131 @@ if (! function_exists('formBoostrap'))
         return $out;
     }
 }
+
+if (! function_exists('showBoostrap')) 
+{
+    function showBoostrap(string $content, string $label)
+    {
+        $numberArguments = func_num_args();
+        $params = utils_params(func_get_args(), $numberArguments);
+        
+        $params['class'] = (isset($params['class']))? $params['class']: '';
+        $params['label'] = (isset($params['label']))? $params['label'] : '';
+        $params['value'] = (isset($params['value']))? $params['value'] : '';
+       
+        $out = "".
+        "<div class=\"row {$params['class']}\">
+            <label class=\"col-sm-5 col-form-label\">{$params['label']}</label>
+            <div class=\"col-sm-7\">
+                <div class=\"form-group has-success\">
+                    <input type=\"text\" class=\"form-control form-static\" value=\"{$params['value']}\" readonly>
+                </div>
+            </div>
+        </div>";
+        return $out;
+    }
+}
+
+if ( ! function_exists('sanetizar'))
+{
+    function sanetizar($string)
+	{
+		$string = trim($string);
+		$string = str_replace(
+			array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+			array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+			$string
+		);
+	
+		$string = str_replace(
+			array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+			array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+			$string
+		);
+	
+		$string = str_replace(
+			array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+			array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+			$string
+		);
+	
+		$string = str_replace(
+			array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+			array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+			$string
+		);
+	
+		$string = str_replace(
+			array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+			array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+			$string
+		);
+	
+		$string = str_replace(
+			array('ñ', 'Ñ', 'ç', 'Ç'),
+			array('n', 'N', 'c', 'C',),
+			$string
+		);
+	
+		$string = str_replace(
+			array("¨", "º", "-", "~","·", "$", "%", "&", "/","°","*",
+				"(", ")", "?", "'", "¡",
+				"¿", "[", "^", "<code>", "]",
+				"+", "}", "{", "¨", "´",
+				">", "< ", ";", ",", ":"),'',$string);
+	
+		return $string;
+  	}
+}
+
+if ( ! function_exists('js_notify')){
+    function js_notify(){
+        return script_tag('assets/bootstrap/bootstrap-notify.min.js');
+    }
+}
+
+if ( ! function_exists('js_datetimepicker')){
+    function jsdatetimepicker(){
+        return script_tag('assets/bootstrap/bootstrap-datetimepicker.js');
+    }
+}
+
+if ( ! function_exists('js_bootstrap_select')){
+    function js_bootstrap_select(){
+        return script_tag('assets/bootstrap/bootstrap-select.min.js');
+    }
+}
+
+if ( ! function_exists('js_moment')){
+    function js_moment(){
+        return script_tag('assets/moment/moment.js');
+    }
+}
+
+if ( ! function_exists('js_sweetalert2')){
+    function js_sweetalert2(){
+        return script_tag('assets/sweetalert2/sweetalert2-min.js');
+    }
+}
+
+if ( ! function_exists('js_axios')){
+    function js_axios(){
+        return script_tag('assets/axios/axios.min.js');
+    }
+}
+
+if ( ! function_exists('js_datatable')){
+    function js_datatable(){
+        return script_tag('assets/datatable/jquery.dataTables.min.js');
+    }
+}
+
+if ( ! function_exists('tokenBearer')){
+    function tokenBearer()
+    {
+        $session = session();
+        $auth = $session->get('auth');
+        return 'Bearer '.$auth['token'];
+    }
+}
+

@@ -15,7 +15,7 @@ class Clientes extends Migration
                 'type'           => 'INT',
                 'constraint'     => 14,
                 'unsigned'       => false,
-                'auto_increment' => false
+                'auto_increment' => true
             ],
             'cedula' => [
                 'type' => 'BIGINT',

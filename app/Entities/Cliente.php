@@ -17,7 +17,7 @@ class Cliente extends Entity
     protected $fecha_finalizacion;
     protected $valor_kilo;
     protected $kilos;
-    protected $valo_kilo_adicional;
+    protected $valor_kilo_adicional;
     protected $direccion;
     protected $telefono;
     protected $barrio;
@@ -28,4 +28,36 @@ class Cliente extends Entity
     protected $usuario_creador;
     protected $estado;
     protected $map;
+
+    public function getEstadosArray()
+    {
+        return [
+            'A'=> 'ACTIVO',
+            'I'=> 'INACTIVO',
+            'X'=> 'BORRADO',
+            'S'=> 'SUSPENDIDO'
+        ];
+    }
+
+    public function getEstadoDetalle(?string $estado)
+    {
+        if(!$estado) $estado = $this->estado;
+        switch ($estado) {
+            case 'A':
+                return 'ACTIVO';
+                break;
+            case 'I':
+                return 'INACTIVO';
+                break;
+            case 'S':
+                return 'SUSPENDIDO';
+                break;
+            case 'X':
+                return 'BORRADO';
+                break;
+            default:
+            break;
+        }
+    }
+
 }
