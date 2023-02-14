@@ -48,8 +48,6 @@ class ViewClientes extends Backbone.View {
 	}
 
     initialize() {
-        this.className = "box";
-        this.id = "viewClientes";
         this.template = $('#tmp_all_clientes').html();
         this.viewCliente = ViewCliente;
         this.children = {};
@@ -372,14 +370,19 @@ class ViewCreateCliente extends Backbone.View {
     }
 
     initialize() {
+        this.clientes = void 0;
+        this.municipios = void 0;
         this.template = $('#tmp_cliente_crear').html();
         this.clienteModel = ClienteModel;
         return this.render();
     }
 
     render(){
+        this.clientes = this.collection[0];
+        this.municipios = this.collection[1];
         let template = _.template(this.template);
         this.$el.html(template());
+        this.addListMunicipios(this);
         return this;
     }
 
@@ -389,6 +392,14 @@ class ViewCreateCliente extends Backbone.View {
             "keypress input[name='password']": "sendKeyData",
             "click #btnVolver": "volverListaClientes"
         }
+    }
+
+    addListMunicipios($scope){
+        let html='<option value="">Seleccionar aquí..</option>';
+        _.each($scope.municipios.toJSON(), function(municipio){
+            html+='<option value="'+municipio.id+'">'+municipio.municipio+'</option>';
+        }, html);
+        $scope.$el.find('#id_municipio').html(html);
     }
 
     sendData(e){

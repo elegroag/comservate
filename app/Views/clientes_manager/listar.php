@@ -39,11 +39,11 @@
                     <div class="card-icon icon-primary ">
                         <i class="fa fa-user"></i>
                     </div>
-                    <h3 class="card-title">Afiliado</h3>
+                    <h3 class="card-title"><%=afiliado%></h3>
                     <ul>
-                        <li>Estado <%=estado%></li>
-                        <li>Ruta <%=ruta%></li>
-                        <li>Municipio <%=id_municipio%></li>
+                        <li>ESTADO <%=estado_detalle%></li>
+                        <li>RUTA <%=ruta%></li>
+                        <li>MUNICIPIO <span class='text-uppercase'><%=municipio%></span></li>
                     </ul>
                 </div>
                 <div class="card-footer">
@@ -75,7 +75,7 @@
                                 <?= showBoostrap('label: Contrato', 'value: <%=contrato%>') ?>
                             </div>
                             <div class="col-md-6">
-                                <?= showBoostrap('label: Fecha Finalizacion', 'value: <%=fecha_finalizacion%>') ?>
+                                <?= showBoostrap('label: Fecha Finalización', 'value: <%=fecha_finalizacion%>') ?>
                             </div>
                             <div class="col-md-6">
                                 <?= showBoostrap('label: Valor kilo', 'value: <%=valor_kilo%>') ?>
@@ -99,10 +99,10 @@
                                 <?= showBoostrap('label: Especiales', 'value: <%=especiales%>') ?>
                             </div>
                             <div class="col-md-6">
-                                <?= showBoostrap('label: Fecha creacion', 'value: <%=fecha_creacion%>') ?>
+                                <?= showBoostrap('label: Fecha creación', 'value: <%=fecha_creacion%>') ?>
                             </div>
                             <div class="col-md-6">
-                                <?= showBoostrap('label: Usuario creador', 'value: <%=usuario_creador%>') ?>
+                                <?= showBoostrap('label: Usuario creador', 'value: <%=usuario%>') ?>
                             </div>
                         </div>
                     </form>
@@ -175,7 +175,7 @@
                                     'especiales', 'value: <%=especiales%>'), 'label: Especiales', 'class: has-valid col-md-6 mb-2', 'id: especiales') ?>
                             <?= formBoostrap(
                                 select_statico(
-                                    'estado', ['A'=>'ACTIVO', 'I'=> 'INACTIVO', 'S'=> 'SUSPENDIDO'], 'value: <%=estado%>'), 'label: Estado', 'class: has-valid col-md-6 mb-2', 'id: estado', 'required: 1') ?>
+                                    'estado', ['A'=>'ACTIVO', 'I'=> 'INACTIVO', 'S'=> 'SUSPENDIDO', 'X'=> 'BORRADO'], 'value: <%=estado%>'), 'label: Estado', 'class: has-valid col-md-6 mb-2', 'id: estado', 'required: 1') ?>
                             <?= formBoostrap(
                                 numeric_field(
                                     'ruta', 'value: <%=ruta%>'), 'label: Ruta', 'class: has-valid col-md-6 mb-2', 'id: ruta', 'required: 1') ?>
@@ -253,13 +253,12 @@
                                     'especiales'), 'label: Especiales', 'class: has-valid col-md-6 mb-2', 'id: especiales') ?>
                             <?= formBoostrap(
                                 select_statico(
-                                    'estado', ['A'=>'ACTIVO', 'I'=> 'INACTIVO', 'S'=> 'SUSPENDIDO'], 'value: estado'), 'label: Estado', 'class: has-valid col-md-6 mb-2', 'id: estado', 'required: 1') ?>
+                                    'estado', ['A'=>'ACTIVO', 'I'=> 'INACTIVO', 'S'=> 'SUSPENDIDO', 'X'=> 'BORRADO']), 'label: Estado', 'class: has-valid col-md-6 mb-2', 'id: estado', 'required: 1') ?>
                             <?= formBoostrap(
                                 numeric_field(
                                     'ruta'), 'label: Ruta', 'class: has-valid col-md-6 mb-2', 'id: ruta', 'required: 1') ?>
                             <?= formBoostrap(
-                                numeric_field(
-                                    'id_municipio'), 'label: id_municipio', 'class: has-valid col-md-6 mb-2', 'id: id_municipio', 'required: 1') ?>
+                                select_statico('id_municipio', []), 'label: id_municipio', 'class: has-valid col-md-6 mb-2', 'id: id_municipio', 'required: 1') ?>
                         </div>
                     </form>
                 </div>

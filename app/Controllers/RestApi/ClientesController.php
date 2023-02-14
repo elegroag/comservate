@@ -3,6 +3,7 @@
 namespace App\Controllers\RestApi;
 
 use App\Services\ClienteService;
+use App\Services\MunicipioService;
 use CodeIgniter\HTTP\Message;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -10,10 +11,12 @@ class ClientesController extends ResourceController
 {
 
 	private $clienteService;
+	private $municipioService;
 
 	public function __construct()
 	{
 		$this->clienteService = new ClienteService();
+		$this->municipioService= new MunicipioService();
 	}
 
 	public function index()
@@ -103,5 +106,20 @@ class ClientesController extends ResourceController
 		} catch (\Exception $err) {
 			return $this->failServerError($err->getMessage());
 		}
+	}
+
+	/**
+	 * requiereCliente function
+	 * Recursos requeridos para el registro y creación de clientes
+	 * @param string|null $id
+	 * @return void
+	 */
+	public function requiereCliente()
+	{
+		return $this->respond([
+			'status' => true,
+			'clientes' => $this->clienteService->getClients(),
+			'municipios' => $this->municipioService->getMunicipios()
+		]);
 	}
 }

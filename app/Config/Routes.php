@@ -58,6 +58,7 @@ $routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtau
     $routes->put('cliente/edita/(:num)', 'ClientesController::editaCliente/$1');
     $routes->delete('cliente/remove/(:num)', 'ClientesController::removeCliente/$1');
     $routes->get('cliente/show/(:num)', 'ClientesController::showCliente/$1');
+    $routes->get('cliente/require', 'ClientesController::requiereCliente');
 
     $routes->get('municipios', 'MunicipiosController::index');
     $routes->post('municipio/salvar', 'MunicipiosController::salvarMunicipio');

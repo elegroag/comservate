@@ -134,4 +134,36 @@ class ClienteModel extends Model
     {
         return $this->find($id);
     }
+
+    public function getEstadosArray()
+    {
+        return [
+            'A'=> 'ACTIVO',
+            'I'=> 'INACTIVO',
+            'X'=> 'BORRADO',
+            'S'=> 'SUSPENDIDO'
+        ];
+    }
+
+    public function getEstadoDetalle(?string $estado = '')
+    {
+        if($estado == '') $estado = $this->estado;
+        switch ($estado) {
+            case 'A':
+                return 'ACTIVO';
+                break;
+            case 'I':
+                return 'INACTIVO';
+                break;
+            case 'S':
+                return 'SUSPENDIDO';
+                break;
+            case 'X':
+                return 'BORRADO';
+                break;
+            default:
+            break;
+        }
+    }
+    
 }

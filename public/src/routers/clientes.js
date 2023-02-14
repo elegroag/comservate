@@ -7,6 +7,7 @@ class RouterClientes extends Backbone.Router {
 		this.content = "containerBone";
         this.errors = void 0;
 		this.clientes = new ClientesCollection();
+		this.municipios = new MunicipiosCollection();
 		this.viewClientes = ViewClientes;
 		this.viewShowCliente = ViewShowCliente;
 		this.viewCreateCliente = ViewCreateCliente;
@@ -65,18 +66,7 @@ class RouterClientes extends Backbone.Router {
 						timer: 3000
 					})
 				}
-			}).catch(function(err){
-				let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
-				if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
-				Swal.fire({
-					position: 'center',
-					type: 'error',
-					text:  message,
-					title: 'Alerta error!',
-					showConfirmButton: false,
-					timer: 3000
-				})
-			}).finally(function(){
+			}).catch(this.cathRequest).finally(function(){
 				loading.hide();
 			})
 		}
@@ -125,24 +115,14 @@ class RouterClientes extends Backbone.Router {
 						timer: 3000
 					})
 				}
-			}).catch(function(err){
-				let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
-				if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
-				Swal.fire({
-					position: 'center',
-					type: 'error',
-					text:  message,
-					title: 'Alerta error!',
-					showConfirmButton: false,
-					timer: 3000
-				})
-			}).finally(function(){
+			}).catch(this.cathRequest).finally(function(){
 				loading.hide();
 			})
 		}
+		return null;
 	}
 
-	editaShowView(id = void 0)  {
+	editaShowView(id = void 0) {
 		this.createContent();
 		var $scope = this;
 		if(_.size(this.clientes) > 0)
@@ -150,8 +130,28 @@ class RouterClientes extends Backbone.Router {
 			let cliente = this.clientes.get(id);
 			if(cliente)
 			{
-				new this.viewEditCliente({el: `#${this.content}`, model: cliente, className:'box animated'});
-				loading.hide();
+				if(_.size($scope.municipios) > 0)
+				{
+					new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente,  collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+					loading.hide();
+				} else {
+					axios({
+						"method": 'get',
+						"url": create_url('api/municipios'),
+						"type": 'JSON',
+						"headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()}
+					})
+					.then(function(response){
+						if(response.data)
+						{
+							$scope.setMunicipios($scope, response.data.minicipios);
+							new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente,  collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+							loading.hide();
+						}
+					}).catch(this.cathRequest).finally(function(){
+						loading.hide();
+					})
+				}
 			}else{
 				Routers.routerClientes.navigate("all", { trigger: true });
 			}
@@ -160,17 +160,19 @@ class RouterClientes extends Backbone.Router {
 			this.clientes.reset();
 			axios({
 				"method": 'get',
-				"url": create_url('api/clientes'),
+				"url": create_url('api/cliente/require'),
 				"type": 'JSON',
 				"headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()}
 			})
 			.then(function(response){
 				if(response.data)
 				{
-					$scope.setClientes($scope, response.data);
+					$scope.setClientes($scope, response.data.clientes);
+					$scope.setMunicipios($scope, response.data.minicipios);
+
 					let cliente = $scope.clientes.get(id);
 					if(cliente){
-						new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente, className:'box animated'});
+						new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente, collection: [$scope.clientes, $scope.municipios], className:'box animated'});
 					}else{
 						Routers.routerClientes.navigate("all", { trigger: true });
 					}
@@ -184,31 +186,63 @@ class RouterClientes extends Backbone.Router {
 						timer: 3000
 					})
 				}
-			}).catch(function(err){
-				let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
-				if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
-				Swal.fire({
-					position: 'center',
-					type: 'error',
-					text:  message,
-					title: 'Alerta error!',
-					showConfirmButton: false,
-					timer: 3000
-				})
-			}).finally(function(){
+			}).catch(this.cathRequest).finally(function(){
 				loading.hide();
 			})
 		}
+		return null;
+	}
+
+	cathRequest(err){
+		let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+		if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+		Swal.fire({
+			position: 'center',
+			type: 'error',
+			text:  message,
+			title: 'Alerta error!',
+			showConfirmButton: false,
+			timer: 3000
+		});
 	}
 
 	crearShowView() {
 		this.createContent();
-		new this.viewCreateCliente({el: `#${this.content}`, collection: this.clientes, className:'box animated'});
+		var $scope = this;
+		if(_.size(this.municipios) == 0)
+		{
+			axios({
+				"method": 'get',
+				"url": create_url('api/cliente/require'),
+				"type": 'JSON',
+				"headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()}
+			})
+			.then(function(response){
+				if(response.data)
+				{
+					$scope.setMunicipios(response.data.municipios);
+					$scope.setClientes(response.data.clientes);
+					
+					new $scope.viewCreateCliente({el: `#${$scope.content}`, collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+					loading.hide();
+				}
+			}).catch(this.cathRequest).finally(function(){
+				loading.hide();
+			})
+		} else {
+			new $scope.viewCreateCliente({el: `#${$scope.content}`, collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+			loading.hide();
+		}
 	}
 
 	setClientes($scope, clientes) {
-		if($scope.clientes == void 0) $scope.clientes = new ClientesCollection();
+		if($scope.clientes == void 0 || _.size($scope.clientes) == 0) $scope.clientes = new ClientesCollection();
         $scope.clientes.add(clientes, {'merge': true});
+	}
+
+	setMunicipios($scope, minicipios) {
+		if($scope.minicipios == void 0 || _.size($scope.minicipios) == 0) $scope.minicipios = new MunicipiosCollection();
+        $scope.minicipios.add(minicipios, {'merge': true});
 	}
 }
 

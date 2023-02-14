@@ -184,8 +184,10 @@ function copyFontAwesomeFonts()
 function clientes(){
     return src([
         'src/models/core.js',
+        'src/models/municipio.js',
         'src/models/cliente.js',
         'src/collections/clientes.js',
+        'src/collections/municipios.js',
         'src/views/core.js',
         'src/views/clientes.js',
         'src/routers/clientes.js'
@@ -244,7 +246,7 @@ function login(){
 }
 
 exports.default = series(
-    login,
+    // login,
     clientes,
     // copyFileDatatable
     // copyFileAxios,
