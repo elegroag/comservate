@@ -21,33 +21,58 @@ const capitalize = function (_string) {
 	return _string;
 };
 
-const formatMoney = function (n, currency, fixFloat) {
+const valNumeric = function (element) {
+	let frag = element.value.split(/([0-9])/);
+	let number = _.filter(frag, function (item) {
+		return /[0-9]/.test(item) ? item : null;
+	});
+	$(element).val(number.join(""));
+};
+
+const formatMoney = function (valor, fixFloat = 2) {
 	return (
-		currency +
-		" " +
-		n.toFixed(fixFloat).replace(/./g, function (c, i, a) {
-			return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+		"$ " +
+		valor.toFixed(fixFloat).replace(/,/g, function (c, i, a) {
+			return i > 0 && c !== "," && (a.length - i) % 3 === 0 ? "." + c : c;
 		})
 	);
 };
 
+const valMoney = function (element) {
+	let ext = element.value.replace("$", "").trim().split(".");
+	let segment = void 0;
+	let frag;
+	if (ext.length == 2) {
+		frag = ext[0];
+		segment = ext[1].substr(0, 2);
+	} else {
+		frag = ext[0];
+	}
+	frag = frag.split(/([0-9])/);
+	let number = _.filter(frag, function (item) {
+		return /[0-9]/.test(item) ? item : null;
+	});
+	if (segment) {
+		$(element).val("$ " + number.join("") + "." + segment);
+	} else {
+		$(element).val(formatMoney(parseInt(number.join(""))));
+	}
+};
+
 const cleanFormatMoney = function (valor) {
-	return valor.replace(/[a-zA-Z_\$\.\-]/g, "");
+	return valor.replace(/[a-zA-Z_\$\-]/g, "");
 };
 
 const Testeo = (function ($, _) {
-	const render = function (out, target, msj) 
-	{
+	const render = function (out, target, msj) {
 		let _html = $(`[${out}='${target}']`).html();
-		_html = (_html == '')? msj : _html+"<br/>"+msj;
+		_html = _html == "" ? msj : _html + "<br/>" + msj;
 		$(`[${out}='${target}']`).html(_html);
-		if(!$(`[name='${target}']`).hasClass("is-invalid"))
-		{
+		if (!$(`[name='${target}']`).hasClass("is-invalid")) {
 			$(`[name='${target}']`).toggleClass("is-invalid");
 		}
-		setTimeout(function()
-		{
-			$(`[${out}='${target}']`).html('');
+		setTimeout(function () {
+			$(`[${out}='${target}']`).html("");
 			$(`[name='${target}']`).removeClass("is-invalid");
 		}, 3000);
 	};
@@ -149,8 +174,8 @@ const Testeo = (function ($, _) {
 	};
 
 	const menor_que = function (attr, target = void 0, out = false, longitud = 1) {
-		if(attr==''){
-			return false;			
+		if (attr == "") {
+			return false;
 		}
 		if (_.size(attr) > parseInt(longitud)) {
 			let msj = `<span>El campo ${target} no puede ser mayor de ${longitud} caracteres.</span>`;
@@ -200,11 +225,11 @@ const TABLE_LENGUAJE = {
 			1: "Copiada 1 fila al portapapeles",
 			_: "Copiadas %d fila al portapapeles",
 		},
-	}
+	},
 };
 
 const formSerialiceObject = function (formulario = void 0) {
-	let _data_array = $('#'+formulario).serializeArray();
+	let _data_array = $("#" + formulario).serializeArray();
 	let _token = {};
 	let $i = 0;
 	while ($i < _.size(_data_array)) {

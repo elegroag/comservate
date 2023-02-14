@@ -183,3 +183,21 @@ Dropdown
 .table>tbody>tr {
     font-size: .75rem !important;
 }
+
+.form-control.form-static {
+    border: 0px;
+    border-bottom: 1px solid #f44336;
+    background: #fff;
+    border-radius: 0px;
+    cursor: initial;
+}
+
+.form-control.form-static:hover,
+.form-control.form-static:focus{
+    border: 0px;
+    border-bottom: 1px solid #f44336;
+}
+
+.card-category, .category {
+    color: #f44336; 
+}

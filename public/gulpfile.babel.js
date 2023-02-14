@@ -246,7 +246,7 @@ function login(){
 exports.default = series(
     login,
     clientes,
-    copyFileDatatable
+    // copyFileDatatable
     // copyFileAxios,
     // copyFileAxiosMap,
     // copyFileBootstrap,

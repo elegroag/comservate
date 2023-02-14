@@ -39,14 +39,15 @@
                     <div class="card-icon icon-primary ">
                         <i class="fa fa-user"></i>
                     </div>
-                    <h3 class="card-title">69$</h3>
+                    <h3 class="card-title">Afiliado</h3>
                     <ul>
-                        <li>Working materials in EPS</li>
-                        <li>6 months access to the library</li>
+                        <li>Estado <%=estado%></li>
+                        <li>Ruta <%=ruta%></li>
+                        <li>Municipio <%=id_municipio%></li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="javascript:;" class="btn btn-round btn-default">Volver</a>
+                    <button type='button' class="btn btn-round btn-default" id='btnVolver'>Volver</button>
                 </div>
             </div>
         </div>
@@ -58,32 +59,50 @@
                 <div class="card-body">
                     <form method="get" action="/" class="form-horizontal">
                         <div class='row'>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Cedula', 'value: <%=cedula%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Nit', 'value: <%=nit%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Afiliado', 'value: <%=afiliado%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Representante', 'value: <%=representante%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Contrato', 'value: <%=contrato%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Fecha Finalizacion', 'value: <%=fecha_finalizacion%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Valor kilo', 'value: <%=valor_kilo%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Kilos', 'value: <%=kilos%>') ?>
                             </div>
-                            <div class="col-md-4">
-                                <?=showBoostrap('cedula', 'label: cedula', 'value: 11126616')?>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Dirección', 'value: <%=direccion%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Teléfono', 'value: <%=telefono%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Barrio', 'value: <%=barrio%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Correo', 'value: <%=correo%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Especiales', 'value: <%=especiales%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Fecha creacion', 'value: <%=fecha_creacion%>') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= showBoostrap('label: Usuario creador', 'value: <%=usuario_creador%>') ?>
                             </div>
                         </div>
                     </form>
@@ -93,20 +112,85 @@
     </div>
 </script>
 
-
-
-
 <script type="text/template" id='tmp_cliente_editar'>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"> Editar Datos Cliente</h4>
-            <p class="card-category"> Cliente</p>
-        </div>
-        <div class="card-body">
-            
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class="nav justify-content-end">
+                <div class="nav-item">
+                    <button class="nav-link btn btn-success">
+                        <span class="btn-label"><i class="nc-icon nc-check-2"></i></span> Guardar
+                    </button>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-link btn btn-default">
+                        <span class="btn-label"><i class="nc-icon nc-zoom-split"></i></span> Volver
+                    </button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="#">
+                        <div class='row form-horizontal'>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'cedula', 'value: <%=cedula%>'), 'label: Cedula', 'class: has-valid col-md-6 mb-2', 'id: cedula','required: 1') ?>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'nit', 'value: <%=nit%>'), 'label: Nit', 'class: has-valid col-md-6 mb-2', 'id: nit','required: 1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'afiliado', 'value: <%=afiliado%>'), 'label: Afiliado', 'class: has-valid col-md-6 mb-2', 'id: afiliado', 'required: 1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'representante', 'value: <%=representante%>'), 'label: Representante', 'class: has-valid col-md-6 mb-2', 'id: representante','required: 1') ?>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'contrato', 'value: <%=contrato%>'), 'label: Contrato', 'class: has-valid col-md-6 mb-2', 'id: contrato', 'required: 1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'fecha_finalizacion', 'value: <%=fecha_finalizacion%>'), 'label: Fecha finalización', 'class: has-valid col-md-6 mb-2', 'id: fecha_finalizacion') ?>
+                            <?= formBoostrap(
+                                money_field(
+                                    'valor_kilo', 'value: <%=valor_kilo%>'), 'label: Valor kilo', 'class: has-valid col-md-6 mb-2', 'id: valor_kilo') ?>
+                            <?= formBoostrap(
+                                money_field(
+                                    'valor_kilo_adicional', 'value: <%=valor_kilo_adicional%>'), 'label: Valor kilo adicional', 'class: has-valid col-md-6 mb-2', 'id: valor_kilo_adicional') ?>
+                            <?= formBoostrap(
+                                text_field(
+                                    'kilos', 'value: <%=kilos%>'), 'label: Kilos', 'class: has-valid col-md-6 mb-2', 'id: kilos', 'required: -1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'direccion', 'value: <%=direccion%>'), 'label: Dirección', 'class: has-valid col-md-6 mb-2', 'id: direccion', 'required: 1') ?>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'telefono', 'value: <%=telefono%>'), 'label: Teléfono', 'class: has-valid col-md-6 mb-2', 'id: telefono', 'required: 1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'barrio', 'value: <%=barrio%>'), 'label: Barrio', 'class: has-valid col-md-6 mb-2', 'id: barrio', 'required: 1') ?>
+                            <?= formBoostrap(
+                                text_upper_field(
+                                    'correo', 'value: <%=correo%>'), 'label: Correo', 'class: has-valid col-md-6 mb-2', 'id: correo', 'required: 1') ?>
+                            <?= formBoostrap(
+                                text_field(
+                                    'especiales', 'value: <%=especiales%>'), 'label: Especiales', 'class: has-valid col-md-6 mb-2', 'id: especiales') ?>
+                            <?= formBoostrap(
+                                select_statico(
+                                    'estado', ['A'=>'ACTIVO', 'I'=> 'INACTIVO', 'S'=> 'SUSPENDIDO'], 'value: <%=estado%>'), 'label: Estado', 'class: has-valid col-md-6 mb-2', 'id: estado', 'required: 1') ?>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'ruta', 'value: <%=ruta%>'), 'label: Ruta', 'class: has-valid col-md-6 mb-2', 'id: ruta', 'required: 1') ?>
+                            <?= formBoostrap(
+                                numeric_field(
+                                    'id_municipio', 'value: <%=id_municipio%>'), 'label: id_municipio', 'class: has-valid col-md-6 mb-2', 'id: id_municipio', 'required: 1') ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </script>
+
+
 
 <div class="container" id='container'></div>
 

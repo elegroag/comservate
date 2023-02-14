@@ -81,25 +81,16 @@ class ViewClientes extends Backbone.View {
             "click [data-toggle='row-remove']": "removeData"
         }
     }
-
     editData(e){
         e.preventDefault();
-        let element = $(e.currentTarget);
-        let id = element.attr('data-cid');
-        Routers.routerClientes.navigate("edita/"+id, { trigger: true });
+        Routers.routerClientes.navigate("edita/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
         this.remove();
     }
-
     likeData(e){
         e.preventDefault();
-        let element = $(e.currentTarget);
-        let id = element.attr('data-cid');
-        Routers.routerClientes.navigate("detalle/"+id, { trigger: true });
-        this.remove();
-        // let model =  this.collection.get(id);
-        // model.set('afiliado', 'edwin legro');
+        Routers.routerClientes.navigate("detalle/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
+        this.remove();       
     }
-
     removeData(e){
         e.preventDefault();
         var element = $(e.currentTarget);
@@ -160,11 +151,9 @@ class ViewClientes extends Backbone.View {
             }
         })
     }
-
     serializeData(){
         return (!this.collection)? void 0 : this.collection.toJSON();
     }
-
     clienteAdd(model){
         let view = this.renderModel(model, this);
         this.$el.find('#filas').append(view.$el);
@@ -229,31 +218,35 @@ class ViewShowCliente extends Backbone.View {
     }
 
     initialize() {
-        this.className = "box";
-        this.id = "viewClientes";
         this.template = $('#tmp_cliente_detalle').html();
-        this.viewCliente = ViewCliente;
-        this.children = {};
         return this.render();
     }
 
     render(){
         let template = _.template(this.template);
-        this.$el.html(template());
+        this.$el.html(template(this.serializeData()));
         return this;
     }
 
     events(){
         return {
-            "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
+            "click #btnVolver": "volverListaClientes"
         }
     }
     
-    sendData(event){
+    volverListaClientes(e){
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
+        });
     }
 
-    sendKeyData(event){
+    serializeData(){
+        return (!this.model)? void 0 : this.model.toJSON();
     }
 }
 
@@ -261,59 +254,48 @@ class ViewEditCliente extends Backbone.View {
     
     constructor(options) {
         super(options);
-        this.className = "box";
-        this.id = "viewClientes";
-        this.template = $('#tmp_clientes_listar').html();
-        this.viewCliente = ViewCliente;
-        return this.render();
     }
 
     initialize() {
-        this.children = {};
-        this.listenTo(this.collection, 'add', this.clienteAdd);
-        this.listenTo(this.collection, 'remove', this.clienteRemoved);
+        this.template = $('#tmp_cliente_editar').html();
+        return this.render();
     }
 
     render(){
         let template = _.template(this.template);
-        this.$el.html(template());
+        this.$el.html(template(this.serializeData()));
         return this;
     }
 
     events(){
         return {
             "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
-        }
-    }
-
-    clienteAdd(model){
-        var view = this.renderModel(model);
-        this.$el.append(view.$el);
-    }
-    
-    renderModel(model){
-        var view = new this.viewCliente({model: model});
-        this.children[model.cid] = view;
-        this.listenTo(view, 'all', eventName => {
-            this.trigger('item:' + eventName, view, model);
-        });
-        view.render();
-        return view;
-    }
-
-    clienteRemoved(model) {
-        var view = this.children[model.cid];
-        if (view) {
-            view.remove();
-            this.children[model.cid] = undefined;
+            "keypress input[name='password']": "sendKeyData",
+            "click #btnVolver": "volverListaClientes"
         }
     }
 
     sendData(event){
+        // let model =  this.collection.get(id);
+        // model.set('afiliado', 'edwin legro');
     }
 
     sendKeyData(event){
+    }
+
+    volverListaClientes(e){
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
+        });
+    }
+
+    serializeData(){
+        return (!this.model)? void 0 : this.model.toJSON();
     }
 }
 
@@ -321,17 +303,11 @@ class ViewCreateCliente extends Backbone.View {
     
     constructor(options) {
         super(options);
-        this.className = "box";
-        this.id = "viewClientes";
-        this.template = $('#tmp_clientes_listar').html();
-        this.viewCliente = ViewCliente;
-        return this.render();
     }
 
     initialize() {
-        this.children = {};
-        this.listenTo(this.collection, 'add', this.clienteAdd);
-        this.listenTo(this.collection, 'remove', this.clienteRemoved);
+        this.template = $('#tmp_clientes_create').html();
+        return this.render();
     }
 
     render(){
@@ -344,29 +320,6 @@ class ViewCreateCliente extends Backbone.View {
         return {
             "click #btnSendData": "sendData",
             "keypress input[name='password']": "sendKeyData"
-        }
-    }
-
-    clienteAdd(model){
-        var view = this.renderModel(model);
-        this.$el.append(view.$el);
-    }
-    
-    renderModel(model){
-        var view = new this.viewCliente({model: model});
-        this.children[model.cid] = view;
-        this.listenTo(view, 'all', eventName => {
-            this.trigger('item:' + eventName, view, model);
-        });
-        view.render();
-        return view;
-    }
-
-    clienteRemoved(model) {
-        var view = this.children[model.cid];
-        if (view) {
-            view.remove();
-            this.children[model.cid] = undefined;
         }
     }
 
