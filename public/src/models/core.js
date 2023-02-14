@@ -39,6 +39,7 @@ const formatMoney = function (valor, fixFloat = 2) {
 };
 
 const valMoney = function (element) {
+	if (element.value == "") return false;
 	let ext = element.value.replace("$", "").trim().split(".");
 	let segment = void 0;
 	let frag;
@@ -65,16 +66,20 @@ const cleanFormatMoney = function (valor) {
 
 const Testeo = (function ($, _) {
 	const render = function (out, target, msj) {
-		let _html = $(`[${out}='${target}']`).html();
+		let _html = $("#" + out + "_" + target).html();
 		_html = _html == "" ? msj : _html + "<br/>" + msj;
-		$(`[${out}='${target}']`).html(_html);
+
+		$("#" + out + "_" + target).fadeIn("fast");
+		$("#" + out + "_" + target).html(_html);
+
 		if (!$(`[name='${target}']`).hasClass("is-invalid")) {
 			$(`[name='${target}']`).toggleClass("is-invalid");
 		}
+
 		setTimeout(function () {
-			$(`[${out}='${target}']`).html("");
-			$(`[name='${target}']`).removeClass("is-invalid");
-		}, 3000);
+			$("#" + out + "_" + target).html("");
+			$("#" + out + "_" + target).fadeOut("fast");
+		}, 3500);
 	};
 	const es_telefono = function (attr, target = void 0, out = false) {
 		let telefono = /^([0-9]){7,10}$/;
@@ -129,22 +134,33 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 	const es_email = function (attr, target = void 0, out = false) {
-		let email = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		let email =
+			/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if (!email.test(attr)) {
-			let msj = "<span>La dirección de email no es un valor valido.</span>";
+			let msj =
+				"<span>La dirección de email no es un valor valido.</span>";
 			if (out) render(out, target, msj);
 			return msj;
 		}
 		return false;
 	};
-	const es_identificacion = function (attr, target = void 0, _min = 1, _max = 100, out = false) {
+	const es_identificacion = function (
+		attr,
+		target = void 0,
+		_min = 1,
+		_max = 100,
+		out = false
+	) {
 		let numerico = /^([0-9]+){1,100}$/;
 		if (!numerico.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor valido.</span>`;
 			if (out) render(out, target, msj);
 			return msj;
 		} else {
-			let express = new RegExp("^([0-9]+){" + _min + "," + _max + "}", "i");
+			let express = new RegExp(
+				"^([0-9]+){" + _min + "," + _max + "}",
+				"i"
+			);
 			if (!express.test(attr)) {
 				let msj = `<span>El campo debe ser un valor entre ${_min} y ${_max} dígitos.</span>`;
 				if (out) render(out, target, msj);
@@ -153,7 +169,12 @@ const Testeo = (function ($, _) {
 		}
 		return false;
 	};
-	const es_fija_longitud = function (attr, target = void 0, _longitud = 1, out = false) {
+	const es_fija_longitud = function (
+		attr,
+		target = void 0,
+		_longitud = 1,
+		out = false
+	) {
 		let express = new RegExp("^([0-9]+){" + _longitud + "}", "i");
 		if (!express.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor entre ${_longitud} dígitos.</span>`;
@@ -173,7 +194,12 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 
-	const menor_que = function (attr, target = void 0, out = false, longitud = 1) {
+	const menor_que = function (
+		attr,
+		target = void 0,
+		out = false,
+		longitud = 1
+	) {
 		if (attr == "") {
 			return false;
 		}
@@ -228,8 +254,9 @@ const TABLE_LENGUAJE = {
 	},
 };
 
-const formSerialiceObject = function (formulario = void 0) {
-	let _data_array = $("#" + formulario).serializeArray();
+const formSerialiceObject = function (formulario = void 0, type = false) {
+	let target = type ? formulario : $("#" + formulario);
+	let _data_array = target.serializeArray();
 	let _token = {};
 	let $i = 0;
 	while ($i < _.size(_data_array)) {

@@ -38,8 +38,8 @@ if (! function_exists('text_field')) {
             $params['name'] = $params[0];
         }
 
-        $value ='';
-        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
@@ -77,8 +77,8 @@ if (! function_exists('text_upper_field')) {
             $params['name'] = $params[0];
         }
 
-        $value ='';
-        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "text-uppercase form-control" : "text-uppercase form-control ".$params['class'];
 
@@ -114,10 +114,8 @@ if (! function_exists('numeric_field')) {
             $params['name'] = $params[0];
         }
 
-        if(isset($params['value'])) {
-            $value = $params['value'];
-            unset($params['value']);
-        }
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
@@ -151,11 +149,9 @@ if (! function_exists('money_field')) {
             $params['name'] = $params[0];
         }
 
-        if(isset($params['value']))
-        {
-            $value = $params['value'];
-            unset($params['value']);
-        }
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
+        
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
         $params['onblur'] = (isset($params['onblur']))? $params['onblur'].",valMoney(this)": "valMoney(this)";
@@ -238,9 +234,8 @@ if (! function_exists('password_field')) {
                 $params['name'] = $params[0];
             }
 
-            if(!isset($params['value'])){
-                $params['value'] = $params[0];
-            }
+            $value = (isset($params['value']))? $params['value']: '';
+            if(isset($params['value'])) unset($params['value']);
 
             $code = "<input type='password' id='{$params[0]}' ";
 
@@ -308,7 +303,7 @@ if (! function_exists('formBoostrap'))
             "<label class=\"col-md-4 col-form-label text-uppercase\">{$params['label']}:</label>".
             "<div class=\"col-md-8\">".
                 "<div class=\"form-group\" data-toggle=\"help-{$params['id']}\">".$content."</div>".
-                "<label id=\"has_error_{$params['id']}\" class=\"error txt-primary\" for=\"required\">El valor {$params['label']} ingresado no es válido.</label>".
+                "<label id=\"has_error_{$params['id']}\" class=\"error txt-primary\"></label>".
                 (($params['required'])? "<div class=\"category form-category\">* Campo requerido</div>":'').
             "</div>".
         "</div>";
@@ -439,7 +434,7 @@ if ( ! function_exists('tokenBearer')){
     {
         $session = session();
         $auth = $session->get('auth');
-        return 'Bearer '.$auth['token'];
+        return ($auth)? 'Bearer '.$auth['token']: false;
     }
 }
 

@@ -10,10 +10,10 @@ Model.Login = Backbone.Model.extend({
     validate: function(attrs){
         let errors = []
         let out = '';
-        if(out = Testeo.vacio(attrs.username, 'username','has-error')) errors.push(out);
-        if(out = Testeo.menor(attrs.username, 'username','has-error', 30)) errors.push(out); 
-        if(out = Testeo.vacio(attrs.password, 'password','has-error')) errors.push(out); 
-        if(out = Testeo.menor(attrs.password, 'password','has-error', 30)) errors.push(out); 
+        if(out = Testeo.vacio(attrs.username, 'username','has_error')) errors.push(out);
+        if(out = Testeo.menor(attrs.username, 'username','has_error', 30)) errors.push(out); 
+        if(out = Testeo.vacio(attrs.password, 'password','has_error')) errors.push(out); 
+        if(out = Testeo.menor(attrs.password, 'password','has_error', 30)) errors.push(out); 
         return (_.size(errors) > 0)? errors : void 0;
     }
 });

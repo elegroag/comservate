@@ -258,6 +258,7 @@ class ViewEditCliente extends Backbone.View {
 
     initialize() {
         this.template = $('#tmp_cliente_editar').html();
+        this.clienteModel = ClienteModel;
         return this.render();
     }
 
@@ -275,12 +276,77 @@ class ViewEditCliente extends Backbone.View {
         }
     }
 
-    sendData(event){
+    sendData(e){
+        e.preventDefault()
+        var $scope = this;
+        $scope.target = $(e.target);
+        $scope.target.attr('disabled', true)
+        let form = this.$el.find('#formEditData');
+        let token = formSerialiceObject(form, true);
+        
+        let cliente = new this.clienteModel(token);
+        if(!cliente.isValid())
+        {
+            let errors = cliente.validationError;
+            showNotification('top', 'right', errors.join("<br/>"), false);
+            $scope.target.removeAttr('disabled');
+            return false;
+        }
+        _.each(cliente.toJSON(), function(element, key){
+            $scope.model.set(key, element);
+        });
+        cliente.destroy();
+        
+        loading.show();
+        axios({
+            "method": 'put',
+            "url": create_url('api/cliente/edita/'+$scope.model.get('id')),
+            "type": 'JSON',
+            "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
+            "data": $scope.model.toJSON()
+        })
+        .then(function(response){
+            if(response.data)
+            {
+                Swal.fire('Actualizado!', response.data.message, 'success');
+                $scope.$el.fadeOut('fast', function() {
+                    Routers.routerClientes.navigate("all", { trigger: true })
+                    $scope.remove();
+                });
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    text:  (_.size(response.data) == 0)? 'No hay datos disponible del cliente' : '',
+                    title: 'Alerta error!',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
+        }).catch(function(err){
+            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                text:  message,
+                title: 'Alerta error!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }).finally(function(){
+            $scope.target.removeAttr('disabled');
+            loading.hide();
+        })
         // let model =  this.collection.get(id);
         // model.set('afiliado', 'edwin legro');
     }
 
-    sendKeyData(event){
+    sendKeyData(e){
+        let keycode = e.keyCode || e.which;
+        if(keycode == '13') {
+            document.querySelector("#btnSendDataLogin").click();
+        }
     }
 
     volverListaClientes(e){
@@ -306,7 +372,8 @@ class ViewCreateCliente extends Backbone.View {
     }
 
     initialize() {
-        this.template = $('#tmp_clientes_create').html();
+        this.template = $('#tmp_cliente_crear').html();
+        this.clienteModel = ClienteModel;
         return this.render();
     }
 
@@ -319,13 +386,88 @@ class ViewCreateCliente extends Backbone.View {
     events(){
         return {
             "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
+            "keypress input[name='password']": "sendKeyData",
+            "click #btnVolver": "volverListaClientes"
         }
     }
 
-    sendData(event){
+    sendData(e){
+        e.preventDefault()
+        var $scope = this;
+        $scope.target = $(e.target);
+        $scope.target.attr('disabled', true)
+        let form = this.$el.find('#formCreateData');
+        let token = formSerialiceObject(form, true);
+        
+        let cliente = new this.clienteModel(token);
+        if(!cliente.isValid())
+        {
+            let errors = cliente.validationError;
+            showNotification('top', 'right', errors.join("<br/>"), false);
+            $scope.target.removeAttr('disabled');
+            return false;
+        }
+
+        loading.show();
+        axios({
+            "method": 'put',
+            "url": create_url('api/cliente/create/'),
+            "type": 'JSON',
+            "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
+            "data": cliente.toJSON()
+        })
+        .then(function(response){
+            if(response.data)
+            {
+                $scope.collection.add(cliente, {"trigger": true});
+                Swal.fire('Creado!', response.data.message, 'success');
+                $scope.$el.fadeOut('fast', function() {
+                    Routers.routerClientes.navigate("all", { trigger: true })
+                    $scope.remove();
+                });
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    text:  (_.size(response.data) == 0)? 'No hay datos disponible del cliente' : '',
+                    title: 'Alerta error!',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
+        }).catch(function(err){
+            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                text:  message,
+                title: 'Alerta error!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }).finally(function(){
+            $scope.target.removeAttr('disabled');
+            loading.hide();
+        })
     }
 
-    sendKeyData(event){
+    sendKeyData(e){
+        let keycode = e.keyCode || e.which;
+        if(keycode == '13') {
+            document.querySelector("#btnSendDataLogin").click();
+        }
+    }
+    
+    volverListaClientes(e)
+    {
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
+        });
     }
 }

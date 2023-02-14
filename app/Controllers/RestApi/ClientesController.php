@@ -55,7 +55,11 @@ class ClientesController extends ResourceController
 
 			$data = (array) $this->request->getJSON();
 			if ($this->clienteService->updateClient($id, $data)) :
-				return $this->respondUpdated($data);
+				return $this->respondUpdated([
+					'status' => true,
+					'message' => 'Se ha editado con éxito el registro',
+					'data' => $data
+				]);
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",

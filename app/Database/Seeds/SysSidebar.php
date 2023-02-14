@@ -33,7 +33,7 @@ class SysSidebar extends Seeder
                 'id'=> 3,
                 'label' => 'Listado clientes',
                 'estado'=> 'A',
-                'resource_router' => 'web/clientes',
+                'resource_router' => 'web/clientes#all',
                 'orden'=> 1,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'T',
@@ -43,7 +43,7 @@ class SysSidebar extends Seeder
                 'id'=> 4,
                 'label'=> 'Crear cliente',
                 'estado'=> 'A',
-                'resource_router'=> 'web/clientes/create',
+                'resource_router'=> 'web/clientes#crear',
                 'orden'=> 2,
                 'sys_sidebar_id'=> 2,
                 'ambiente' => 'E',
@@ -53,7 +53,7 @@ class SysSidebar extends Seeder
                 'id'=> 5,
                 'label' => 'Editar cliente',
                 'estado' => 'O', #Oculto activo
-                'resource_router' => 'web/clientes/editar',
+                'resource_router' => 'web/clientes#editar',
                 'orden' => 3,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'E',
@@ -61,9 +61,9 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 6,
-                'label' => 'Borrar cliente',
+                'label' => 'Detalle cliente',
                 'estado' => 'O', #Oculto activo
-                'resource_router' => 'web/clientes/delete',
+                'resource_router' => 'web/clientes#detalle',
                 'orden' => 4,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'E',

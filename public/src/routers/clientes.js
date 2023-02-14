@@ -203,7 +203,7 @@ class RouterClientes extends Backbone.Router {
 
 	crearShowView() {
 		this.createContent();
-		new this.viewCreateCliente({el: `#${this.content}`})
+		new this.viewCreateCliente({el: `#${this.content}`, collection: this.clientes, className:'box animated'});
 	}
 
 	setClientes($scope, clientes) {
