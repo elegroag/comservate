@@ -47,7 +47,10 @@
                             <?= showBoostrap('label: Fecha Finalización', 'value: <%=fecha_finalizacion%>') ?>
                         </div>
                         <div class="col-md-6">
-                            <?= showBoostrap('label: Valor kilo', 'value: <%=valor_kilo%>') ?>
+                            <?= showBoostrap('label: Valor kilo', 'value: $ <%= valor_kilo %>') ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= showBoostrap('label: Valor kilo adicional', 'value: $ <%= valor_kilo_adicional %>') ?>
                         </div>
                         <div class="col-md-6">
                             <?= showBoostrap('label: Kilos', 'value: <%=kilos%>') ?>

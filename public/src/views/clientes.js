@@ -270,6 +270,7 @@ class ViewEditCliente extends Backbone.View {
         let template = _.template(this.template);
         this.$el.html(template(this.serializeData()));
         this.addListMunicipios(this);
+        this.$el.find("#fecha_finalizacion").datetimepicker(optionsDataPicker());
         return this;
     }
 
@@ -403,6 +404,7 @@ class ViewCreateCliente extends Backbone.View {
         let template = _.template(this.template);
         this.$el.html(template());
         this.addListMunicipios(this);
+        this.$el.find("#fecha_finalizacion").datetimepicker(optionsDataPicker());
         return this;
     }
 

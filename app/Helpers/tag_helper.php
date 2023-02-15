@@ -394,8 +394,10 @@ if ( ! function_exists('js_notify')){
 }
 
 if ( ! function_exists('js_datetimepicker')){
-    function jsdatetimepicker(){
-        return script_tag('assets/bootstrap/bootstrap-datetimepicker.js');
+    function js_datetimepicker(){
+        return 
+        script_tag('assets/datatimepicker/jquery.datetimepicker.full.min.js').' '.
+        link_tag('assets/datatimepicker/jquery.datetimepicker.min.css');
     }
 }
 

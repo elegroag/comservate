@@ -5,6 +5,8 @@
 <?= js_sweetalert2() ?>
 <?= js_datatable() ?>
 <?= js_chosen() ?>
+<?= js_moment() ?>
+<?= js_datetimepicker() ?>
 
 <script type="text/template" id='tmp_all_clientes'>
     <?= $this->include('clientes_manager/tmp_all_clientes') ?>

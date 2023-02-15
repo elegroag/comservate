@@ -284,3 +284,16 @@ const showNotification = function (from, align, message, icon, ai = 3) {
 		}
 	);
 };
+
+const optionsDataPicker = function(time = false){
+	return {
+		format: "Y-m-d",
+		timepicker: time,
+		i18n: {
+			es: { 
+				months: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+				dayOfWeek: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
+			}
+		}
+	}
+}

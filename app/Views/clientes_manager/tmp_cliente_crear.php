@@ -71,13 +71,14 @@
                             'required: 1'
                         ) ?>
                         <?= formBoostrap(
-                            text_upper_field(
+                            text_field(
                                 'fecha_finalizacion'
                             ),
                             'label: Fecha finalización',
                             'class: has-valid col-md-6 mb-2',
                             'id: fecha_finalizacion'
                         ) ?>
+                        
                         <?= formBoostrap(
                             money_field(
                                 'valor_kilo'

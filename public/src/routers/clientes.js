@@ -244,7 +244,8 @@ class RouterClientes extends Backbone.Router {
 
 Routers.routerClientes = new RouterClientes();
 
-$(function(){	
+$(function(){
+	jQuery.datetimepicker.setLocale('es');
 	if (!Backbone.history.start()) {
 		Routers.routerClientes.navigate("all", { trigger: true });
 	}

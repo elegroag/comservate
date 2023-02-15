@@ -78,7 +78,7 @@
                             'required: 1'
                         ) ?>
                         <?= formBoostrap(
-                            text_upper_field(
+                            text_field(
                                 'fecha_finalizacion',
                                 'value: <%=fecha_finalizacion%>'
                             ),
