@@ -31,7 +31,10 @@ class ClientesController extends ResourceController
 			$out = $this->clienteService->createClient($cliente);
 			if (is_numeric($out) &&  $out > 0) :
 				$cliente->id = $out;
-				return $this->respondCreated($cliente);
+				return $this->respondCreated([
+					"status" => true,
+					"cliente" => $cliente
+				]);
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",

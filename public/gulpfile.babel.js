@@ -229,7 +229,26 @@ function copyFileDatatable()
     .pipe(dest('assets/datatable/'));
 };
 
+function copyFileChosen()
+{
+    return src([
+        'node_modules/chosen-js/chosen.jquery.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/chosen/'));
+};
 
+function copyFileChosenRq()
+{
+    return src([
+        'node_modules/chosen-js/chosen-sprite.png',
+        'node_modules/chosen-js/chosen-sprite@2x.png',
+        'node_modules/chosen-js/chosen.css'
+    ])
+    .pipe(dest('assets/chosen/'));
+};
 
 function login(){
     return src([
@@ -248,6 +267,8 @@ function login(){
 exports.default = series(
     // login,
     clientes,
+    // copyFileChosen,
+    // copyFileChosenRq
     // copyFileDatatable
     // copyFileAxios,
     // copyFileAxiosMap,

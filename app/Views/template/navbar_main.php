@@ -14,7 +14,7 @@
                     <span class="navbar-toggler-bar bar3"></span>
                 </button>
             </div>
-            <a class="navbar-brand" href="javascript:;"><?= esc($title) ?></a>
+            <a class="navbar-brand title" href="javascript:;"><?= esc($title) ?></a>
         </div>
 
         <button class="navbar-toggler btn-toggle collapsed border-0" data-bs-toggle="collapse" data-bs-target="#navigationCollapse" type="button" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">

@@ -21,7 +21,7 @@ class UsuarioService
 
 	public function getUsuarioById($id)
 	{
-		return $this->usuarioModel->find($id);
+		return $this->usuarioModel->select('id, nombres, usuario, fecha_creacion, fecha_modificacion, correo,  estado, syncros')->find($id);
 	}
 
 	public function createUsuario($data)

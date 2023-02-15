@@ -36,15 +36,13 @@ class RouterClientes extends Backbone.Router {
 	allShowView() {
 		this.createContent();
 		var $scope = this;
-
-		if(_.size($scope.clientes) > 0)
+		if($scope.clientes.length > 0)
 		{
-			loading.show();
 			new $scope.viewClientes({el: `#${$scope.content}`, collection: $scope.clientes}); 
 			loading.hide();
 		} else {
 			loading.show();
-			this.clientes.reset();
+			$scope.clientes.reset();
 			axios({
 				"method": 'get',
 				"url": create_url('api/clientes'),
@@ -76,9 +74,9 @@ class RouterClientes extends Backbone.Router {
 	detalleShowView(id = void 0) {
 		this.createContent();
 		var $scope = this;
-		if(_.size(this.clientes) > 0)
+		if($scope.clientes.length > 0)
 		{
-			let cliente = this.clientes.get(id);
+			let cliente = this.clientes.get(parseInt(id));
 			if(cliente)
 			{
 				new this.viewShowCliente({el: `#${this.content}`, model: cliente, className:'box animated'});
@@ -88,7 +86,7 @@ class RouterClientes extends Backbone.Router {
 			}
 		} else {
 			loading.show();
-			this.clientes.reset();
+			$scope.clientes.reset();
 			axios({
 				"method": 'get',
 				"url": create_url('api/clientes'),
@@ -125,14 +123,14 @@ class RouterClientes extends Backbone.Router {
 	editaShowView(id = void 0) {
 		this.createContent();
 		var $scope = this;
-		if(_.size(this.clientes) > 0)
+		if(this.clientes.length > 0)
 		{
-			let cliente = this.clientes.get(id);
-			if(cliente)
+			$scope.cliente = this.clientes.get(id);
+			if($scope.cliente)
 			{
-				if(_.size($scope.municipios) > 0)
+				if(this.municipios.length > 0)
 				{
-					new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente,  collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+					new $scope.viewEditCliente({el: `#${this.content}`, model: $scope.cliente,  collection: [ this.clientes, this.municipios], className:'box animated'});
 					loading.hide();
 				} else {
 					axios({
@@ -144,9 +142,8 @@ class RouterClientes extends Backbone.Router {
 					.then(function(response){
 						if(response.data)
 						{
-							$scope.setMunicipios($scope, response.data.minicipios);
-							new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente,  collection: [$scope.clientes, $scope.municipios], className:'box animated'});
-							loading.hide();
+							$scope.setMunicipios($scope, response.data);
+							new $scope.viewEditCliente({el: `#${$scope.content}`, model: $scope.cliente,  collection: [$scope.clientes, $scope.municipios], className:'box animated'});
 						}
 					}).catch(this.cathRequest).finally(function(){
 						loading.hide();
@@ -156,8 +153,7 @@ class RouterClientes extends Backbone.Router {
 				Routers.routerClientes.navigate("all", { trigger: true });
 			}
 		} else {
-			loading.show();
-			this.clientes.reset();
+			loading.show();			
 			axios({
 				"method": 'get',
 				"url": create_url('api/cliente/require'),
@@ -168,7 +164,7 @@ class RouterClientes extends Backbone.Router {
 				if(response.data)
 				{
 					$scope.setClientes($scope, response.data.clientes);
-					$scope.setMunicipios($scope, response.data.minicipios);
+					$scope.setMunicipios($scope, response.data.municipios);
 
 					let cliente = $scope.clientes.get(id);
 					if(cliente){
@@ -208,9 +204,9 @@ class RouterClientes extends Backbone.Router {
 
 	crearShowView() {
 		this.createContent();
-		var $scope = this;
-		if(_.size(this.municipios) == 0)
+		if(this.municipios.length === 0)
 		{
+			var $scope = this;
 			axios({
 				"method": 'get',
 				"url": create_url('api/cliente/require'),
@@ -220,8 +216,8 @@ class RouterClientes extends Backbone.Router {
 			.then(function(response){
 				if(response.data)
 				{
-					$scope.setMunicipios(response.data.municipios);
-					$scope.setClientes(response.data.clientes);
+					$scope.setMunicipios($scope, response.data.municipios);
+					$scope.setClientes($scope, response.data.clientes);
 					
 					new $scope.viewCreateCliente({el: `#${$scope.content}`, collection: [$scope.clientes, $scope.municipios], className:'box animated'});
 					loading.hide();
@@ -230,19 +226,19 @@ class RouterClientes extends Backbone.Router {
 				loading.hide();
 			})
 		} else {
-			new $scope.viewCreateCliente({el: `#${$scope.content}`, collection: [$scope.clientes, $scope.municipios], className:'box animated'});
+			new this.viewCreateCliente({el: `#${this.content}`, collection: [ this.clientes, this.municipios], className:'box animated'});
 			loading.hide();
 		}
 	}
 
 	setClientes($scope, clientes) {
-		if($scope.clientes == void 0 || _.size($scope.clientes) == 0) $scope.clientes = new ClientesCollection();
+		if($scope.clientes === void 0) $scope.clientes = new ClientesCollection();
         $scope.clientes.add(clientes, {'merge': true});
 	}
 
-	setMunicipios($scope, minicipios) {
-		if($scope.minicipios == void 0 || _.size($scope.minicipios) == 0) $scope.minicipios = new MunicipiosCollection();
-        $scope.minicipios.add(minicipios, {'merge': true});
+	setMunicipios($scope, municipios) {
+		if($scope.municipios === void 0) $scope.municipios = new MunicipiosCollection();
+        $scope.municipios.add(municipios, {'merge': true});
 	}
 }
 
@@ -252,4 +248,5 @@ $(function(){
 	if (!Backbone.history.start()) {
 		Routers.routerClientes.navigate("all", { trigger: true });
 	}
+	document.querySelector('[data-bs-target="#gestion_clientes_collapse"]').click();
 });

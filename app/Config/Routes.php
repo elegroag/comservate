@@ -54,7 +54,7 @@ $routes->post('/api_token', 'AuthController::autenticar', ['namespace' => 'App\C
 
 $routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtauth'], static function($routes) {
     $routes->get('clientes', 'ClientesController::index');
-    $routes->post('cliente/salvar', 'ClientesController::salvarCliente');
+    $routes->post('cliente/create', 'ClientesController::salvarCliente');
     $routes->put('cliente/edita/(:num)', 'ClientesController::editaCliente/$1');
     $routes->delete('cliente/remove/(:num)', 'ClientesController::removeCliente/$1');
     $routes->get('cliente/show/(:num)', 'ClientesController::showCliente/$1');

@@ -91,6 +91,7 @@ class ViewClientes extends Backbone.View {
     }
     removeData(e){
         e.preventDefault();
+        var $scope = this;
         var element = $(e.currentTarget);
         element.attr('disabled', true);
 
@@ -255,14 +256,20 @@ class ViewEditCliente extends Backbone.View {
     }
 
     initialize() {
+        this.clientes = void 0;
+        this.municipios = void 0;
         this.template = $('#tmp_cliente_editar').html();
         this.clienteModel = ClienteModel;
+        this.usuarioLocal = usuario_local();
         return this.render();
     }
 
     render(){
+        this.clientes = this.collection[0];
+        this.municipios = this.collection[1];
         let template = _.template(this.template);
         this.$el.html(template(this.serializeData()));
+        this.addListMunicipios(this);
         return this;
     }
 
@@ -272,6 +279,16 @@ class ViewEditCliente extends Backbone.View {
             "keypress input[name='password']": "sendKeyData",
             "click #btnVolver": "volverListaClientes"
         }
+    }
+
+    addListMunicipios($scope){
+        let html='<option value="">Seleccionar aquí..</option>';
+        _.each($scope.municipios.toJSON(), function(municipio){
+            let selected = ($scope.model.get('id_municipio') == municipio.id)? 'selected': '';
+            html+='<option '+selected+' value="'+municipio.id+'">'+(municipio.municipio).toUpperCase() +'</option>';
+        }, html);
+        $scope.$el.find('#id_municipio').html(html);
+        $scope.$el.find('#id_municipio').chosen({"width":"100%", "allow_single_deselect": true});
     }
 
     sendData(e){
@@ -290,6 +307,8 @@ class ViewEditCliente extends Backbone.View {
             $scope.target.removeAttr('disabled');
             return false;
         }
+
+        cliente.set('usuario_creador', this.usuarioLocal.id);
         _.each(cliente.toJSON(), function(element, key){
             $scope.model.set(key, element);
         });
@@ -374,6 +393,7 @@ class ViewCreateCliente extends Backbone.View {
         this.municipios = void 0;
         this.template = $('#tmp_cliente_crear').html();
         this.clienteModel = ClienteModel;
+        this.usuarioLocal = usuario_local();
         return this.render();
     }
 
@@ -397,9 +417,10 @@ class ViewCreateCliente extends Backbone.View {
     addListMunicipios($scope){
         let html='<option value="">Seleccionar aquí..</option>';
         _.each($scope.municipios.toJSON(), function(municipio){
-            html+='<option value="'+municipio.id+'">'+municipio.municipio+'</option>';
+            html+='<option value="'+municipio.id+'">'+(municipio.municipio).toUpperCase()+'</option>';
         }, html);
         $scope.$el.find('#id_municipio').html(html);
+        $scope.$el.find('#id_municipio').chosen({width: '100%', allow_single_deselect: true});
     }
 
     sendData(e){
@@ -419,9 +440,10 @@ class ViewCreateCliente extends Backbone.View {
             return false;
         }
 
+        cliente.set('usuario_creador', this.usuarioLocal.id);
         loading.show();
         axios({
-            "method": 'put',
+            "method": 'post',
             "url": create_url('api/cliente/create/'),
             "type": 'JSON',
             "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
@@ -430,7 +452,9 @@ class ViewCreateCliente extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
-                $scope.collection.add(cliente, {"trigger": true});
+                cliente.set('id', response.data.cliente.id);
+                $scope.clientes.add(cliente, {"trigger": true});
+                
                 Swal.fire('Creado!', response.data.message, 'success');
                 $scope.$el.fadeOut('fast', function() {
                     Routers.routerClientes.navigate("all", { trigger: true })

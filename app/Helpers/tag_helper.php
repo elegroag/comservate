@@ -438,3 +438,9 @@ if ( ! function_exists('tokenBearer')){
     }
 }
 
+if ( ! function_exists('js_chosen')){
+    function js_chosen(){
+        return link_tag('assets/chosen/chosen.jquery.css', 'stylesheet') .
+        script_tag('assets/chosen/chosen.jquery-min.js');
+    }
+}

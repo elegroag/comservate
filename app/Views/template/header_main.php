@@ -36,6 +36,10 @@
 		const bearer_token = function(){
 			return document.querySelector("[name=\"csrf-token\"]").getAttribute('content');
 		}
+
+		const usuario_local = function(){
+			return <?=$usuario?>;
+		}
 		
 		var _router = {};
 		var _model = {};

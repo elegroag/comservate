@@ -13198,6 +13198,7 @@ img {
 
 span[data-notify="message"]{
     margin-left: 2.5rem;
+    color: #f44336;
 }
 
 div[data-notify="container"]  button.close {

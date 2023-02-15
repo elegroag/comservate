@@ -101,6 +101,7 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 	const es_decimal = function (attr, target = void 0, out = false) {
+		attr = ((attr).replace(/^(\$)/, '')).trim();
 		let numerico = /^([0-9\.\,]+){0,20}$/;
 		if (!numerico.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor númerico decimal</span>`;
@@ -260,7 +261,7 @@ const formSerialiceObject = function (formulario = void 0, type = false) {
 	let _token = {};
 	let $i = 0;
 	while ($i < _.size(_data_array)) {
-		_token[_data_array[$i].name] = _data_array[$i].value;
+		_token[_data_array[$i].name] = (_data_array[$i].value).replace(/^\$/, "").trim();
 		$i++;
 	}
 	return _token;
