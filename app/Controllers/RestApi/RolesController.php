@@ -2,30 +2,30 @@
 
 namespace App\Controllers\RestApi;
 
-use App\Services\UsuarioService;
+use App\Services\RolService;
 use CodeIgniter\HTTP\Message;
 use CodeIgniter\RESTful\ResourceController;
 
-class UsuariosController extends ResourceController
+class RolesController extends ResourceController
 {
 
-	private $usuarioService;
+	private $rolService;
 
 	public function __construct()
 	{
-		$this->usuarioService = new UsuarioService();
+		$this->rolService = new RolService();
 	}
 
 	public function index()
 	{
-		return $this->respond($this->usuarioService->getUsuarios());
+		return $this->respond($this->rolService->getRoles());
 	}
 
-	public function salvarUsuario()
+	public function salvarRol()
 	{
 		try {
 			$usuario = $this->request->getJSON();
-			$out = $this->usuarioService->createUsuario($usuario);
+			$out = $this->rolService->createRol($usuario);
 			if (is_numeric($out) &&  $out > 0) :
 				$usuario->id = $out;
 				return $this->respondCreated([
@@ -43,7 +43,7 @@ class UsuariosController extends ResourceController
 		}
 	}
 
-	public function editaUsuario($id)
+	public function editaRol($id)
 	{
 		try {
 			if ($id == null)
@@ -52,12 +52,12 @@ class UsuariosController extends ResourceController
 			if (is_numeric($id) == FALSE)
 				return $this->failNotFound("El recurso no es valido para hacer la edición");
 
-			$usuario = $this->usuarioService->getUsuarioById($id);
+			$usuario = $this->rolService->getRolById($id);
 			if (!$usuario)
 				return $this->failNotFound('El usuario no es valido para actualizar ' . $id);
 
 			$data = (array) $this->request->getJSON();
-			if ($this->usuarioService->updateUsuario($id, $data)) :
+			if ($this->rolService->updateRol($id, $data)) :
 				return $this->respondUpdated([
 					'status' => true,
 					'message' => 'Se ha editado con éxito el registro',
@@ -66,7 +66,7 @@ class UsuariosController extends ResourceController
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",
-					"errors" =>$this->usuarioService->getErrors()
+					"errors" =>$this->rolService->getErrors()
 				]);
 			endif;
 		} catch (\Exception $err) {
@@ -74,12 +74,12 @@ class UsuariosController extends ResourceController
 		}
 	}
 
-	public function showUsuario($id)
+	public function showRol($id)
 	{
-		return $this->respond($this->usuarioService->getUsuarioById($id));
+		return $this->respond($this->rolService->getRolById($id));
 	}
 
-	public function removeUsuario($id)
+	public function removeRol($id)
 	{
 		try {
 			if ($id == null)
@@ -88,11 +88,11 @@ class UsuariosController extends ResourceController
 			if (is_numeric($id) == FALSE)
 				return $this->failNotFound("El recurso no es valido para hacer la edición");
 
-			$usuario = $this->usuarioService->getUsuarioById($id);
+			$usuario = $this->rolService->getRolById($id);
 			if (!$usuario)
 				return $this->failNotFound('El cliente no es valido para actualizar ' . $id);
 
-			if ($this->usuarioService->deleteUsuario($id, $usuario)) :
+			if ($this->rolService->deleteRol($id, $usuario)) :
 				return $this->respondUpdated([
 					'status' => true,
 					'message' => 'Se ha borrado con exito el registro'
@@ -100,7 +100,7 @@ class UsuariosController extends ResourceController
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",
-					"errors" =>$this->usuarioService->getErrors()
+					"errors" =>$this->rolService->getErrors()
 				]);
 			endif;
 		} catch (\Exception $err) {
@@ -114,11 +114,11 @@ class UsuariosController extends ResourceController
 	 * @param string|null $id
 	 * @return void
 	 */
-	public function requiereUsuario()
+	public function requiereRol()
 	{
 		return $this->respond([
 			'status' => true,
-			'usuarios' => $this->usuarioService->getUsuarios()
+			'usuarios' => $this->rolService->getRoles()
 		]);
 	}
 
