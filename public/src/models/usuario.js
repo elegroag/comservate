@@ -3,6 +3,8 @@ class UsuarioModel extends Backbone.Model {
 		super(options);
 	}
 
+	static omitirPassword = false;
+
 	initialize() {
 		this.urlRoot = "http://localhost:8080/api/usuario";
 	}
@@ -14,7 +16,8 @@ class UsuarioModel extends Backbone.Model {
             "usuario": void 0,
             "fecha_creacion": void 0,
             "correo": void 0,
-            "estado": void 0
+            "estado": void 0,
+			"password": void 0
 		};
 	}
 
@@ -29,7 +32,10 @@ class UsuarioModel extends Backbone.Model {
         if ((out = Testeo.vacio(attrs.correo, "correo", "has_error"))) errors.push(out);
 
         if ((out = Testeo.vacio(attrs.estado, "estado", "has_error"))) errors.push(out);
-        
+
+		if(UsuarioModel.omitirPassword === false) {
+			if ((out = Testeo.vacio(attrs.password, "password", "has_error"))) errors.push(out);
+		}
 		return _.size(errors) > 0 ? errors : void 0;
 	}
 }

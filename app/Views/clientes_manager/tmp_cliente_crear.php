@@ -27,7 +27,8 @@
                     <div class='row form-horizontal'>
                         <?= formBoostrap(
                             numeric_field(
-                                'cedula'
+                                'cedula',
+                                "autocomplete: off"
                             ),
                             'label: Cedula',
                             'class: has-valid col-md-6 mb-2',
@@ -36,7 +37,8 @@
                         ) ?>
                         <?= formBoostrap(
                             numeric_field(
-                                'nit'
+                                'nit',
+                                "autocomplete: off"
                             ),
                             'label: Nit',
                             'class: has-valid col-md-6 mb-2',
@@ -45,7 +47,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'afiliado'
+                                'afiliado',
+                                "autocomplete: off"
                             ),
                             'label: Afiliado',
                             'class: has-valid col-md-6 mb-2',
@@ -54,7 +57,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'representante'
+                                'representante',
+                                "autocomplete: off"
                             ),
                             'label: Representante',
                             'class: has-valid col-md-6 mb-2',
@@ -63,7 +67,8 @@
                         ) ?>
                         <?= formBoostrap(
                             numeric_field(
-                                'contrato'
+                                'contrato',
+                                "autocomplete: off"
                             ),
                             'label: Contrato',
                             'class: has-valid col-md-6 mb-2',
@@ -72,7 +77,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_field(
-                                'fecha_finalizacion'
+                                'fecha_finalizacion',
+                                "autocomplete: off"
                             ),
                             'label: Fecha finalización',
                             'class: has-valid col-md-6 mb-2',
@@ -81,7 +87,8 @@
                         
                         <?= formBoostrap(
                             money_field(
-                                'valor_kilo'
+                                'valor_kilo',
+                                "autocomplete: off"
                             ),
                             'label: Valor kilo',
                             'class: has-valid col-md-6 mb-2',
@@ -89,7 +96,8 @@
                         ) ?>
                         <?= formBoostrap(
                             money_field(
-                                'valor_kilo_adicional'
+                                'valor_kilo_adicional',
+                                "autocomplete: off"
                             ),
                             'label: Valor kilo adicional',
                             'class: has-valid col-md-6 mb-2',
@@ -97,7 +105,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_field(
-                                'kilos'
+                                'kilos',
+                                "autocomplete: off"
                             ),
                             'label: Kilos',
                             'class: has-valid col-md-6 mb-2',
@@ -113,7 +122,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'direccion'
+                                'direccion',
+                                "autocomplete: off"
                             ),
                             'label: Dirección',
                             'class: has-valid col-md-6 mb-2',
@@ -122,7 +132,8 @@
                         ) ?>
                         <?= formBoostrap(
                             numeric_field(
-                                'telefono'
+                                'telefono',
+                                "autocomplete: off"
                             ),
                             'label: Teléfono',
                             'class: has-valid col-md-6 mb-2',
@@ -131,7 +142,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'barrio'
+                                'barrio',
+                                "autocomplete: off"
                             ),
                             'label: Barrio',
                             'class: has-valid col-md-6 mb-2',
@@ -140,7 +152,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'correo'
+                                'correo',
+                                "autocomplete: off"
                             ),
                             'label: Correo',
                             'class: has-valid col-md-6 mb-2',
@@ -149,7 +162,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_field(
-                                'especiales'
+                                'especiales',
+                                "autocomplete: off"
                             ),
                             'label: Especiales',
                             'class: has-valid col-md-6 mb-2',
@@ -158,7 +172,8 @@
                         <?= formBoostrap(
                             select_statico(
                                 'estado',
-                                ['A' => 'ACTIVO', 'I' => 'INACTIVO', 'S' => 'SUSPENDIDO', 'X' => 'BORRADO']
+                                ['A' => 'ACTIVO', 'I' => 'INACTIVO', 'S' => 'SUSPENDIDO', 'X' => 'BORRADO'],
+                                "autocomplete: off"
                             ),
                             'label: Estado',
                             'class: has-valid col-md-6 mb-2',
@@ -167,7 +182,8 @@
                         ) ?>
                         <?= formBoostrap(
                             numeric_field(
-                                'ruta'
+                                'ruta',
+                                "autocomplete: off"
                             ),
                             'label: Ruta',
                             'class: has-valid col-md-6 mb-2',

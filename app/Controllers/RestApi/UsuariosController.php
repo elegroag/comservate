@@ -2,6 +2,7 @@
 
 namespace App\Controllers\RestApi;
 
+use App\Services\HashService;
 use App\Services\UsuarioService;
 use CodeIgniter\HTTP\Message;
 use CodeIgniter\RESTful\ResourceController;
@@ -25,6 +26,11 @@ class UsuariosController extends ResourceController
 	{
 		try {
 			$usuario = $this->request->getJSON();
+			if(isset($usuario['password']))
+			{
+				$hashService = new HashService();
+				$usuario['password'] = $hashService->getClaveHash($usuario['password'], $usuario['usuario']);
+			}
 			$out = $this->usuarioService->createUsuario($usuario);
 			if (is_numeric($out) &&  $out > 0) :
 				$usuario->id = $out;
@@ -57,6 +63,12 @@ class UsuariosController extends ResourceController
 				return $this->failNotFound('El usuario no es valido para actualizar ' . $id);
 
 			$data = (array) $this->request->getJSON();
+			if(isset($data['password']))
+			{
+				$hashService = new HashService();
+				$data['password'] = $hashService->getClaveHash($data['password'], $data['usuario']);
+			}
+
 			if ($this->usuarioService->updateUsuario($id, $data)) :
 				return $this->respondUpdated([
 					'status' => true,

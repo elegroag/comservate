@@ -27,7 +27,8 @@
                     <div class='row form-horizontal'>
                         <?= formBoostrap(
                             text_upper_field(
-                                'nombres'
+                                'nombres',
+                                "autocomplete: off"
                             ),
                             'label: Nombres',
                             'class: has-valid col-md-6 mb-2',
@@ -36,7 +37,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_field(
-                                'usuario'
+                                'usuario',
+                                "autocomplete: off"
                             ),
                             'label: Usuario',
                             'class: has-valid col-md-6 mb-2',
@@ -45,7 +47,8 @@
                         ) ?>
                         <?= formBoostrap(
                             text_upper_field(
-                                'correo'
+                                'correo',
+                                "autocomplete: off"
                             ),
                             'label: Correo',
                             'class: has-valid col-md-6 mb-2',
@@ -55,11 +58,22 @@
                         <?= formBoostrap(
                             select_statico(
                                 'estado',
-                                ['A' => 'ACTIVO', 'I' => 'INACTIVO', 'S' => 'SUSPENDIDO', 'X' => 'BORRADO']
+                                ['A' => 'ACTIVO', 'I' => 'INACTIVO', 'S' => 'SUSPENDIDO', 'X' => 'BORRADO'],
+                                "autocomplete: off"
                             ),
                             'label: Estado',
                             'class: has-valid col-md-6 mb-2',
                             'id: estado',
+                            'required: 1'
+                        ) ?>
+                        <?= formBoostrap(
+                            '<div class="input-group">
+                                <input type="password" autocomplete="off" id="password" name="password" class="form-control" placeholder="***" aria-label="password" aria-describedby="button-addon2">
+                                <button id="btnShowPassword" class="btn btn-outline-primary border-0 mt-0 mb-0" style="padding:8px" type="button" id="button-addon2"><i class="fa fa-eye"></i></button>
+                            </div>',
+                            'label: Clave',
+                            'class: has-valid col-md-6 mb-2',
+                            'id: password',
                             'required: 1'
                         ) ?>
                     </div>

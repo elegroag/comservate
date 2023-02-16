@@ -7,6 +7,7 @@
 <?= js_chosen() ?>
 <?= js_moment() ?>
 <?= js_datetimepicker() ?>
+<?= js_switch() ?>
 
 <script type="text/template" id='tmp_all_usuarios'>
     <?= $this->include('usuarios_manager/tmp_all_usuarios') ?>

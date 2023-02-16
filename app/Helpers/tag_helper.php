@@ -393,6 +393,13 @@ if ( ! function_exists('js_notify')){
     }
 }
 
+if ( ! function_exists('js_switch')){
+    function js_switch(){
+        return script_tag('assets/bootstrap/bootstrap-switch.js');
+    }
+}
+
+
 if ( ! function_exists('js_datetimepicker')){
     function js_datetimepicker(){
         return 

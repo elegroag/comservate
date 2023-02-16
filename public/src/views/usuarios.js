@@ -265,6 +265,8 @@ class ViewEditUsuario extends Backbone.View {
         this.usuarios = this.collection;
         let template = _.template(this.template);
         this.$el.html(template(this.serializeData()));
+        this.$el.find("[id='boxChangePassword']").bootstrapSwitch();
+        this.$el.find("[id='boxChangePassword']").on("switchChange.bootstrapSwitch", this.changePassword);
         return this;
     }
 
@@ -272,7 +274,27 @@ class ViewEditUsuario extends Backbone.View {
         return {
             "click #btnSendData": "sendData",
             "keypress input[name='password']": "sendKeyData",
-            "click #btnVolver": "volverListaUsuarios"
+            "click #btnVolver": "volverListaUsuarios",
+            "click #btnShowPassword": "showPassword"
+        }
+    }
+
+    showPassword(e){
+        e.preventDefault();
+        if(this.$el.find('#password').attr('type') == 'text')
+        {
+            this.$el.find('#password').attr('type', 'password');
+        }else{
+            this.$el.find('#password').attr('type', 'text');
+        }
+    }
+
+    changePassword(e){
+        let element = $(this);
+        if(element.is(':checked')){
+            $("#renderChangePassword").fadeIn('fast');
+        }else{
+            $("#renderChangePassword").fadeOut('fast');
         }
     }
 
@@ -300,6 +322,7 @@ class ViewEditUsuario extends Backbone.View {
         let form = this.$el.find('#formEditData');
         let token = formSerialiceObject(form, true);
         
+        UsuarioModel.omitirPassword = true;
         let usuario = new this.usuarioModel(token);
         if(!usuario.isValid())
         {
@@ -312,6 +335,11 @@ class ViewEditUsuario extends Backbone.View {
         _.each(usuario.toJSON(), function(element, key){
             if(key != 'id') $scope.model.set(key, element);
         });
+        
+        let clave = $scope.model.get('password');
+        if(clave === '' || clave == void 0){
+            $scope.model.unset('password');
+        }
         usuario = void 0;
         loading.show();
         axios({
@@ -401,7 +429,18 @@ class ViewCreateUsuario extends Backbone.View {
         return {
             "click #btnSendData": "sendData",
             "keypress input[name='password']": "sendKeyData",
-            "click #btnVolver": "volverListaUsuarios"
+            "click #btnVolver": "volverListaUsuarios",
+            "click #btnShowPassword": "showPassword"
+        }
+    }
+    
+    showPassword(e){
+        e.preventDefault();
+        if(this.$el.find('#password').attr('type') == 'text')
+        {
+            this.$el.find('#password').attr('type', 'password');
+        }else{
+            this.$el.find('#password').attr('type', 'text');
         }
     }
 
