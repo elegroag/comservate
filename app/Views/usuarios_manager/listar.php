@@ -26,5 +26,5 @@
 
 <div class="container" id='container'></div>
 
-<?= script_tag('resource/usuario/build.usuarios-min.js') ?>
+<?= script_tag('resource/usuario/build.usuarios.js') ?>
 <?= $this->endSection() ?>

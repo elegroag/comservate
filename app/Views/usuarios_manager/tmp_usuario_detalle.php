@@ -36,7 +36,7 @@
                             <?= showBoostrap('label: Correo', 'value: <%=correo%>') ?>
                         </div>
                         <div class="col-md-6">
-                            <?= showBoostrap('label: Estado', 'value: <%=estado%>') ?>
+                            <?= showBoostrap('label: Estado', 'value: <%=estado_detalle%>') ?>
                         </div>
                         <div class="col-md-6">
                             <?= showBoostrap('label: Fecha Creación', 'value: <%=fecha_creacion%>') ?>

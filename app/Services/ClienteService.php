@@ -26,7 +26,8 @@ class ClienteService
 
 	public function getClientById($id)
 	{
-		return $this->clientModel->select('clientes.*, municipio, usuarios.nombres')
+		return $this->clientModel->select("clientes.*, municipio, usuarios.nombres as usuario, ".
+		"(CASE clientes.estado WHEN 'A' THEN 'ACTIVO' WHEN 'I' THEN 'INACTIVO' WHEN 'X' THEN 'BORRADO' WHEN 'S' THEN 'SUSPENDIDO' ELSE '' END) as 'estado_detalle'")
 		->join('municipios', 'municipios.id = clientes.id_municipio')
 		->join('usuarios', 'usuarios.id = clientes.usuario_creador')
 		->find($id);

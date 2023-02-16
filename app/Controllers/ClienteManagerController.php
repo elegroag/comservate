@@ -21,7 +21,7 @@ class ClienteManagerController extends BaseController
         $user = $this->usuarioService->getUsuarioById($auth['id']);
         helper('tag');
         helper('html');
-        return view('clientes_manager/listar', ['title'=> 'Clientes Manager', 'usuario' => json_encode($user)]);
+        return view('clientes_manager/listar', ['title'=> 'Administra Clientes', 'usuario' => json_encode($user)]);
     }
 
 }

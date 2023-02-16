@@ -9,7 +9,6 @@
                 <tr>
                     <th>Nombres</th>
                     <th>Usuario</th>
-                    <th class="text-right">Fecha creación</th>
                     <th>Correo</th>
                     <th>Estado</th>
                     <th>Actions</th>

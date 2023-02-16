@@ -30,10 +30,10 @@ class ClientesController extends ResourceController
 			$cliente = $this->request->getJSON();
 			$out = $this->clienteService->createClient($cliente);
 			if (is_numeric($out) &&  $out > 0) :
-				$cliente->id = $out;
 				return $this->respondCreated([
 					"status" => true,
-					"cliente" => $cliente
+					"cliente" => $this->clienteService->getClientById($out),
+					"message" => "El registro se ha creado con éxito"
 				]);
 			else :
 				return $this->failValidationErrors([
@@ -64,7 +64,7 @@ class ClientesController extends ResourceController
 				return $this->respondUpdated([
 					'status' => true,
 					'message' => 'Se ha editado con éxito el registro',
-					'data' => $data
+					'cliente' => $this->clienteService->getClientById($id)
 				]);
 			else :
 				return $this->failValidationErrors([

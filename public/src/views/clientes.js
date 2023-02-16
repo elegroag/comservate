@@ -261,6 +261,7 @@ class ViewEditCliente extends Backbone.View {
         this.template = $('#tmp_cliente_editar').html();
         this.clienteModel = ClienteModel;
         this.usuarioLocal = usuario_local();
+        this.listenTo(this.model, 'change', this.render);
         return this.render();
     }
 
@@ -299,6 +300,7 @@ class ViewEditCliente extends Backbone.View {
         $scope.target.attr('disabled', true)
         let form = this.$el.find('#formEditData');
         let token = formSerialiceObject(form, true);
+        $scope.previus = $scope.model.clone();
         
         let cliente = new this.clienteModel(token);
         if(!cliente.isValid())
@@ -313,7 +315,7 @@ class ViewEditCliente extends Backbone.View {
         _.each(cliente.toJSON(), function(element, key){
             $scope.model.set(key, element);
         });
-        cliente.destroy();
+        cliente = void 0;
         
         loading.show();
         axios({
@@ -326,11 +328,8 @@ class ViewEditCliente extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
+                RouterClientes.clientes.add(cliente, {trigger: true});
                 Swal.fire('Actualizado!', response.data.message, 'success');
-                $scope.$el.fadeOut('fast', function() {
-                    Routers.routerClientes.navigate("all", { trigger: true })
-                    $scope.remove();
-                });
             } else {
                 Swal.fire({
                     position: 'center',
@@ -342,8 +341,21 @@ class ViewEditCliente extends Backbone.View {
                 })
             }
         }).catch(function(err){
-            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            _.each($scope.previus.toJSON(), function(element, key){
+                $scope.model.set(key, element);
+            });
+            $scope.previus = void 0;
+            let message;
             if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
             Swal.fire({
                 position: 'center',
                 type: 'error',
@@ -356,8 +368,6 @@ class ViewEditCliente extends Backbone.View {
             $scope.target.removeAttr('disabled');
             loading.hide();
         })
-        // let model =  this.collection.get(id);
-        // model.set('afiliado', 'edwin legro');
     }
 
     sendKeyData(e){
@@ -446,7 +456,7 @@ class ViewCreateCliente extends Backbone.View {
         loading.show();
         axios({
             "method": 'post',
-            "url": create_url('api/cliente/create/'),
+            "url": create_url('api/cliente/create'),
             "type": 'JSON',
             "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
             "data": cliente.toJSON()
@@ -454,14 +464,13 @@ class ViewCreateCliente extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
-                cliente.set('id', response.data.cliente.id);
-                $scope.clientes.add(cliente, {"trigger": true});
-                
-                Swal.fire('Creado!', response.data.message, 'success');
-                $scope.$el.fadeOut('fast', function() {
-                    Routers.routerClientes.navigate("all", { trigger: true })
-                    $scope.remove();
+                _.each(response.data.cliente, function(element, key){
+                    cliente.set(key, element);
                 });
+                RouterClientes.clientes.add(cliente);
+                Swal.fire('Creado!', response.data.message, 'success');
+                Routers.routerClientes.navigate("detalle/"+cliente.get('id'), { "trigger": true })
+                $scope.remove();
             } else {
                 Swal.fire({
                     position: 'center',
@@ -473,8 +482,17 @@ class ViewCreateCliente extends Backbone.View {
                 })
             }
         }).catch(function(err){
-            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            let message;
             if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
             Swal.fire({
                 position: 'center',
                 type: 'error',

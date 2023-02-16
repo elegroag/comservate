@@ -61,7 +61,7 @@ class UsuariosController extends ResourceController
 				return $this->respondUpdated([
 					'status' => true,
 					'message' => 'Se ha editado con éxito el registro',
-					'data' => $data
+					'usuario' => $this->usuarioService->getUsuarioById($id)
 				]);
 			else :
 				return $this->failValidationErrors([

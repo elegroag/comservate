@@ -16,12 +16,17 @@ class UsuarioService
 
 	public function getUsuarios()
 	{
-		return $this->usuarioModel->whereNotIn('estado',['X'])->findAll();
+		return $this->usuarioModel->select("nombres, id, fecha_creacion, fecha_modificacion, correo, estado, syncros, usuario, ".
+		"(CASE estado WHEN 'A' THEN 'ACTIVO' WHEN 'I' THEN 'INACTIVO' WHEN 'X' THEN 'BORRADO' WHEN 'S' THEN 'SUSPENDIDO' ELSE '' END) as 'estado_detalle'")
+		->whereNotIn('estado',['X'])
+		->findAll();
 	}
 
 	public function getUsuarioById($id)
 	{
-		return $this->usuarioModel->select('id, nombres, usuario, fecha_creacion, fecha_modificacion, correo,  estado, syncros')->find($id);
+		return $this->usuarioModel->select("id, nombres, usuario, fecha_creacion, fecha_modificacion, correo,  estado, syncros, ".
+		"(CASE estado WHEN 'A' THEN 'ACTIVO' WHEN 'I' THEN 'INACTIVO' WHEN 'X' THEN 'BORRADO' WHEN 'S' THEN 'SUSPENDIDO' ELSE '' END) as 'estado_detalle'")
+		->find($id);
 	}
 
 	public function createUsuario($data)
@@ -57,5 +62,10 @@ class UsuarioService
 
 	public function getErrors(){
 		return $this->errors;
+	}
+
+	public function getAuthUserById($id)
+	{
+		return $this->usuarioModel->select('usuario, password')->where('id', $id)->find();
 	}
 }

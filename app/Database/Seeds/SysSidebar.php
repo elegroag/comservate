@@ -31,7 +31,7 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 3,
-                'label' => 'Listado clientes',
+                'label' => 'Administra clientes',
                 'estado'=> 'A',
                 'resource_router' => 'web/clientes#all',
                 'orden'=> 1,
@@ -111,16 +111,26 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 11,
-                'label' => 'Listar Usuarios',
+                'label' => 'Administra Usuarios',
                 'estado' => 'A',
                 'resource_router' => 'conf/usuarios',
-                'orden' => 2,
+                'orden' => 3,
                 'sys_sidebar_id' => 8,
                 'ambiente' => 'E',
                 'icon' => 'U'   
             ],
             [
                 'id'=> 12,
+                'label' => 'Crear Usuario',
+                'estado' => 'A',
+                'resource_router' => 'conf/usuarios#crear',
+                'orden' => 4,
+                'sys_sidebar_id' => 8,
+                'ambiente' => 'E',
+                'icon' => 'CU'   
+            ],
+            [
+                'id'=> 13,
                 'label' => 'Empleados',
                 'estado' => 'A',
                 'resource_router' => 'conf/empleados',

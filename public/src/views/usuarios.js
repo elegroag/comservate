@@ -15,9 +15,8 @@ class ViewUsuario extends Backbone.View {
         let template = _.template(`
         <td><%=nombres%></td>
         <td><%=usuario%></td>
-        <td><%=fecha_creacion%></td>
         <td><%=correo%></td>
-        <td><%=estado%></td>
+        <td><%=estado_detalle%></td>
         <td>
             <div class="btn-group">
                 <a type="button" data-cid='<%=id%>' data-toggle='row-like' class="btn btn-info btn-link btn-icon btn-sm like">
@@ -49,7 +48,7 @@ class ViewUsuarios extends Backbone.View {
 
     initialize(){
         this.template = $('#tmp_all_usuarios').html()
-        this.childrens = {}
+        this.children = {}
         this.dataTable = void 0
         this.viewUsuario = ViewUsuario;
 
@@ -63,12 +62,12 @@ class ViewUsuarios extends Backbone.View {
         let filas = this.collection.map(function(usuario){
             let view = $scope.renderModel(usuario, $scope);
             return view.$el;
-        })
+        });
         let template = _.template(this.template)
         this.$el.html(template())
         this.$el.find('#filas').html(filas);
         this.renderDataTable(this);
-        return this
+        return this;
     }
 
     events(){
@@ -166,18 +165,18 @@ class ViewUsuarios extends Backbone.View {
         }
     }
 
-    renderModel(usuario, $scope){
+    renderModel(usuario, $scope)
+    {
         let view;
         if(_.size($scope.children) > 0){
             if(_.indexOf($scope.children, usuario.cid) != -1){
                 view = $scope.children[usuario.cid];
             }else{
-
-                view = $scope.viewUsuario({model: usuario, tagName:'tr'})     
+                view = new $scope.viewUsuario({model: usuario, tagName:'tr'});        
                 $scope.children[usuario.cid] = view;        
             }
         }else{
-            view = new $scope.viewCliente({model: usuario, tagName:'tr'});        
+            view = new $scope.viewUsuario({model: usuario, tagName:'tr'});        
             $scope.children[usuario.cid] = view;  
         }
         view.render();
@@ -191,12 +190,11 @@ class ViewUsuarios extends Backbone.View {
             "pageLength": 10,
             "info": true,
             "columnDefs": [
-                { targets: 0, searchable: false, width:'15%'},
+                { targets: 0, searchable: false, width:'25%'},
                 { targets: 1, width:'20%'},
-                { targets: 2, width:'10%'},
-                { targets: 3, width:'30%'},
-                { targets: 4, width:'15%'},
-                { targets: 5, width:'10%'}
+                { targets: 2, width:'30%'},
+                { targets: 3, width:'15%'},
+                { targets: 4, width:'10%'}
             ],
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -213,7 +211,7 @@ class ViewUsuarios extends Backbone.View {
     }
 }
 
-class ViewShowUsuarios extends Backbone.View {
+class ViewShowUsuario extends Backbone.View {
     constructor(e) {
         super(e)
     }
@@ -260,7 +258,6 @@ class ViewEditUsuario extends Backbone.View {
         this.usuarios = void 0;
         this.template = $('#tmp_usuario_editar').html();
         this.usuarioModel = UsuarioModel;
-        this.usuarioLocal = usuario_local();
         return this.render();
     }
 
@@ -297,6 +294,7 @@ class ViewEditUsuario extends Backbone.View {
     sendData(e){
         e.preventDefault()
         var $scope = this;
+        $scope.previus = this.model.clone();
         $scope.target = $(e.target);
         $scope.target.attr('disabled', true)
         let form = this.$el.find('#formEditData');
@@ -311,12 +309,10 @@ class ViewEditUsuario extends Backbone.View {
             return false;
         }
 
-        usuario.set('usuario_creador', this.usuarioLocal.id);
         _.each(usuario.toJSON(), function(element, key){
-            $scope.model.set(key, element);
+            if(key != 'id') $scope.model.set(key, element);
         });
-        usuario.destroy();
-        
+        usuario = void 0;
         loading.show();
         axios({
             "method": 'put',
@@ -329,10 +325,9 @@ class ViewEditUsuario extends Backbone.View {
             if(response.data)
             {
                 Swal.fire('Actualizado!', response.data.message, 'success');
-                $scope.$el.fadeOut('fast', function() {
-                    Routers.routerUsuarios.navigate("all", { trigger: true })
-                    $scope.remove();
-                });
+                Routers.routerUsuarios.navigate("detalle/"+$scope.model.get('id'), { trigger: true })
+                $scope.remove();
+      
             } else {
                 Swal.fire({
                     position: 'center',
@@ -344,8 +339,21 @@ class ViewEditUsuario extends Backbone.View {
                 })
             }
         }).catch(function(err){
-            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            _.each($scope.previus.toJSON(), function(element, key){
+                $scope.model.set(key, element);
+            });
+            $scope.previus = void 0;
+            let message;
             if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
             Swal.fire({
                 position: 'center',
                 type: 'error',
@@ -358,8 +366,6 @@ class ViewEditUsuario extends Backbone.View {
             $scope.target.removeAttr('disabled');
             loading.hide();
         })
-        // let model =  this.collection.get(id);
-        // model.set('afiliado', 'edwin legro');
     }
 
     sendKeyData(e){
@@ -381,7 +387,6 @@ class ViewCreateUsuario extends Backbone.View {
         this.usuarios = void 0;
         this.template = $('#tmp_usuario_crear').html();
         this.usuarioModel = UsuarioModel;
-        this.usuarioLocal = usuario_local();
         return this.render();
     }
 
@@ -417,11 +422,10 @@ class ViewCreateUsuario extends Backbone.View {
             return false;
         }
 
-        usuario.set('usuario_creador', this.usuarioLocal.id);
         loading.show();
         axios({
             "method": 'post',
-            "url": create_url('api/usuario/create/'),
+            "url": create_url('api/usuario/create'),
             "type": 'JSON',
             "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
             "data": cliente.toJSON()
@@ -429,14 +433,13 @@ class ViewCreateUsuario extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
-                usuario.set('id', response.data.usuario.id);
-                $scope.usuarios.add(usuario, {"trigger": true});
-                
-                Swal.fire('Creado!', response.data.message, 'success');
-                $scope.$el.fadeOut('fast', function() {
-                    Routers.routerUsuarios.navigate("all", { trigger: true })
-                    $scope.remove();
+                _.each(response.data.usuario, function(element, key){
+                    usuario.set(key, element);
                 });
+                RouterUsuarios.usuarios.add(usuario);
+                Swal.fire('Creado!', response.data.message, 'success');
+                Routers.routerUsuarios.navigate("detalle/"+usuario.get('id'), { trigger: true })
+                $scope.remove();
             } else {
                 Swal.fire({
                     position: 'center',
@@ -448,8 +451,17 @@ class ViewCreateUsuario extends Backbone.View {
                 })
             }
         }).catch(function(err){
-            let message = (err.code == 'ERR_BAD_REQUEST')? err.response.data.message : err.message;
+            let message;
             if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
             Swal.fire({
                 position: 'center',
                 type: 'error',

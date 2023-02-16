@@ -192,10 +192,9 @@ function clientes(){
         'src/views/clientes.js',
         'src/routers/clientes.js'
     ])
+    .pipe(concat('build.clientes.js'))
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('build.clientes.js'))
-    .pipe(minify())
     .pipe(dest('resource/cliente/'));
 };
 
@@ -264,9 +263,25 @@ function login(){
     .pipe(dest('resource/login/'));
 }
 
+function usuarios(){
+    return src([
+        'src/models/core.js',
+        'src/models/usuario.js',
+        'src/collections/usuarios.js',
+        'src/views/core.js',
+        'src/views/usuarios.js',
+        'src/routers/usuarios.js'
+    ])
+    .pipe(concat('build.usuarios.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('resource/usuario/'));
+};
+
 exports.default = series(
     // login,
-    clientes,
+    // clientes,
+    usuarios
     // copyFileChosen,
     // copyFileChosenRq
     // copyFileDatatable

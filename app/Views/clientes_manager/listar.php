@@ -26,5 +26,5 @@
 
 <div class="container" id='container'></div>
 
-<?= script_tag('resource/cliente/build.clientes-min.js') ?>
+<?= script_tag('resource/cliente/build.clientes.js') ?>
 <?= $this->endSection() ?>
