@@ -18,7 +18,7 @@ class Usuarios extends Seeder
             "estado" => 'A',
             "password" => $password
         ];
-        $this->db->table('usuarios')->insert($data);
+        $this->db->table('usuarios')->where('id', 18)->update($data);
     }
 
     public function useFile()

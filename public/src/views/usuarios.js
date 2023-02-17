@@ -190,11 +190,11 @@ class ViewUsuarios extends Backbone.View {
             "pageLength": 10,
             "info": true,
             "columnDefs": [
-                { targets: 0, searchable: false, width:'25%'},
+                { targets: 0, width:'25%'},
                 { targets: 1, width:'20%'},
                 { targets: 2, width:'30%'},
                 { targets: 3, width:'15%'},
-                { targets: 4, width:'10%'}
+                { targets: 4, searchable: false, width:'10%'}
             ],
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -352,6 +352,11 @@ class ViewEditUsuario extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
+                _.each(response.data.usuario, function(element, key){
+                    $scope.model.set(key, element);
+                });
+                RouterUsuarios.usuarios.add($scope.model, {trigger: true});
+
                 Swal.fire('Actualizado!', response.data.message, 'success');
                 Routers.routerUsuarios.navigate("detalle/"+$scope.model.get('id'), { trigger: true })
                 $scope.remove();
@@ -399,7 +404,8 @@ class ViewEditUsuario extends Backbone.View {
     sendKeyData(e){
         let keycode = e.keyCode || e.which;
         if(keycode == '13') {
-            document.querySelector("#btnSendDataLogin").click();
+            let container = document.querySelector(".main-panel");
+            container.scrollTop = 0;
         }
     }
 
@@ -467,7 +473,7 @@ class ViewCreateUsuario extends Backbone.View {
             "url": create_url('api/usuario/create'),
             "type": 'JSON',
             "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
-            "data": cliente.toJSON()
+            "data": usuario.toJSON()
         })
         .then(function(response){
             if(response.data)
@@ -518,7 +524,8 @@ class ViewCreateUsuario extends Backbone.View {
     sendKeyData(e){
         let keycode = e.keyCode || e.which;
         if(keycode == '13') {
-            document.querySelector("#btnSendDataLogin").click();
+            let container = document.querySelector(".main-panel");
+            container.scrollTop = 0;
         }
     }
     

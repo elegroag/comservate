@@ -25,18 +25,18 @@ class UsuariosController extends ResourceController
 	public function salvarUsuario()
 	{
 		try {
-			$usuario = $this->request->getJSON();
+			$data = (array) $this->request->getJSON();
 			if(isset($usuario['password']))
 			{
 				$hashService = new HashService();
-				$usuario['password'] = $hashService->getClaveHash($usuario['password'], $usuario['usuario']);
+				$usuario['password'] = $hashService->getClaveHash($data['password'], $data['usuario']);
 			}
-			$out = $this->usuarioService->createUsuario($usuario);
+			$out = $this->usuarioService->createUsuario($data);
 			if (is_numeric($out) &&  $out > 0) :
-				$usuario->id = $out;
 				return $this->respondCreated([
 					"status" => true,
-					"usuario" => $usuario
+					"usuario" => $this->usuarioService->getUsuarioById($out),
+					"message" => "El registro se ha creado con éxito" 
 				]);
 			else :
 				return $this->failValidationErrors([
@@ -68,7 +68,6 @@ class UsuariosController extends ResourceController
 				$hashService = new HashService();
 				$data['password'] = $hashService->getClaveHash($data['password'], $data['usuario']);
 			}
-
 			if ($this->usuarioService->updateUsuario($id, $data)) :
 				return $this->respondUpdated([
 					'status' => true,
@@ -88,7 +87,21 @@ class UsuariosController extends ResourceController
 
 	public function showUsuario($id)
 	{
-		return $this->respond($this->usuarioService->getUsuarioById($id));
+		try {
+			if ($id == null)
+				return $this->failNotFound("No dispone de un id correcto para buscar el usuario");
+
+			if (is_numeric($id) == FALSE)
+				return $this->failNotFound("El id no es valido para hacer la busqueda");
+
+			$usuario = $this->usuarioService->getUsuarioById($id);
+			if (!$usuario)
+				return $this->failNotFound('El usuario no es valido para buscar ' . $id);
+			
+			return $this->respond($this->usuarioService->getUsuarioById($id));
+		} catch (\Exception $err) {
+			return $this->failServerError($err->getMessage());
+		}
 	}
 
 	public function removeUsuario($id)
@@ -102,7 +115,7 @@ class UsuariosController extends ResourceController
 
 			$usuario = $this->usuarioService->getUsuarioById($id);
 			if (!$usuario)
-				return $this->failNotFound('El cliente no es valido para actualizar ' . $id);
+				return $this->failNotFound('El usuario no es valido para actualizar ' . $id);
 
 			if ($this->usuarioService->deleteUsuario($id, $usuario)) :
 				return $this->respondUpdated([
@@ -111,7 +124,7 @@ class UsuariosController extends ResourceController
 				]);
 			else :
 				return $this->failValidationErrors([
-					"message" => "Error de validación servicio de clientes",
+					"message" => "Error de validación servicio de usuarios",
 					"errors" =>$this->usuarioService->getErrors()
 				]);
 			endif;

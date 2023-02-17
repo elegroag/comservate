@@ -41,6 +41,11 @@ class UsuarioService
 
 	public function updateUsuario($id, $data)
 	{
+		if(is_array($data)){
+			$data['fecha_modificacion'] = date('Y-m-d');
+		}else{
+			$data->fecha_modificacion = date('Y-m-d');
+		}
 		if ($this->usuarioModel->update($id, $data) === TRUE) :
 			return true;
 		else :

@@ -4,9 +4,7 @@
 <?= js_axios() ?>
 <?= js_sweetalert2() ?>
 <?= js_datatable() ?>
-<?= js_chosen() ?>
 <?= js_moment() ?>
-<?= js_datetimepicker() ?>
 <?= js_switch() ?>
 
 <script type="text/template" id='tmp_all_usuarios'>

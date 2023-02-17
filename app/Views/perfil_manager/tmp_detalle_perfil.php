@@ -2,26 +2,23 @@
     <div class='col-md-4'>
         <div class="card card-pricing ">
             <div class="card-header">
-                <h4 class="card-title"> Usuario</h4>
+                <h4 class="card-title"> Perfil Usuario</h4>
             </div>
             <div class="card-body">
                 <div class="card-icon icon-primary ">
                     <i class="fa fa-user"></i>
                 </div>
                 <h4 class="card-title"><%=nombres%></h4>
-                <ul>
-                    <li>ESTADO <%=estado_detalle%></li>
-                </ul>
             </div>
             <div class="card-footer">
-                <button type='button' class="btn btn-round btn-default" id='btnVolver'>Volver</button>
+                <button type='button' class="btn btn-round btn-info" id='btnEditaPerfil'>Editar Perfil</button>
             </div>
         </div>
     </div>
     <div class='col-md-8'>
         <div class="card card-pricing ">
             <div class="card-header">
-                <h5 class="text-primary">Datos Del Usuario</h5>
+                <h5 class="text-primary">Datos Del Perfil</h5>
             </div>
             <div class="card-body">
                 <form method="get" action="/" class="form-horizontal">

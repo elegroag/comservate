@@ -2,8 +2,8 @@
     
     <div class="col-md-6">
         <div class="row justify-content-first">
-            <h4 class="card-title">Editar Registro</h4>
-            <p class="card-category"> Modulo de usuarios para la administración y control de los mismos.</p>
+            <h4 class="card-title">Editar Perfil</h4>
+            <p class="card-category"> Modulo de perfil para la administración y control de los mismos.</p>
         </div>
     </div>
     
@@ -81,7 +81,7 @@
                                     data-off-color="danger" 
                                     data-off-text="NO"/>
                             </div>',
-                        'label: Cambiar clave de usuario',
+                        'label: Cambiar clave',
                         'class: has-valid col-md-6 mb-2'
                         ) ?>
 

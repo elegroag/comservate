@@ -1,18 +1,24 @@
-"use strict";
+class RouterLogin extends Backbone.Router {
+	
+	constructor(op){
+		super(op)
+	}
 
-var RouterLogin = Backbone.Router.extend({
-	content: "containerBone",
-	errors: void 0,
-	initialize: function () {
-		if (!Backbone.history.start()) {
-			this.navigate("auth", { trigger: true });
+	initialize(){
+		this.content = "containerBone";
+		this.viewLogin = ViewLogin;
+		this.viewLoginRecovery = ViewLoginRecovery;
+		this.errors = void 0;
+	}
+	
+	routes() {
+		return {
+			"auth": "loginShowView",
+			"recovery": "recoveryShowView"	
 		}
-	},
-	routes: {
-		auth: "loginShowView",
-		recovery: "recoveryShowView",
-	},
-	createContent: function () {
+	}
+
+	createContent() {
 		$("#" + this.content).remove();
 		let _el = document.createElement("div");
 		_el.setAttribute("id", this.content);
@@ -20,14 +26,24 @@ var RouterLogin = Backbone.Router.extend({
 		document.getElementById("container").appendChild(_el);
 		scroltop();
 		return _el;
-	},
-	loginShowView: function () {
-		this.createContent();
-		new View.Login({el: `#${this.content}`})
 	}
-});
 
+	loginShowView() {
+		this.createContent();
+		new this.viewLogin({el: `#${this.content}`, className: 'boxLogin', id:'viewLogin'});
+		loading.hide();
+	}
 
+	recoveryShowView(){
+		this.createContent();
+		new this.viewLoginRecovery({el: `#${this.content}`, className: 'boxLogin', id:'viewLoginRecovery'});
+		loading.hide();
+	}
+}
+
+var routerLogin = new RouterLogin();
 $(function(){
-	new RouterLogin();
+	if (!Backbone.history.start()) {
+		routerLogin.navigate("auth", { trigger: true });
+	}
 });

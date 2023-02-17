@@ -21,6 +21,6 @@ class PerfilController extends BaseController
         $session = session();
         $auth = $session->get('auth');
         $user = $this->usuarioService->getUsuarioById($auth['id']);
-        return view('inicio/index', ['title'=> 'Inicio', 'usuario'=> json_encode($user)]);
+        return view('perfil_manager/perfil', ['title'=> 'Perfil Usuario', 'usuario'=> json_encode($user)]);
     }
 }

@@ -1,13 +1,22 @@
-Model.Login = Backbone.Model.extend({
-	initialize: function () {
+class LoginModel extends Backbone.Model {
+
+	constructor(op) {
+		super(op)
+	}
+
+	initialize() {
 		console.log("inicializa el modelo de login");
-	},
-	urlRoot: "http://localhost:8080/api/auth",
-	defaults: {
-		username: void 0,
-		password: void 0,
-	},
-	validate: function (attrs) {
+		this.urlRoot = "http://localhost:8080/api/auth";
+	}
+
+	defaults(){
+		return {
+			username: void 0,
+			password: void 0,
+		}
+	}
+	
+	validate(attrs){
 		let errors = [];
 		let out = "";
 		if ((out = Testeo.vacio(attrs.username, "username", "has_error")))
@@ -19,5 +28,5 @@ Model.Login = Backbone.Model.extend({
 		if ((out = Testeo.menor(attrs.password, "password", "has_error", 30)))
 			errors.push(out);
 		return _.size(errors) > 0 ? errors : void 0;
-	},
-});
+	}
+}

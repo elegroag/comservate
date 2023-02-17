@@ -68,35 +68,35 @@ $routes->group('/api', ['namespace'=> 'App\Controllers\RestApi','filter'=>'jwtau
     $routes->get('municipios/masivos', 'MunicipiosController::cargueMasivo');
 
     $routes->get('usuarios', 'UsuariosController::index');
-    $routes->post('usuario/salvar', 'UsuariosController::salvarUsuario');
+    $routes->post('usuario/create', 'UsuariosController::salvarUsuario');
     $routes->put('usuario/edita/(:num)', 'UsuariosController::editaUsuario/$1');
     $routes->delete('usuario/remove/(:num)', 'UsuariosController::removeUsuario/$1');
     $routes->get('usuario/show/(:num)', 'UsuariosController::showUsuario/$1');
     $routes->get('usuarios/masivos', 'UsuariosController::cargueMasivo');
 
     $routes->get('empleados', 'EmpleadosController::index');
-    $routes->post('empleado/salvar', 'EmpleadosController::salvarEmpleado');
+    $routes->post('empleado/create', 'EmpleadosController::salvarEmpleado');
     $routes->put('empleado/edita/(:num)', 'EmpleadosController::editaEmpleado/$1');
     $routes->delete('empleado/remove/(:num)', 'EmpleadosController::removeEmpleado/$1');
     $routes->get('empleado/show/(:num)', 'EmpleadosController::showEmpleado/$1');
     $routes->get('empleados/masivos', 'EmpleadosController::cargueMasivo');
 
     $routes->get('tipo_residuos', 'TipoResiduoController::index');
-    $routes->post('tipo_residuo/salvar', 'TipoResiduoController::salvaTipo');
+    $routes->post('tipo_residuo/create', 'TipoResiduoController::salvaTipo');
     $routes->put('tipo_residuo/edita/(:num)', 'TipoResiduoController::editaTipo/$1');
     $routes->delete('tipo_residuo/remove/(:num)', 'TipoResiduoController::removeTipo/$1');
     $routes->get('tipo_residuo/show/(:num)', 'TipoResiduoController::showTipo/$1');
     $routes->get('tipo_residuos/masivos', 'TipoResiduoController::cargueMasivo');
 
     $routes->get('vehiculos', 'VehiculosController::index');
-    $routes->post('vehiculo/salvar', 'VehiculosController::salvaVehiculo');
+    $routes->post('vehiculo/create', 'VehiculosController::salvaVehiculo');
     $routes->put('vehiculo/edita/(:num)', 'VehiculosController::editaVehiculo/$1');
     $routes->delete('vehiculo/remove/(:num)', 'VehiculosController::removeVehiculo/$1');
     $routes->get('vehiculo/show/(:num)', 'VehiculosController::showVehiculo/$1');
     $routes->get('vehiculos/masivos', 'VehiculosController::cargueMasivo');
 
     $routes->get('cargos', 'CargosController::index');
-    $routes->post('cargo/salvar', 'CargosController::salvaCargo');
+    $routes->post('cargo/create', 'CargosController::salvaCargo');
     $routes->put('cargo/edita/(:num)', 'CargosController::editaCargo/$1');
     $routes->delete('cargo/remove/(:num)', 'CargosController::removeCargo/$1');
     $routes->get('cargo/show/(:num)', 'CargosController::showCargo/$1');

@@ -218,9 +218,8 @@ class RouterUsuarios extends Backbone.Router {
 Routers.routerUsuarios = new RouterUsuarios();
 
 $(function(){
-	jQuery.datetimepicker.setLocale('es');
 	if (!Backbone.history.start()) {
 		Routers.routerUsuarios.navigate("all", { trigger: true });
 	}
-	document.querySelector('[data-bs-target="#configuracion_collapse"]').click();
+	document.querySelector('[data-bs-target="#gestion_usuarios_collapse"]').click();
 });

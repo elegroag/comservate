@@ -31,7 +31,7 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 3,
-                'label' => 'Administra clientes',
+                'label' => 'Tabla Clientes',
                 'estado'=> 'A',
                 'resource_router' => 'web/clientes#all',
                 'orden'=> 1,
@@ -41,7 +41,7 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 4,
-                'label'=> 'Crear cliente',
+                'label'=> 'Crear Cliente',
                 'estado'=> 'A',
                 'resource_router'=> 'web/clientes#crear',
                 'orden'=> 2,
@@ -73,7 +73,7 @@ class SysSidebar extends Seeder
                 'id'=> 7,
                 'label' => 'Perfil',
                 'estado' => 'A', #Oculto activo
-                'resource_router' => 'web/perfil',
+                'resource_router' => 'web/perfil#show',
                 'orden' => 1,
                 'sys_sidebar_id' => 1,
                 'ambiente' => 'T',
@@ -111,26 +111,6 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 11,
-                'label' => 'Administra Usuarios',
-                'estado' => 'A',
-                'resource_router' => 'conf/usuarios',
-                'orden' => 3,
-                'sys_sidebar_id' => 8,
-                'ambiente' => 'E',
-                'icon' => 'U'   
-            ],
-            [
-                'id'=> 12,
-                'label' => 'Crear Usuario',
-                'estado' => 'A',
-                'resource_router' => 'conf/usuarios#crear',
-                'orden' => 4,
-                'sys_sidebar_id' => 8,
-                'ambiente' => 'E',
-                'icon' => 'CU'   
-            ],
-            [
-                'id'=> 13,
                 'label' => 'Empleados',
                 'estado' => 'A',
                 'resource_router' => 'conf/empleados',
@@ -138,6 +118,36 @@ class SysSidebar extends Seeder
                 'sys_sidebar_id' => 8,
                 'ambiente' => 'E',
                 'icon' => 'EM'   
+            ],
+            [
+                'id'=> 12,
+                'label' => 'Gestión Usuarios',
+                'estado' => 'A',
+                'resource_router' => null,
+                'orden' => 4,
+                'sys_sidebar_id' => null,
+                'ambiente' => 'E',
+                'icon' => 'fa fa-users'   
+            ],
+            [
+                'id'=> 13,
+                'label' => 'Tabla Usuarios',
+                'estado' => 'A',
+                'resource_router' => 'conf/usuarios#all',
+                'orden' => 4,
+                'sys_sidebar_id' => 12,
+                'ambiente' => 'E',
+                'icon' => 'TU'   
+            ],
+            [
+                'id'=> 14,
+                'label' => 'Crear Usuario',
+                'estado' => 'A',
+                'resource_router' => 'conf/usuarios#crear',
+                'orden' => 4,
+                'sys_sidebar_id' => 12,
+                'ambiente' => 'E',
+                'icon' => 'CU'   
             ]
         ];
 

@@ -278,10 +278,26 @@ function usuarios(){
     .pipe(dest('resource/usuario/'));
 };
 
+function perfil(){
+    return src([
+        'src/models/core.js',
+        'src/models/usuario.js',
+        'src/views/core.js',
+        'src/views/perfil.js',
+        'src/routers/perfil.js'
+    ])
+    .pipe(concat('build.perfil.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('resource/perfil/'));
+};
+
+
 exports.default = series(
-    // login,
-    // clientes,
-    usuarios
+    login,
+    clientes,
+    usuarios,
+    perfil,
     // copyFileChosen,
     // copyFileChosenRq
     // copyFileDatatable

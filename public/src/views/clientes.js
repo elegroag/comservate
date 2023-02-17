@@ -192,12 +192,12 @@ class ViewClientes extends Backbone.View {
             "pageLength": 10,
             "info": true,
             "columnDefs": [
-                { targets: 0, searchable: false, width:'25%'},
+                { targets: 0, width:'25%'},
                 { targets: 1, width:'25%'},
                 { targets: 2, width:'15%'},
                 { targets: 3, width:'10%'},
                 { targets: 4, width:'15%'},
-                { targets: 5, width:'10%'}
+                { targets: 5, searchable: false, width:'10%'}
             ],
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -328,7 +328,11 @@ class ViewEditCliente extends Backbone.View {
         .then(function(response){
             if(response.data)
             {
-                RouterClientes.clientes.add(cliente, {trigger: true});
+                _.each(response.data.cliente, function(element, key){
+                    $scope.model.set(key, element);
+                });
+
+                RouterClientes.clientes.add($scope.model, {trigger: true});
                 Swal.fire('Actualizado!', response.data.message, 'success');
             } else {
                 Swal.fire({
@@ -421,7 +425,7 @@ class ViewCreateCliente extends Backbone.View {
     events(){
         return {
             "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData",
+            "keypress input[name='ruta']": "sendKeyData",
             "click #btnVolver": "volverListaClientes"
         }
     }
@@ -510,7 +514,8 @@ class ViewCreateCliente extends Backbone.View {
     sendKeyData(e){
         let keycode = e.keyCode || e.which;
         if(keycode == '13') {
-            document.querySelector("#btnSendDataLogin").click();
+            let container = document.querySelector(".main-panel");
+            container.scrollTop = 0;
         }
     }
     

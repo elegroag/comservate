@@ -141,9 +141,13 @@
     padding: 2rem;
 }
 .login-page .content .container {
-    margin-top: 5vh;
+    margin-top: 2vh;
 }
 .login-page .card-login {
     margin: 0px 8px;
     padding: 1rem;
+}
+
+.full-page>.content {
+    padding-top: 17vh;
 }

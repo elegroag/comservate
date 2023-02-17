@@ -8,7 +8,7 @@
                 <div class="card-icon icon-primary ">
                     <i class="fa fa-user"></i>
                 </div>
-                <h3 class="card-title"><%=afiliado%></h3>
+                <h4 class="card-title"><%=afiliado%></h4>
                 <ul>
                     <li>ESTADO <%=estado_detalle%></li>
                     <li>RUTA <%=ruta%></li>

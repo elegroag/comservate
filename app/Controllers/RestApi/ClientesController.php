@@ -27,7 +27,7 @@ class ClientesController extends ResourceController
 	public function salvarCliente()
 	{
 		try {
-			$cliente = $this->request->getJSON();
+			$cliente = (array) $this->request->getJSON();
 			$out = $this->clienteService->createClient($cliente);
 			if (is_numeric($out) &&  $out > 0) :
 				return $this->respondCreated([
