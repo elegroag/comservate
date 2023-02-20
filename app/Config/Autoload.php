@@ -41,10 +41,15 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
-        'Config'      => APPPATH . 'Config',
+        'Config'  => APPPATH . 'Config',
+        "App"     => APPPATH,
+        "Commands" => APPPATH . 'Commands',
         'Firebase\\JWT\\' => APPPATH . 'vendor/firebase/php-jwt/src/JWT',
+        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/PHPMailer',
+        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/SMTP',
+        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/Exception',
+        "TCPDF" => APPPATH . "ThirdParty/tcpdf"
     ];
-
     /**
      * -------------------------------------------------------------------
      * Class Map
@@ -62,7 +67,9 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
-    public $classmap = [];
+    public $classmap = [
+        "TCPDF" => APPPATH . "app/ThirdParty/tcpdf/tcpdf.php"
+    ];
 
     /**
      * -------------------------------------------------------------------

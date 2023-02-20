@@ -40,7 +40,9 @@ $routes->group('/web', static function($routes) {
     $routes->get('clientes', 'ClienteManagerController::index',  ['filter'=> 'webauth']);
     $routes->get('clientes/create', 'ClienteManagerController::create',  ['filter'=> 'webauth']);
     $routes->get('perfil', 'PerfilController::index', ['filter'=> 'webauth']);
+    $routes->get('perfil/change', 'PerfilController::changeClave', ['filter'=> 'webauth']);
     $routes->get('inicio', 'InicioController::index', ['filter'=> 'webauth']);
+    $routes->get('perfil/informe', 'PerfilController::informePdf', ['filter'=> 'webauth']);
 });
 
 $routes->group('/conf', ['namespace'=> 'App\Controllers\Configuration', 'filter'=> 'webauth'], static function($routes) {

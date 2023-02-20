@@ -145,3 +145,5 @@ public/fonts/
 public/compile/
 public/resource/
 out/
+app/ThirdParty/.gitkeep
+app/ThirdParty/tcpdf/

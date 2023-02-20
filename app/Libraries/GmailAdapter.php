@@ -21,11 +21,13 @@ class GmailAdapter
             'protocol' => 'smtp',
             'charset'  => 'utf-8',
             'wordWrap' => true,
-            'userAgent' => 'Comserva',
-            'SMTPHost' => 'ssl://smtp.gmail.com',
+            'userAgent' => 'soportesistemas',
+            'SMTPHost' => 'smtp.gmail.com',
             'SMTPUser' => 'soportesistemas.comfaca@gmail.com',
-            'SMTPPass' => '',
+            'SMTPPass' => 'fqjdyxaavteiflkn',
             'SMTPPort' => 465,
+            'SMTPAuth' => true,
+            'SMTPCrypto' => 'ssl',
             'mailtype' => 'html',
             'newline' => "\r\n",
             'bcc_batch_mode' => true
@@ -33,11 +35,14 @@ class GmailAdapter
         $this->email = Services::email($config);
     }
 
-    public function setting($properties)
+    public function setting(array ...$properties)
     {
-        foreach ($properties as $key => $value) {
+        foreach ($properties as $attr) {
+            $key  = array_key_last($attr);
+            $value = array_values($attr)[0];
             $this->$key = $value;
         }
+        return $this;
     }
 
     public function sendEmail()

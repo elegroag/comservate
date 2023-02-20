@@ -1,62 +1,27 @@
 <?php
-namespace App\Controllers;
+namespace App\Commands;
+require_once APPPATH . 'ThirdParty/PdfParty.php';
 
-use App\Libraries\GmailAdapter;
-use App\Libraries\GmailMailer;
-use App\Libraries\PdfLibrary;
-use App\Services\UsuarioService;
+use CodeIgniter\CLI\BaseCommand;
+use CodeIgniter\CLI\CLI;
+use PdfParty;
 
-class PerfilController extends BaseController
+class PdfCommand extends BaseCommand
 {
+    protected $group       = 'Server';
+    protected $name        = 'app:pdf';
+    protected $description = 'Displays basic application information.';
 
-	private $usuarioService;
-	private $session;
+    public function run(array $params)
+    {
+        $this->informePdf();
+        echo 'PDF OK';
+    }
 
-	public function __construct()
-	{
-		$this->session = session();
-		$this->usuarioService = new UsuarioService();
-		helper('tag');
-		helper('uri');
-		helper('html');
-	}
-
-	public function index()
-	{
-		$auth = $this->session->get('auth');
-		$user = $this->usuarioService->getUsuarioById($auth['id']);
-		return view('perfil_manager/perfil', ['title'=> 'Perfil Usuario', 'usuario'=> json_encode($user)]);
-	}
-
-	public function changeClave()
-	{
-		$auth = $this->session->get('auth');
-		$gmailAdapter = new GmailAdapter();
-		$gmailAdapter->setting(
-			['asunto'=> 'Mensaje de prueba'],
-			['mensaje'=> 'Hola prueba 01'],
-			['emisor'=> 'soportesistemas.comfaca@gmail.com'],
-			['destino'=> 'maxedwwin@gmail.com'],
-			['nombreEmisor'=> 'soportesistemas']
-		);
-
-		// $gmailAdapter = new GmailMailer();
-		// $gmailAdapter->setting(
-		//     ['asunto'=> 'Mensaje de prueba'],
-		//     ['mensaje'=> 'Hola prueba 01'],
-		//     ['emisor'=> 'soportesistemas.comfaca@gmail.com'],
-		//     ['destino'=> 'maxedwwin@gmail.com'],
-		//     ['nombreEmisor'=> 'soportesistemas']
-		// );
-		$out = $gmailAdapter->sendEmail();
-		var_export($out);
-	}
-
-
-	public function informePdf()
+    public function informePdf()
 	{
 		try {
-			$pdf = new PdfLibrary(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+			$pdf = new PdfParty(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 			// set document information
 			$pdf->setCreator(PDF_CREATOR);
@@ -134,7 +99,7 @@ class PerfilController extends BaseController
 			// ---------------------------------------------------------
 
 			//Close and output PDF document
-			$pdf->Output('C:/xampp/htdocs/html7/test_tcpdf/example2.pdf', 'F');
+			$pdf->Output('C:/xampp/htdocs/html7/test_tcpdf/example.pdf', 'F');
 		} catch (\Exception $err) {
 			var_export($err->getMessage());
 		}
