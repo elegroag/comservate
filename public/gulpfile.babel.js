@@ -239,6 +239,17 @@ function copyFileChosen()
     .pipe(dest('assets/chosen/'));
 };
 
+function copyFileSortable()
+{
+    return src([
+        'node_modules/sortablejs/Sortable.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/sortablejs/'));
+};
+
 function copyFileChosenRq()
 {
     return src([
@@ -297,6 +308,7 @@ exports.default = series(
     clientes,
     usuarios,
     perfil,
+    copyFileSortable,
     // copyFileChosen,
     // copyFileChosenRq
     // copyFileDatatable
