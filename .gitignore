@@ -147,3 +147,4 @@ public/resource/
 out/
 app/ThirdParty/.gitkeep
 app/ThirdParty/tcpdf/
+public/storage
