@@ -22,7 +22,6 @@ class GmailMailer
     public function __construct()
     {
         $this->email = new PHPMailer(true);
-        // $this->email->SMTPDebug = SMTP::DEBUG_SERVER;
         $this->email->isSMTP();
         $this->email->Host      = 'smtp.gmail.com';
         $this->email->SMTPAuth  = true;
@@ -71,11 +70,9 @@ class GmailMailer
             $this->email->isHTML(true);
             $this->email->Subject = $this->asunto;
             $this->email->Body = $this->mensaje;
-            $this->email->send();
-           
+            return $this->email->send();
         } catch (PHPMailerException $err){
-            var_export($err->getMessage());
-            echo "<br/><br/>Message could not be sent. Mailer Error: {$this->email->ErrorInfo}";
+            throw new Exception($this->email->ErrorInfo .', '. $err->getMessage(), 1);            
         }
     }
 

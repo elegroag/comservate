@@ -2,10 +2,12 @@
 
 namespace App\Controllers\RestApi;
 
+use App\Libraries\GmailMailer;
 use App\Services\HashService;
 use App\Services\UsuarioService;
 use CodeIgniter\HTTP\Message;
 use CodeIgniter\RESTful\ResourceController;
+use Config\Services;
 
 class UsuariosController extends ResourceController
 {
@@ -62,24 +64,49 @@ class UsuariosController extends ResourceController
 			if (!$usuario)
 				return $this->failNotFound('El usuario no es valido para actualizar ' . $id);
 
-			$data = (array) $this->request->getJSON();
-			if(isset($data['password']))
+			$data = (array) $this->request->getJSON(); 
+			$password = (isset($data['password']))? $data['password'] : false;
+			if($password)
 			{
 				$hashService = new HashService();
-				$data['password'] = $hashService->getClaveHash($data['password'], $data['usuario']);
+				$hash = $hashService->getClaveHash($password, $data['usuario']);
+				$data['password'] = $hash;
 			}
-			if ($this->usuarioService->updateUsuario($id, $data)) :
+
+			if ($this->usuarioService->updateUsuario($id, $data)) 
+			{
+				$user = $this->usuarioService->getUsuarioById($id);
+				if($password)
+				{
+					$parser = Services::parser();
+					$gmailAdapter = new GmailMailer();
+					$gmailAdapter->setting(
+						['asunto' => 'Recuperación de cuenta Comserva'],
+						[
+							'mensaje' => $parser->setData([
+								'nombres' => $user->nombres,
+								'username' => $user->usuario,
+								'usuario_clave' => $password
+							])->render('autenticar/recovery_parse')
+						],
+						['emisor' => 'soportesistemas.comfaca@gmail.com'],
+						['destino' => $user->correo],
+						['nombreEmisor' => 'soportesistemas']
+					);
+					$gmailAdapter->sendEmail();
+				}
+
 				return $this->respondUpdated([
 					'status' => true,
 					'message' => 'Se ha editado con éxito el registro',
-					'usuario' => $this->usuarioService->getUsuarioById($id)
+					'usuario' => $user
 				]);
-			else :
+			} else {
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",
 					"errors" =>$this->usuarioService->getErrors()
 				]);
-			endif;
+			}
 		} catch (\Exception $err) {
 			return $this->failServerError($err->getMessage());
 		}

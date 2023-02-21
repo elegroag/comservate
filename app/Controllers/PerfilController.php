@@ -39,19 +39,9 @@ class PerfilController extends BaseController
 			['destino'=> 'maxedwwin@gmail.com'],
 			['nombreEmisor'=> 'soportesistemas']
 		);
-
-		// $gmailAdapter = new GmailMailer();
-		// $gmailAdapter->setting(
-		//     ['asunto'=> 'Mensaje de prueba'],
-		//     ['mensaje'=> 'Hola prueba 01'],
-		//     ['emisor'=> 'soportesistemas.comfaca@gmail.com'],
-		//     ['destino'=> 'maxedwwin@gmail.com'],
-		//     ['nombreEmisor'=> 'soportesistemas']
-		// );
 		$out = $gmailAdapter->sendEmail();
 		var_export($out);
 	}
-
 
 	public function informePdf()
 	{

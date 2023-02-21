@@ -10,7 +10,7 @@
             <?= $this->renderSection('content') ?>
 
         </div>
-        <?=script_tag('resource/login/build.login-min.js')?>
+        <?=script_tag('resource/login/build.login.js')?>
         <?= $this->include('template/footer_login') ?>
     </div>
 </div>

@@ -45,6 +45,9 @@ class ViewLogin extends Backbone.View {
         e.preventDefault();
         var target = $(e.target); 
         target.attr('disabled', true);
+        
+        this.loginModel.forRecovery = false;
+
         let loginModel = new this.loginModel(formSerialiceObject('formLogin'));
         if(!loginModel.isValid())
         {
@@ -114,8 +117,8 @@ class ViewLoginRecovery extends Backbone.View {
     
     events(){
         return {
-            "click #btnSendData": "sendData",
-            "keypress input[name='email']": "sendKeyDataLogin",
+            "click #btnSendDataRecovery": "sendData",
+            "keypress input[name='email']": "sendKeyDataRecovery",
             "click #btnVolverSesion": "volverSesion"
         }
     }
@@ -128,7 +131,7 @@ class ViewLoginRecovery extends Backbone.View {
         this.remove();
     }
 
-    sendKeyDataLogin(e){
+    sendKeyDataRecovery(e){
         let keycode = e.keyCode || e.which;
         if(keycode == '13') {
             document.querySelector("#btnSendData").click();
@@ -139,20 +142,32 @@ class ViewLoginRecovery extends Backbone.View {
         e.preventDefault();
         var target = $(e.target); 
         target.attr('disabled', true);
-        let loginModel = new this.loginModel(formSerialiceObject('formLogin'));
+        
+        this.loginModel.forRecovery = true;
+
+        let loginModel = new this.loginModel(formSerialiceObject('formRecovery'));
         if(!loginModel.isValid())
         {
             let errors = loginModel.validationError;
+            console.log(errors);
             showNotification('top', 'right', errors.join("<br/>"), false);
             target.removeAttr('disabled');
             return false;
         }
         loading.show();
-        axios.post(create_url('api_token'), loginModel.toJSON())
+        axios.post(create_url('login/recovery'), loginModel.toJSON())
         .then(function(response){
             if(response.data.status)
             {
-                window.location.href = create_url('web/validation/'+response.data.token); 
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    text:  response.data.message,
+                    title: 'Notificación!',
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+                document.querySelector("#btnVolverSesion").click();
             } else {
                 Swal.fire({
                     position: 'center',
@@ -160,7 +175,7 @@ class ViewLoginRecovery extends Backbone.View {
                     text:  response.data.message,
                     title: 'Alerta error!',
                     showConfirmButton: false,
-                    timer: 3000
+                    timer: 4000
                 })
             }
         }).catch(function(err){
@@ -172,7 +187,7 @@ class ViewLoginRecovery extends Backbone.View {
                 text:  message,
                 title: 'Alerta error!',
                 showConfirmButton: false,
-                timer: 3000
+                timer: 4000
             })
         }).finally(function(){
             loading.hide();

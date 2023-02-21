@@ -44,10 +44,10 @@ class Autoload extends AutoloadConfig
         'Config'  => APPPATH . 'Config',
         "App"     => APPPATH,
         "Commands" => APPPATH . 'Commands',
-        'Firebase\\JWT\\' => APPPATH . 'vendor/firebase/php-jwt/src/JWT',
-        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/PHPMailer',
-        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/SMTP',
-        'PHPMailer\\PHPMailer\\' => APPPATH . 'vendor/phpmailer/src/Exception',
+        'Firebase\\JWT\\' => ROOTPATH . 'vendor/firebase/php-jwt/src/JWT',
+        'PHPMailer\\PHPMailer\\' => ROOTPATH . 'vendor/phpmailer/src/PHPMailer',
+        'PHPMailer\\PHPMailer\\' => ROOTPATH . 'vendor/phpmailer/src/SMTP',
+        'PHPMailer\\PHPMailer\\' => ROOTPATH . 'vendor/phpmailer/src/Exception',
         "TCPDF" => APPPATH . "ThirdParty/tcpdf"
     ];
     /**
@@ -68,7 +68,7 @@ class Autoload extends AutoloadConfig
      * @var array<string, string>
      */
     public $classmap = [
-        "TCPDF" => APPPATH . "app/ThirdParty/tcpdf/tcpdf.php"
+        "TCPDF" => APPPATH . "ThirdParty/tcpdf/tcpdf.php"
     ];
 
     /**

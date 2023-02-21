@@ -34,6 +34,7 @@ $routes->set404Override();
 $routes->get('/', 'InicioController::index', ['filter'=> 'webauth']);
 $routes->get('login', 'LoginController::index');
 $routes->get('logout', 'LoginController::logout');
+$routes->post('login/recovery', 'LoginController::recovery');
 
 $routes->group('/web', static function($routes) {
     $routes->get('validation/(:any)', 'LoginController::validation/$1');

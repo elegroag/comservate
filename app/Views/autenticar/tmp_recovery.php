@@ -1,4 +1,4 @@
-<form class="form needs-validation" method="POST" action="javascript:;" id='formLogin'>
+<form class="form needs-validation" method="POST" action="javascript:;" id='formRecovery'>
 	<div class="card card-login">
 		<div class="card-header">
 			<div class="card-header">
@@ -12,6 +12,15 @@
 						<i class="nc-icon nc-single-02"></i>
 					</span>
 				</div>
+				<input type="text" name='username' id='username' class="form-control" placeholder="Usuario" />
+				<div class="invalid-feedback" has-error='username'></div>
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="nc-icon nc-single-02"></i>
+					</span>
+				</div>
 				<input type="text" name='email' id='email' class="form-control" placeholder="dirección de email" />
 				<div class="invalid-feedback" has-error='email'></div>
 			</div>
@@ -19,7 +28,7 @@
 		</div>
 		<div class="card-footer">
 			<div class="row justify-content-md-center">
-				<button type='button' id='btnSendDataLogin' class="btn btn-warning btn-round btn-block mb-3">Envíar</button>
+				<button type='button' id='btnSendDataRecovery' class="btn btn-warning btn-round btn-block mb-3">Envíar</button>
 			</div>
 		</div>
 		<div class="form-group text-center">

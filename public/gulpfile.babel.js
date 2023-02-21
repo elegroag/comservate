@@ -256,10 +256,9 @@ function login(){
         'src/views/login.js',
         'src/routers/login.js'
     ])
+    .pipe(concat('build.login.js'))
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('build.login.js'))
-    .pipe(minify())
     .pipe(dest('resource/login/'));
 }
 
