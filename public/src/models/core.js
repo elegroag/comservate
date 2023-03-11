@@ -297,3 +297,58 @@ const optionsDataPicker = function(time = false){
 		}
 	}
 }
+
+var methodMap = {
+	'create':"POST",
+	'update': "PUT",
+	'fetch':"GET",
+	'destroy':"DELETE"
+};
+
+Backbone.emulateJSON = true;
+
+Backbone.sync = function (method, model, options) {
+	var type = methodMap[method];
+
+	var params = _.extend(
+		{
+			type: type,
+			dataType: "json",
+			processData: false,
+		},
+		options
+	);
+
+	if (!params.url) {
+		params.url = model.url || urlError();
+	}
+
+	if (!params.data && model && (method == "create" || method == "update")) {
+		params.contentType = "application/json";
+		params.data = JSON.stringify(model.toJSON());
+	}
+
+	if (Backbone.emulateJSON) 
+	{
+		params.contentType = "application/x-www-form-urlencoded";
+		params.processData = true;
+		params.data = params.data ? { model: params.data } : {};
+		params.beforeSend = function (xhr) 
+		{
+			xhr.setRequestHeader("X-Requested-With", 'XMLHttpRequest');
+			xhr.setRequestHeader("Authorization", bearer_token());
+		};
+	}
+
+	if (Backbone.emulateHTTP) {
+		if (type === "PUT" || type === "DELETE") {
+			if (Backbone.emulateJSON) params.data._method = type;
+			params.type = "POST";
+			params.beforeSend = function (xhr) {
+				xhr.setRequestHeader("X-HTTP-Method-Override", type);
+			};
+		}
+	}
+
+	return $.ajax(params);
+};

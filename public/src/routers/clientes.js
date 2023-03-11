@@ -5,9 +5,11 @@ class RouterClientes extends Backbone.Router {
 	
 	static clientes;
 	static municipios;
+	static viewPersistencia = false;
+	static content = "containerBone";
+	static contentPersistencia = "containerPersistencia";
 
     initialize() {
-		this.content = "containerBone";
         this.errors = void 0;
 		RouterClientes.clientes = new ClientesCollection();
 		RouterClientes.municipios = new MunicipiosCollection();
@@ -26,22 +28,42 @@ class RouterClientes extends Backbone.Router {
         }
 	}
 
-    createContent() {
-		$("#" + this.content).remove();
-		let _el = document.createElement("div");
-		_el.setAttribute("id", this.content);
-		_el.setAttribute("class", "box");
+    createContent() 
+	{
+		if(RouterClientes.viewPersistencia === true){
+			document.getElementById(RouterClientes.contentPersistencia).setAttribute('style', 'display:none');
+		}
+		$("#"+RouterClientes.content).remove();
+		let _el = document.createElement('webview');
+		_el.setAttribute("id", RouterClientes.content);
 		document.getElementById("container").appendChild(_el);
 		scroltop();
-		return _el;
 	}
 
-	allShowView() {
-		this.createContent();
+	createContentPersistencia() 
+	{
+		$("#"+RouterClientes.content).remove();
+		if(RouterClientes.viewPersistencia === true){
+			document.getElementById(RouterClientes.contentPersistencia).setAttribute('style', 'display:inline-block');
+		} else {
+			let _el = document.createElement('webview');
+			_el.setAttribute("id", RouterClientes.contentPersistencia);
+			document.getElementById("container").appendChild(_el);
+		}
+		scroltop();
+	}
+
+	allShowView() 
+	{
+		this.createContentPersistencia();
 		var $scope = this;
 		if(RouterClientes.clientes.length > 0)
 		{
-			new $scope.viewClientes({el: `#${$scope.content}`, collection: RouterClientes.clientes}); 
+			if(RouterClientes.viewPersistencia === false)
+			{
+				new $scope.viewClientes({el: `#${RouterClientes.contentPersistencia}`, collection: RouterClientes.clientes}); 
+				RouterClientes.viewPersistencia = true;	
+			}
 			loading.hide();
 		} else {
 			loading.show();
@@ -55,7 +77,8 @@ class RouterClientes extends Backbone.Router {
 				if(response.data)
 				{
 					RouterClientes.setClientes(response.data);
-					new $scope.viewClientes({el: `#${$scope.content}`, collection: RouterClientes.clientes}); 
+					new $scope.viewClientes({el: `#${RouterClientes.contentPersistencia}`, collection: RouterClientes.clientes}); 
+					RouterClientes.viewPersistencia = true;	
 				} else {
 					Swal.fire({
 						position: 'center',
@@ -81,7 +104,7 @@ class RouterClientes extends Backbone.Router {
 			let cliente = RouterClientes.clientes.get(parseInt(id));
 			if(cliente)
 			{
-				new this.viewShowCliente({el: `#${this.content}`, model: cliente, className:'box animated'});
+				new this.viewShowCliente({el: `#${RouterClientes.content}`, model: cliente, className:'box animated'});
 				loading.hide();
 			}else{
 				Routers.routerClientes.navigate("all", { trigger: true });
@@ -100,7 +123,7 @@ class RouterClientes extends Backbone.Router {
 					RouterClientes.setClientes(response.data);
 					let cliente = RouterClientes.clientes.get(id);
 					if(cliente){
-						new $scope.viewShowCliente({el: `#${$scope.content}`, model: cliente, className:'box animated'});
+						new $scope.viewShowCliente({el: `#${RouterClientes.content}`, model: cliente, className:'box animated'});
 					}else{
 						Routers.routerClientes.navigate("all", { trigger: true });
 					}
@@ -131,7 +154,7 @@ class RouterClientes extends Backbone.Router {
 			{
 				if(RouterClientes.municipios.length > 0)
 				{
-					new $scope.viewEditCliente({el: `#${this.content}`, model: $scope.cliente,  collection: [ RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
+					new $scope.viewEditCliente({el: `#${RouterClientes.content}`, model: $scope.cliente,  collection: [ RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
 					loading.hide();
 				} else {
 					axios({
@@ -144,7 +167,7 @@ class RouterClientes extends Backbone.Router {
 						if(response.data)
 						{
 							RouterClientes.setMunicipios(response.data);
-							new $scope.viewEditCliente({el: `#${$scope.content}`, model: $scope.cliente,  collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
+							new $scope.viewEditCliente({el: `#${RouterClientes.content}`, model: $scope.cliente,  collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
 						}
 					}).catch(this.cathRequest).finally(function(){
 						loading.hide();
@@ -169,7 +192,7 @@ class RouterClientes extends Backbone.Router {
 
 					let cliente = RouterClientes.clientes.get(id);
 					if(cliente){
-						new $scope.viewEditCliente({el: `#${$scope.content}`, model: cliente, collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
+						new $scope.viewEditCliente({el: `#${RouterClientes.content}`, model: cliente, collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
 					}else{
 						Routers.routerClientes.navigate("all", { trigger: true });
 					}
@@ -220,14 +243,14 @@ class RouterClientes extends Backbone.Router {
 					RouterClientes.setMunicipios(response.data.municipios);
 					RouterClientes.setClientes(response.data.clientes);
 					
-					new $scope.viewCreateCliente({el: `#${$scope.content}`, collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
+					new $scope.viewCreateCliente({el: `#${RouterClientes.content}`, collection: [RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
 					loading.hide();
 				}
 			}).catch(this.cathRequest).finally(function(){
 				loading.hide();
 			})
 		} else {
-			new this.viewCreateCliente({el: `#${this.content}`, collection: [ RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
+			new this.viewCreateCliente({el: `#${RouterClientes.content}`, collection: [ RouterClientes.clientes, RouterClientes.municipios], className:'box animated'});
 			loading.hide();
 		}
 	}

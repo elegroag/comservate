@@ -24,7 +24,23 @@
     <?= $this->include('clientes_manager/tmp_cliente_crear') ?>
 </script>
 
+<script type="text/template" id="tmp_reload_datatable">
+    <table class="table table-striped table-bordered dataTable dtr-inline" id='datatable' aria-describedby="datatable_info" style="width: 100%;">
+        <thead class="text-primary">
+            <tr>
+                <th>Afiliado</th>
+                <th>Representante</th>
+                <th class="text-right">Municipio</th>
+                <th>Estado</th>
+                <th>Teléfono</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id='filas'></tbody>
+    </table>
+</script>
+
 <div class="container" id='container'></div>
 
-<?= script_tag('resource/cliente/build.clientes.js') ?>
+<?= script_tag('resource/cliente/build.clientes.js?time='.strtotime('now')) ?>
 <?= $this->endSection() ?>

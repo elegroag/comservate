@@ -47,12 +47,13 @@ class ViewClientes extends Backbone.View {
 		super(options)
 	}
 
+    static dataTable = false;
+    static children = {};
+
     initialize() {
         this.template = $('#tmp_all_clientes').html();
         this.viewCliente = ViewCliente;
-        this.children = {};
-        this.dataTable = void 0;
-       
+        ViewClientes.children = {};
         this.listenTo(this.collection, 'add', this.clienteAdd);
         this.listenTo(this.collection, 'remove', this.clienteRemoved);
         this.render();
@@ -76,19 +77,59 @@ class ViewClientes extends Backbone.View {
         return {
             "click [data-toggle='row-edit']": "editData",
             "click [data-toggle='row-like']": "likeData",
-            "click [data-toggle='row-remove']": "removeData"
+            "click [data-toggle='row-remove']": "removeData",
+            "click #btnFetchData": "fetchData"
         }
     }
+
+    fetchData(e)
+    {
+        e.preventDefault();
+        loading.show();
+        this.$el.find('#render_data_table').fadeOut();
+        ViewClientes.dataTable.destroy();
+        this.clearChildrens();
+        this.collection.reset();
+
+        var $scope = this;
+        this.collection.fetch().done(function(data)
+        {
+            let temp = $("#tmp_reload_datatable").html();
+            $scope.$el.find("#render_data_table").html(temp);
+            if(data){
+                $scope.collection.add(data, {merge: true});
+                let filas = $scope.collection.map(function(cliente){
+                    let view = $scope.renderModel(cliente, $scope);
+                    return view.$el;
+                });
+                $scope.$el.find('#filas').html(filas);
+            }
+            $scope.renderDataTable($scope);
+        }).catch(function(err){
+            console.log(err);
+        }).always(function(){
+            $scope.$el.find('#render_data_table').fadeIn('fast');
+            loading.hide();
+        });
+    }
+
+    clearChildrens(){
+        _.each(ViewClientes.children, function(item){ 
+            if(item) item.remove(); 
+        });
+        ViewClientes.children = {};
+    }
+
     editData(e){
         e.preventDefault();
         Routers.routerClientes.navigate("edita/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
-        this.remove();
     }
+
     likeData(e){
         e.preventDefault();
-        Routers.routerClientes.navigate("detalle/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
-        this.remove();       
+        Routers.routerClientes.navigate("detalle/"+$(e.currentTarget).attr('data-cid'), { trigger: true });  
     }
+
     removeData(e){
         e.preventDefault();
         var $scope = this;
@@ -150,9 +191,11 @@ class ViewClientes extends Backbone.View {
             }
         })
     }
+
     serializeData(){
         return (!this.collection)? void 0 : this.collection.toJSON();
     }
+
     clienteAdd(model){
         let view = this.renderModel(model, this);
         this.$el.find('#filas').append(view.$el);
@@ -161,26 +204,27 @@ class ViewClientes extends Backbone.View {
     renderModel(cliente, $scope)
     {
         let view;
-        if(_.size($scope.children) > 0){
-            if(_.indexOf($scope.children, cliente.cid) != -1){
-                view = $scope.children[cliente.cid];
+        if(_.size(ViewClientes.children) > 0)
+        {
+            if(_.indexOf(ViewClientes.children, cliente.cid) != -1){
+                view = ViewClientes.children[cliente.cid];
             }else{
                 view = new $scope.viewCliente({model: cliente, tagName:'tr'});        
-                $scope.children[cliente.cid] = view;        
+                ViewClientes.children[cliente.cid] = view;        
             }
         }else{
             view = new $scope.viewCliente({model: cliente, tagName:'tr'});        
-            $scope.children[cliente.cid] = view;  
+            ViewClientes.children[cliente.cid] = view;  
         }
         view.render();
         return view;
     }
 
     clienteRemoved(model) {
-        var view = this.children[model.cid];
+        var view = ViewClientes.children[model.cid];
         if (view) {
             view.remove();
-            this.children[model.cid] = undefined;
+            ViewClientes.children[model.cid] = undefined;
         }
     }
 
@@ -205,8 +249,8 @@ class ViewClientes extends Backbone.View {
             ],
             "responsive": true,
             "language": TABLE_LENGUAJE
-        })
-        this.dataTable = $scope.$el.find('#datatable').DataTable();
+        });
+        ViewClientes.dataTable = $scope.$el.find('#datatable').DataTable();
     }
 }
 
@@ -387,8 +431,8 @@ class ViewEditCliente extends Backbone.View {
         var $scope = this;
         loading.show();
         $scope.$el.fadeOut('fast', function() {
-            Routers.routerClientes.navigate("all", { trigger: true })
             $scope.remove();
+            Routers.routerClientes.navigate("all", { trigger: true })
         });
     }
 
@@ -526,8 +570,8 @@ class ViewCreateCliente extends Backbone.View {
         var $scope = this;
         loading.show();
         $scope.$el.fadeOut('fast', function() {
-            Routers.routerClientes.navigate("all", { trigger: true })
             $scope.remove();
+            Routers.routerClientes.navigate("all", { trigger: true })
         });
     }
 }
