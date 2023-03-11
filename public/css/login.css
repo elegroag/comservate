@@ -141,20 +141,13 @@
     padding: 2rem;
 }
 .login-page .content .container {
-    margin-top: 5vh;
+    margin-top: 2vh;
 }
 .login-page .card-login {
     margin: 0px 8px;
     padding: 1rem;
 }
 
-.login-page span[data-notify="message"]{
-    margin-left: 2.5rem;
-}
-
-div[data-notify="container"]  button.close {
-    margin-top: 0.5rem;
-    border: none;
-    background-color: transparent;
-    font-size: 1.8rem;
+.full-page>.content {
+    padding-top: 17vh;
 }

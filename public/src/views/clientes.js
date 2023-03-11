@@ -48,8 +48,6 @@ class ViewClientes extends Backbone.View {
 	}
 
     initialize() {
-        this.className = "box";
-        this.id = "viewClientes";
         this.template = $('#tmp_all_clientes').html();
         this.viewCliente = ViewCliente;
         this.children = {};
@@ -81,27 +79,19 @@ class ViewClientes extends Backbone.View {
             "click [data-toggle='row-remove']": "removeData"
         }
     }
-
     editData(e){
         e.preventDefault();
-        let element = $(e.currentTarget);
-        let id = element.attr('data-cid');
-        Routers.routerClientes.navigate("edita/"+id, { trigger: true });
+        Routers.routerClientes.navigate("edita/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
         this.remove();
     }
-
     likeData(e){
         e.preventDefault();
-        let element = $(e.currentTarget);
-        let id = element.attr('data-cid');
-        Routers.routerClientes.navigate("detalle/"+id, { trigger: true });
-        this.remove();
-        // let model =  this.collection.get(id);
-        // model.set('afiliado', 'edwin legro');
+        Routers.routerClientes.navigate("detalle/"+$(e.currentTarget).attr('data-cid'), { trigger: true });
+        this.remove();       
     }
-
     removeData(e){
         e.preventDefault();
+        var $scope = this;
         var element = $(e.currentTarget);
         element.attr('disabled', true);
 
@@ -160,11 +150,9 @@ class ViewClientes extends Backbone.View {
             }
         })
     }
-
     serializeData(){
         return (!this.collection)? void 0 : this.collection.toJSON();
     }
-
     clienteAdd(model){
         let view = this.renderModel(model, this);
         this.$el.find('#filas').append(view.$el);
@@ -204,12 +192,12 @@ class ViewClientes extends Backbone.View {
             "pageLength": 10,
             "info": true,
             "columnDefs": [
-                { targets: 0, searchable: false, width:'25%'},
+                { targets: 0, width:'25%'},
                 { targets: 1, width:'25%'},
                 { targets: 2, width:'15%'},
                 { targets: 3, width:'10%'},
                 { targets: 4, width:'15%'},
-                { targets: 5, width:'10%'}
+                { targets: 5, searchable: false, width:'10%'}
             ],
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -229,31 +217,35 @@ class ViewShowCliente extends Backbone.View {
     }
 
     initialize() {
-        this.className = "box";
-        this.id = "viewClientes";
         this.template = $('#tmp_cliente_detalle').html();
-        this.viewCliente = ViewCliente;
-        this.children = {};
         return this.render();
     }
 
     render(){
         let template = _.template(this.template);
-        this.$el.html(template());
+        this.$el.html(template(this.serializeData()));
         return this;
     }
 
     events(){
         return {
-            "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
+            "click #btnVolver": "volverListaClientes"
         }
     }
     
-    sendData(event){
+    volverListaClientes(e){
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
+        });
     }
 
-    sendKeyData(event){
+    serializeData(){
+        return (!this.model)? void 0 : this.model.toJSON();
     }
 }
 
@@ -261,59 +253,147 @@ class ViewEditCliente extends Backbone.View {
     
     constructor(options) {
         super(options);
-        this.className = "box";
-        this.id = "viewClientes";
-        this.template = $('#tmp_clientes_listar').html();
-        this.viewCliente = ViewCliente;
-        return this.render();
     }
 
     initialize() {
-        this.children = {};
-        this.listenTo(this.collection, 'add', this.clienteAdd);
-        this.listenTo(this.collection, 'remove', this.clienteRemoved);
+        this.clientes = void 0;
+        this.municipios = void 0;
+        this.template = $('#tmp_cliente_editar').html();
+        this.clienteModel = ClienteModel;
+        this.usuarioLocal = usuario_local();
+        this.listenTo(this.model, 'change', this.render);
+        return this.render();
     }
 
     render(){
+        this.clientes = this.collection[0];
+        this.municipios = this.collection[1];
         let template = _.template(this.template);
-        this.$el.html(template());
+        this.$el.html(template(this.serializeData()));
+        this.addListMunicipios(this);
+        this.$el.find("#fecha_finalizacion").datetimepicker(optionsDataPicker());
         return this;
     }
 
     events(){
         return {
             "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
+            "keypress input[name='password']": "sendKeyData",
+            "click #btnVolver": "volverListaClientes"
         }
     }
 
-    clienteAdd(model){
-        var view = this.renderModel(model);
-        this.$el.append(view.$el);
+    addListMunicipios($scope){
+        let html='<option value="">Seleccionar aquí..</option>';
+        _.each($scope.municipios.toJSON(), function(municipio){
+            let selected = ($scope.model.get('id_municipio') == municipio.id)? 'selected': '';
+            html+='<option '+selected+' value="'+municipio.id+'">'+(municipio.municipio).toUpperCase() +'</option>';
+        }, html);
+        $scope.$el.find('#id_municipio').html(html);
+        $scope.$el.find('#id_municipio').chosen({"width":"100%", "allow_single_deselect": true});
     }
-    
-    renderModel(model){
-        var view = new this.viewCliente({model: model});
-        this.children[model.cid] = view;
-        this.listenTo(view, 'all', eventName => {
-            this.trigger('item:' + eventName, view, model);
+
+    sendData(e){
+        e.preventDefault()
+        var $scope = this;
+        $scope.target = $(e.target);
+        $scope.target.attr('disabled', true)
+        let form = this.$el.find('#formEditData');
+        let token = formSerialiceObject(form, true);
+        $scope.previus = $scope.model.clone();
+        
+        let cliente = new this.clienteModel(token);
+        if(!cliente.isValid())
+        {
+            let errors = cliente.validationError;
+            showNotification('top', 'right', errors.join("<br/>"), false);
+            $scope.target.removeAttr('disabled');
+            return false;
+        }
+
+        cliente.set('usuario_creador', this.usuarioLocal.id);
+        _.each(cliente.toJSON(), function(element, key){
+            $scope.model.set(key, element);
         });
-        view.render();
-        return view;
+        cliente = void 0;
+        
+        loading.show();
+        axios({
+            "method": 'put',
+            "url": create_url('api/cliente/edita/'+$scope.model.get('id')),
+            "type": 'JSON',
+            "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
+            "data": $scope.model.toJSON()
+        })
+        .then(function(response){
+            if(response.data)
+            {
+                _.each(response.data.cliente, function(element, key){
+                    $scope.model.set(key, element);
+                });
+
+                RouterClientes.clientes.add($scope.model, {trigger: true});
+                Swal.fire('Actualizado!', response.data.message, 'success');
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    text:  (_.size(response.data) == 0)? 'No hay datos disponible del cliente' : '',
+                    title: 'Alerta error!',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
+        }).catch(function(err){
+            _.each($scope.previus.toJSON(), function(element, key){
+                $scope.model.set(key, element);
+            });
+            $scope.previus = void 0;
+            let message;
+            if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                text:  message,
+                title: 'Alerta error!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }).finally(function(){
+            $scope.target.removeAttr('disabled');
+            loading.hide();
+        })
     }
 
-    clienteRemoved(model) {
-        var view = this.children[model.cid];
-        if (view) {
-            view.remove();
-            this.children[model.cid] = undefined;
+    sendKeyData(e){
+        let keycode = e.keyCode || e.which;
+        if(keycode == '13') {
+            document.querySelector("#btnSendDataLogin").click();
         }
     }
 
-    sendData(event){
+    volverListaClientes(e){
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
+        });
     }
 
-    sendKeyData(event){
+    serializeData(){
+        return (!this.model)? void 0 : this.model.toJSON();
     }
 }
 
@@ -321,58 +401,133 @@ class ViewCreateCliente extends Backbone.View {
     
     constructor(options) {
         super(options);
-        this.className = "box";
-        this.id = "viewClientes";
-        this.template = $('#tmp_clientes_listar').html();
-        this.viewCliente = ViewCliente;
-        return this.render();
     }
 
     initialize() {
-        this.children = {};
-        this.listenTo(this.collection, 'add', this.clienteAdd);
-        this.listenTo(this.collection, 'remove', this.clienteRemoved);
+        this.clientes = void 0;
+        this.municipios = void 0;
+        this.template = $('#tmp_cliente_crear').html();
+        this.clienteModel = ClienteModel;
+        this.usuarioLocal = usuario_local();
+        return this.render();
     }
 
     render(){
+        this.clientes = this.collection[0];
+        this.municipios = this.collection[1];
         let template = _.template(this.template);
         this.$el.html(template());
+        this.addListMunicipios(this);
+        this.$el.find("#fecha_finalizacion").datetimepicker(optionsDataPicker());
         return this;
     }
 
     events(){
         return {
             "click #btnSendData": "sendData",
-            "keypress input[name='password']": "sendKeyData"
+            "keypress input[name='ruta']": "sendKeyData",
+            "click #btnVolver": "volverListaClientes"
         }
     }
 
-    clienteAdd(model){
-        var view = this.renderModel(model);
-        this.$el.append(view.$el);
+    addListMunicipios($scope){
+        let html='<option value="">Seleccionar aquí..</option>';
+        _.each($scope.municipios.toJSON(), function(municipio){
+            html+='<option value="'+municipio.id+'">'+(municipio.municipio).toUpperCase()+'</option>';
+        }, html);
+        $scope.$el.find('#id_municipio').html(html);
+        $scope.$el.find('#id_municipio').chosen({width: '100%', allow_single_deselect: true});
+    }
+
+    sendData(e){
+        e.preventDefault()
+        var $scope = this;
+        $scope.target = $(e.target);
+        $scope.target.attr('disabled', true)
+        let form = this.$el.find('#formCreateData');
+        let token = formSerialiceObject(form, true);
+        
+        let cliente = new this.clienteModel(token);
+        if(!cliente.isValid())
+        {
+            let errors = cliente.validationError;
+            showNotification('top', 'right', errors.join("<br/>"), false);
+            $scope.target.removeAttr('disabled');
+            return false;
+        }
+
+        cliente.set('usuario_creador', this.usuarioLocal.id);
+        loading.show();
+        axios({
+            "method": 'post',
+            "url": create_url('api/cliente/create'),
+            "type": 'JSON',
+            "headers": {'X-Requested-With': 'XMLHttpRequest', 'Authorization': bearer_token()},
+            "data": cliente.toJSON()
+        })
+        .then(function(response){
+            if(response.data)
+            {
+                _.each(response.data.cliente, function(element, key){
+                    cliente.set(key, element);
+                });
+                RouterClientes.clientes.add(cliente);
+                Swal.fire('Creado!', response.data.message, 'success');
+                Routers.routerClientes.navigate("detalle/"+cliente.get('id'), { "trigger": true })
+                $scope.remove();
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    text:  (_.size(response.data) == 0)? 'No hay datos disponible del cliente' : '',
+                    title: 'Alerta error!',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
+        }).catch(function(err){
+            let message;
+            if(err.code == 'ERR_NETWORK') message = 'No hay red disponible para acceder al servidor.';
+            if (err.code == 'ERR_BAD_REQUEST'){
+                if (err.response.data.status == 404){
+                    message = err.response.data.messages.error;
+                } else {
+                    message = err.response.data.message;
+                }
+            } else {
+                message = err.message;
+            }
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                text:  message,
+                title: 'Alerta error!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }).finally(function(){
+            $scope.target.removeAttr('disabled');
+            loading.hide();
+        })
+    }
+
+    sendKeyData(e){
+        let keycode = e.keyCode || e.which;
+        if(keycode == '13') {
+            let container = document.querySelector(".main-panel");
+            container.scrollTop = 0;
+        }
     }
     
-    renderModel(model){
-        var view = new this.viewCliente({model: model});
-        this.children[model.cid] = view;
-        this.listenTo(view, 'all', eventName => {
-            this.trigger('item:' + eventName, view, model);
+    volverListaClientes(e)
+    {
+        e.preventDefault()
+        $(e.target).attr('disabled', true)
+        var $scope = this;
+        loading.show();
+        $scope.$el.fadeOut('fast', function() {
+            Routers.routerClientes.navigate("all", { trigger: true })
+            $scope.remove();
         });
-        view.render();
-        return view;
-    }
-
-    clienteRemoved(model) {
-        var view = this.children[model.cid];
-        if (view) {
-            view.remove();
-            this.children[model.cid] = undefined;
-        }
-    }
-
-    sendData(event){
-    }
-
-    sendKeyData(event){
     }
 }

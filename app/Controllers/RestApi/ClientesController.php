@@ -3,6 +3,7 @@
 namespace App\Controllers\RestApi;
 
 use App\Services\ClienteService;
+use App\Services\MunicipioService;
 use CodeIgniter\HTTP\Message;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -10,10 +11,12 @@ class ClientesController extends ResourceController
 {
 
 	private $clienteService;
+	private $municipioService;
 
 	public function __construct()
 	{
 		$this->clienteService = new ClienteService();
+		$this->municipioService= new MunicipioService();
 	}
 
 	public function index()
@@ -24,11 +27,14 @@ class ClientesController extends ResourceController
 	public function salvarCliente()
 	{
 		try {
-			$cliente = $this->request->getJSON();
+			$cliente = (array) $this->request->getJSON();
 			$out = $this->clienteService->createClient($cliente);
 			if (is_numeric($out) &&  $out > 0) :
-				$cliente->id = $out;
-				return $this->respondCreated($cliente);
+				return $this->respondCreated([
+					"status" => true,
+					"cliente" => $this->clienteService->getClientById($out),
+					"message" => "El registro se ha creado con éxito"
+				]);
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",
@@ -55,7 +61,11 @@ class ClientesController extends ResourceController
 
 			$data = (array) $this->request->getJSON();
 			if ($this->clienteService->updateClient($id, $data)) :
-				return $this->respondUpdated($data);
+				return $this->respondUpdated([
+					'status' => true,
+					'message' => 'Se ha editado con éxito el registro',
+					'cliente' => $this->clienteService->getClientById($id)
+				]);
 			else :
 				return $this->failValidationErrors([
 					"message" => "Error de validación servicio de clientes",
@@ -99,5 +109,20 @@ class ClientesController extends ResourceController
 		} catch (\Exception $err) {
 			return $this->failServerError($err->getMessage());
 		}
+	}
+
+	/**
+	 * requiereCliente function
+	 * Recursos requeridos para el registro y creación de clientes
+	 * @param string|null $id
+	 * @return void
+	 */
+	public function requiereCliente()
+	{
+		return $this->respond([
+			'status' => true,
+			'clientes' => $this->clienteService->getClients(),
+			'municipios' => $this->municipioService->getMunicipios()
+		]);
 	}
 }

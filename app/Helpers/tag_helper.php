@@ -38,8 +38,8 @@ if (! function_exists('text_field')) {
             $params['name'] = $params[0];
         }
 
-        $value ='';
-        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
@@ -77,8 +77,8 @@ if (! function_exists('text_upper_field')) {
             $params['name'] = $params[0];
         }
 
-        $value ='';
-        if(isset($params['value'])) $value = $params['value']; unset($params['value']);
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "text-uppercase form-control" : "text-uppercase form-control ".$params['class'];
 
@@ -114,14 +114,12 @@ if (! function_exists('numeric_field')) {
             $params['name'] = $params[0];
         }
 
-        if(isset($params['value'])) {
-            $value = $params['value'];
-            unset($params['value']);
-        }
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
 
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
-        $params['onkeydown']= (isset($params['onkeydown']))? $params['onkeydown'].",valNumeric(this)": "valNumeric(this)";
+        $params['onkeyup']= (isset($params['onkeyup']))? $params['onkeyup'].",valNumeric(this)": "valNumeric(this)";
         
         $code = "<input type='text' id='{$params[0]}' value='{$value}' ";
         
@@ -151,14 +149,12 @@ if (! function_exists('money_field')) {
             $params['name'] = $params[0];
         }
 
-        if(isset($params['value']))
-        {
-            $value = $params['value'];
-            unset($params['value']);
-        }
+        $value = (isset($params['value']))? $params['value']: '';
+        if(isset($params['value'])) unset($params['value']);
+        
         $params['class'] = (!isset($params['class']))? "form-control" : "form-control ".$params['class'];
 
-        $params['onkeydown'] = (isset($params['onkeydown']))? $params['onkeydown'].",valNumeric(this),formatMoney(this)": "valNumeric(this), formatMoney(this)";
+        $params['onblur'] = (isset($params['onblur']))? $params['onblur'].",valMoney(this)": "valMoney(this)";
 
         $code = "<input type='text' id='{$params[0]}' value='{$value}' ";
         foreach($params as $key => $value)
@@ -187,22 +183,7 @@ if (! function_exists('select_statico')) {
             if(isset($params['value'])){
                 $value = $params['value'];
             }
-
             $code ="<select id='{$params[0]}' name='{$params[0]}' ";
-
-            if(!isset($params['dummyValue'])){
-                $dummyValue = '@';
-            } else {
-                $dummyValue = $params['dummyValue'];
-                unset($params['dummyValue']);
-            }
-
-            if(!isset($params['dummyText'])){
-                $dummyText = 'Seleccione...';
-            } else {
-                $dummyText = $params['dummyText'];
-                unset($params['dummyText']);
-            }
             $params['class'] = (!isset($params['class']))? "text-uppercase form-control" : "text-uppercase form-control ".$params['class'];
 
             if(is_array($params)){
@@ -217,19 +198,7 @@ if (! function_exists('select_statico')) {
                     }
                 }
             }
-
             $code.=">\r\n";
-
-            if(isset($params['use_dummy']) && $params['use_dummy']){
-                $code.="\t<option value='$dummyValue'>$dummyText</option>\r\n";
-                unset($params['use_dummy']);
-            } else {
-                if(isset($params['useDummy'])&&$params['useDummy']){
-                    $code.="\t<option value='$dummyValue'>$dummyText</option>\r\n";
-                    unset($params['useDummy']);
-                }
-            }
-
             if(is_array($params[1]))
             {
                 foreach($params[1] as $k => $d)
@@ -241,7 +210,6 @@ if (! function_exists('select_statico')) {
                     }
                 }
             }
-
             $code.= "</select>\r\n";
         }
         return $code;
@@ -266,9 +234,8 @@ if (! function_exists('password_field')) {
                 $params['name'] = $params[0];
             }
 
-            if(!isset($params['value'])){
-                $params['value'] = $params[0];
-            }
+            $value = (isset($params['value']))? $params['value']: '';
+            if(isset($params['value'])) unset($params['value']);
 
             $code = "<input type='password' id='{$params[0]}' ";
 
@@ -329,14 +296,15 @@ if (! function_exists('formBoostrap'))
         $params['class'] = (isset($params['class']))? $params['class']: '';
         $params['label'] = (isset($params['label']))? $params['label'] : '';
         $params['id'] = (isset($params['id']))? $params['id'] : '';
+        $params['required'] = (isset($params['required']))? $params['required'] : false;
 
         $out = "".
         "<div class=\"row {$params['class']}\">".
-            "<label class=\"col-md-3 col-form-label\">{$params['label']}:</label>".
-            "<div class=\"col-md-9\">".
+            "<label class=\"col-md-4 col-form-label text-uppercase\">{$params['label']}:</label>".
+            "<div class=\"col-md-8\">".
                 "<div class=\"form-group\" data-toggle=\"help-{$params['id']}\">".$content."</div>".
-                "<label id=\"has_error_{$params['id']}\" class=\"error txt-primary\" for=\"required\">El valor {$params['label']} ingresado no es válido.</label>".
-                "<div class=\"category form-category\">* Campo requerido</div>".
+                "<label id=\"has_error_{$params['id']}\" class=\"error txt-primary\"></label>".
+                (($params['required'])? "<div class=\"category form-category\">* Campo requerido</div>":'').
             "</div>".
         "</div>";
         return $out;
@@ -356,7 +324,7 @@ if (! function_exists('showBoostrap'))
        
         $out = "".
         "<div class=\"row {$params['class']}\">
-            <label class=\"col-sm-5 col-form-label\">{$params['label']}</label>
+            <label class=\"col-sm-5 col-form-label text-uppercase\">{$params['label']}</label>
             <div class=\"col-sm-7\">
                 <div class=\"form-group has-success\">
                     <input type=\"text\" class=\"form-control form-static\" value=\"{$params['value']}\" readonly>
@@ -425,9 +393,18 @@ if ( ! function_exists('js_notify')){
     }
 }
 
+if ( ! function_exists('js_switch')){
+    function js_switch(){
+        return script_tag('assets/bootstrap/bootstrap-switch.js');
+    }
+}
+
+
 if ( ! function_exists('js_datetimepicker')){
-    function jsdatetimepicker(){
-        return script_tag('assets/bootstrap/bootstrap-datetimepicker.js');
+    function js_datetimepicker(){
+        return 
+        script_tag('assets/datatimepicker/jquery.datetimepicker.full.min.js').' '.
+        link_tag('assets/datatimepicker/jquery.datetimepicker.min.css');
     }
 }
 
@@ -466,7 +443,13 @@ if ( ! function_exists('tokenBearer')){
     {
         $session = session();
         $auth = $session->get('auth');
-        return 'Bearer '.$auth['token'];
+        return ($auth)? 'Bearer '.$auth['token']: false;
     }
 }
 
+if ( ! function_exists('js_chosen')){
+    function js_chosen(){
+        return link_tag('assets/chosen/chosen.jquery.css', 'stylesheet') .
+        script_tag('assets/chosen/chosen.jquery-min.js');
+    }
+}

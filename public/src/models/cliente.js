@@ -1,12 +1,12 @@
-class ClienteModel extends Backbone.Model{
-	constructor(options){
+class ClienteModel extends Backbone.Model {
+	constructor(options) {
 		super(options);
 		this.urlRoot = "http://localhost:8080/api/clientes";
 	}
-	initialize(){
-		//console.log("inicializa el modelo de login");
-	}
-	defaults(){
+
+	initialize() {}
+
+	defaults() {
 		return {
 			cedula: void 0,
 			nit: void 0,
@@ -31,31 +31,52 @@ class ClienteModel extends Backbone.Model{
 			estado: void 0,
 			mapa: void 0,
 			syncros: void 0,
-		}
+		};
 	}
-	validate(attrs){
+
+	validate(attrs) {
 		let errors = [];
 		let out = "";
-		if ((out = Testeo.vacio(attrs.cedula, "cedula", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.nit, "nit", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.representante, "representante", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.afiliado, "afiliado", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.id_municipio, "id_municipio", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.direccion, "direccion", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.telefono, "telefono", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.barrio, "barrio", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.correo, "correo", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.kilos, "kilos", "has-error"))) errors.push(out);
-		if ((out = Testeo.vacio(attrs.valor_kilo, "valor_kilo", "has-error"))) errors.push(out);
-		if ((out = Testeo.numerico(attrs.id_municipio, "id_municipio", "has-error"))) errors.push(out);
-		if ((out = Testeo.numerico(attrs.telefono, "telefono", "has-error"))) errors.push(out);
-		if ((out = Testeo.decimal(attrs.valor_kilo, "valor_kilo", "has-error"))) errors.push(out);
-		if ((out = Testeo.decimal(attrs.kilos, "kilos", "has-error"))) errors.push(out);
-		if ((out = Testeo.decimal(attrs.valor_kilo_adicional, "kilos", "has-error"))) errors.push(out);
-        if ((out = Testeo.telefono(attrs.telefono, "telefono", "has-error"))) errors.push(out);
-        if ((out = Testeo.identi(attrs.cedula, "cedula", 6, 16, "has-error"))) errors.push(out);
-		if ((out = Testeo.identi(attrs.nit, "nit", 6, 16, "has-error"))) errors.push(out);
-		if ((out = Testeo.email(attrs.correo, "correo", "has-error"))) errors.push(out);
+		if ((out = Testeo.vacio(attrs.cedula, "cedula", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.nit, "nit", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.representante, "representante", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.afiliado, "afiliado", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.id_municipio, "id_municipio", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.direccion, "direccion", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.telefono, "telefono", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.barrio, "barrio", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.correo, "correo", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.vacio(attrs.kilos, "kilos", "has_error"))) errors.push(out);
+		
+		if ((out = Testeo.vacio(attrs.valor_kilo, "valor_kilo", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.numerico(attrs.id_municipio, "id_municipio", "has_error")))errors.push(out);
+
+		if ((out = Testeo.numerico(attrs.telefono, "telefono", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.decimal(attrs.valor_kilo, "valor_kilo", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.decimal(attrs.kilos, "kilos", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.decimal(attrs.valor_kilo_adicional, "valor_kilo_adicional", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.telefono(attrs.telefono, "telefono", "has_error"))) errors.push(out);
+
+		if ((out = Testeo.identi(attrs.cedula, "cedula", 6, 16, "has_error"))) errors.push(out);
+
+		if ((out = Testeo.identi(attrs.nit, "nit", 6, 16, "has_error"))) errors.push(out);
+
+		if ((out = Testeo.email(attrs.correo, "correo", "has_error"))) errors.push(out);
+
 		return _.size(errors) > 0 ? errors : void 0;
 	}
-};
+}

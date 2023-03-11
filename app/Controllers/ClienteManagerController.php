@@ -1,20 +1,27 @@
 <?php
 namespace App\Controllers;
 
+use App\Services\ClienteService;
+use App\Services\UsuarioService;
+
 class ClienteManagerController extends BaseController
 {
-    public function index()
+
+    private $usuarioService;
+
+    public function __construct()
     {
-        helper('tag');
-        helper('html');
-        return view('clientes_manager/listar', ['title'=> 'Clientes Manager']);
+        $this->usuarioService = new UsuarioService();
     }
 
-    public function create()
+    public function index()
     {
+        $session = session();
+        $auth = $session->get('auth');
+        $user = $this->usuarioService->getUsuarioById($auth['id']);
         helper('tag');
         helper('html');
-        return view('clientes_manager/crear', ['title'=> 'Crear Cliente']);
+        return view('clientes_manager/listar', ['title'=> 'Administra Clientes', 'usuario' => json_encode($user)]);
     }
 
 }

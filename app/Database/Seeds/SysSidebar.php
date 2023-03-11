@@ -31,9 +31,9 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 3,
-                'label' => 'Listado clientes',
+                'label' => 'Tabla Clientes',
                 'estado'=> 'A',
-                'resource_router' => 'web/clientes',
+                'resource_router' => 'web/clientes#all',
                 'orden'=> 1,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'T',
@@ -41,9 +41,9 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 4,
-                'label'=> 'Crear cliente',
+                'label'=> 'Crear Cliente',
                 'estado'=> 'A',
-                'resource_router'=> 'web/clientes/create',
+                'resource_router'=> 'web/clientes#crear',
                 'orden'=> 2,
                 'sys_sidebar_id'=> 2,
                 'ambiente' => 'E',
@@ -53,7 +53,7 @@ class SysSidebar extends Seeder
                 'id'=> 5,
                 'label' => 'Editar cliente',
                 'estado' => 'O', #Oculto activo
-                'resource_router' => 'web/clientes/editar',
+                'resource_router' => 'web/clientes#editar',
                 'orden' => 3,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'E',
@@ -61,9 +61,9 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 6,
-                'label' => 'Borrar cliente',
+                'label' => 'Detalle cliente',
                 'estado' => 'O', #Oculto activo
-                'resource_router' => 'web/clientes/delete',
+                'resource_router' => 'web/clientes#detalle',
                 'orden' => 4,
                 'sys_sidebar_id' => 2,
                 'ambiente' => 'E',
@@ -73,7 +73,7 @@ class SysSidebar extends Seeder
                 'id'=> 7,
                 'label' => 'Perfil',
                 'estado' => 'A', #Oculto activo
-                'resource_router' => 'web/perfil',
+                'resource_router' => 'web/perfil#show',
                 'orden' => 1,
                 'sys_sidebar_id' => 1,
                 'ambiente' => 'T',
@@ -111,16 +111,6 @@ class SysSidebar extends Seeder
             ],
             [
                 'id'=> 11,
-                'label' => 'Listar Usuarios',
-                'estado' => 'A',
-                'resource_router' => 'conf/usuarios',
-                'orden' => 2,
-                'sys_sidebar_id' => 8,
-                'ambiente' => 'E',
-                'icon' => 'U'   
-            ],
-            [
-                'id'=> 12,
                 'label' => 'Empleados',
                 'estado' => 'A',
                 'resource_router' => 'conf/empleados',
@@ -128,6 +118,36 @@ class SysSidebar extends Seeder
                 'sys_sidebar_id' => 8,
                 'ambiente' => 'E',
                 'icon' => 'EM'   
+            ],
+            [
+                'id'=> 12,
+                'label' => 'Gestión Usuarios',
+                'estado' => 'A',
+                'resource_router' => null,
+                'orden' => 4,
+                'sys_sidebar_id' => null,
+                'ambiente' => 'E',
+                'icon' => 'fa fa-users'   
+            ],
+            [
+                'id'=> 13,
+                'label' => 'Tabla Usuarios',
+                'estado' => 'A',
+                'resource_router' => 'conf/usuarios#all',
+                'orden' => 4,
+                'sys_sidebar_id' => 12,
+                'ambiente' => 'E',
+                'icon' => 'TU'   
+            ],
+            [
+                'id'=> 14,
+                'label' => 'Crear Usuario',
+                'estado' => 'A',
+                'resource_router' => 'conf/usuarios#crear',
+                'orden' => 4,
+                'sys_sidebar_id' => 12,
+                'ambiente' => 'E',
+                'icon' => 'CU'   
             ]
         ];
 

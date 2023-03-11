@@ -21,35 +21,65 @@ const capitalize = function (_string) {
 	return _string;
 };
 
-const formatMoney = function (n, currency, fixFloat) {
+const valNumeric = function (element) {
+	let frag = element.value.split(/([0-9])/);
+	let number = _.filter(frag, function (item) {
+		return /[0-9]/.test(item) ? item : null;
+	});
+	$(element).val(number.join(""));
+};
+
+const formatMoney = function (valor, fixFloat = 2) {
 	return (
-		currency +
-		" " +
-		n.toFixed(fixFloat).replace(/./g, function (c, i, a) {
-			return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+		"$ " +
+		valor.toFixed(fixFloat).replace(/,/g, function (c, i, a) {
+			return i > 0 && c !== "," && (a.length - i) % 3 === 0 ? "." + c : c;
 		})
 	);
 };
 
+const valMoney = function (element) {
+	if (element.value == "") return false;
+	let ext = element.value.replace("$", "").trim().split(".");
+	let segment = void 0;
+	let frag;
+	if (ext.length == 2) {
+		frag = ext[0];
+		segment = ext[1].substr(0, 2);
+	} else {
+		frag = ext[0];
+	}
+	frag = frag.split(/([0-9])/);
+	let number = _.filter(frag, function (item) {
+		return /[0-9]/.test(item) ? item : null;
+	});
+	if (segment) {
+		$(element).val("$ " + number.join("") + "." + segment);
+	} else {
+		$(element).val(formatMoney(parseInt(number.join(""))));
+	}
+};
+
 const cleanFormatMoney = function (valor) {
-	return valor.replace(/[a-zA-Z_\$\.\-]/g, "");
+	return valor.replace(/[a-zA-Z_\$\-]/g, "");
 };
 
 const Testeo = (function ($, _) {
-	const render = function (out, target, msj) 
-	{
-		let _html = $(`[${out}='${target}']`).html();
-		_html = (_html == '')? msj : _html+"<br/>"+msj;
-		$(`[${out}='${target}']`).html(_html);
-		if(!$(`[name='${target}']`).hasClass("is-invalid"))
-		{
+	const render = function (out, target, msj) {
+		let _html = $("#" + out + "_" + target).html();
+		_html = _html == "" ? msj : _html + "<br/>" + msj;
+
+		$("#" + out + "_" + target).fadeIn("fast");
+		$("#" + out + "_" + target).html(_html);
+
+		if (!$(`[name='${target}']`).hasClass("is-invalid")) {
 			$(`[name='${target}']`).toggleClass("is-invalid");
 		}
-		setTimeout(function()
-		{
-			$(`[${out}='${target}']`).html('');
-			$(`[name='${target}']`).removeClass("is-invalid");
-		}, 3000);
+
+		setTimeout(function () {
+			$("#" + out + "_" + target).html("");
+			$("#" + out + "_" + target).fadeOut("fast");
+		}, 3500);
 	};
 	const es_telefono = function (attr, target = void 0, out = false) {
 		let telefono = /^([0-9]){7,10}$/;
@@ -71,6 +101,7 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 	const es_decimal = function (attr, target = void 0, out = false) {
+		attr = ((attr).replace(/^(\$)/, '')).trim();
 		let numerico = /^([0-9\.\,]+){0,20}$/;
 		if (!numerico.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor númerico decimal</span>`;
@@ -104,22 +135,33 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 	const es_email = function (attr, target = void 0, out = false) {
-		let email = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		let email =
+			/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if (!email.test(attr)) {
-			let msj = "<span>La dirección de email no es un valor valido.</span>";
+			let msj =
+				"<span>La dirección de email no es un valor valido.</span>";
 			if (out) render(out, target, msj);
 			return msj;
 		}
 		return false;
 	};
-	const es_identificacion = function (attr, target = void 0, _min = 1, _max = 100, out = false) {
+	const es_identificacion = function (
+		attr,
+		target = void 0,
+		_min = 1,
+		_max = 100,
+		out = false
+	) {
 		let numerico = /^([0-9]+){1,100}$/;
 		if (!numerico.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor valido.</span>`;
 			if (out) render(out, target, msj);
 			return msj;
 		} else {
-			let express = new RegExp("^([0-9]+){" + _min + "," + _max + "}", "i");
+			let express = new RegExp(
+				"^([0-9]+){" + _min + "," + _max + "}",
+				"i"
+			);
 			if (!express.test(attr)) {
 				let msj = `<span>El campo debe ser un valor entre ${_min} y ${_max} dígitos.</span>`;
 				if (out) render(out, target, msj);
@@ -128,7 +170,12 @@ const Testeo = (function ($, _) {
 		}
 		return false;
 	};
-	const es_fija_longitud = function (attr, target = void 0, _longitud = 1, out = false) {
+	const es_fija_longitud = function (
+		attr,
+		target = void 0,
+		_longitud = 1,
+		out = false
+	) {
 		let express = new RegExp("^([0-9]+){" + _longitud + "}", "i");
 		if (!express.test(attr)) {
 			let msj = `<span>El campo ${target} debe ser un valor entre ${_longitud} dígitos.</span>`;
@@ -148,9 +195,14 @@ const Testeo = (function ($, _) {
 		return false;
 	};
 
-	const menor_que = function (attr, target = void 0, out = false, longitud = 1) {
-		if(attr==''){
-			return false;			
+	const menor_que = function (
+		attr,
+		target = void 0,
+		out = false,
+		longitud = 1
+	) {
+		if (attr == "") {
+			return false;
 		}
 		if (_.size(attr) > parseInt(longitud)) {
 			let msj = `<span>El campo ${target} no puede ser mayor de ${longitud} caracteres.</span>`;
@@ -200,15 +252,16 @@ const TABLE_LENGUAJE = {
 			1: "Copiada 1 fila al portapapeles",
 			_: "Copiadas %d fila al portapapeles",
 		},
-	}
+	},
 };
 
-const formSerialiceObject = function (formulario = void 0) {
-	let _data_array = $('#'+formulario).serializeArray();
+const formSerialiceObject = function (formulario = void 0, type = false) {
+	let target = type ? formulario : $("#" + formulario);
+	let _data_array = target.serializeArray();
 	let _token = {};
 	let $i = 0;
 	while ($i < _.size(_data_array)) {
-		_token[_data_array[$i].name] = _data_array[$i].value;
+		_token[_data_array[$i].name] = (_data_array[$i].value).replace(/^\$/, "").trim();
 		$i++;
 	}
 	return _token;
@@ -231,3 +284,16 @@ const showNotification = function (from, align, message, icon, ai = 3) {
 		}
 	);
 };
+
+const optionsDataPicker = function(time = false){
+	return {
+		format: "Y-m-d",
+		timepicker: time,
+		i18n: {
+			es: { 
+				months: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+				dayOfWeek: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
+			}
+		}
+	}
+}

@@ -184,16 +184,17 @@ function copyFontAwesomeFonts()
 function clientes(){
     return src([
         'src/models/core.js',
+        'src/models/municipio.js',
         'src/models/cliente.js',
         'src/collections/clientes.js',
+        'src/collections/municipios.js',
         'src/views/core.js',
         'src/views/clientes.js',
         'src/routers/clientes.js'
     ])
+    .pipe(concat('build.clientes.js'))
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('build.clientes.js'))
-    .pipe(minify())
     .pipe(dest('resource/cliente/'));
 };
 
@@ -216,6 +217,49 @@ function copyFileAxios()
     .pipe(dest('assets/axios/'));
 };
 
+function copyFileDatatable()
+{
+    return src([
+        'node_modules/datatables.net/js/jquery.dataTables.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/datatable/'));
+};
+
+function copyFileChosen()
+{
+    return src([
+        'node_modules/chosen-js/chosen.jquery.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/chosen/'));
+};
+
+function copyFileSortable()
+{
+    return src([
+        'node_modules/sortablejs/Sortable.js'
+    ])
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(minify())
+    .pipe(dest('assets/sortablejs/'));
+};
+
+function copyFileChosenRq()
+{
+    return src([
+        'node_modules/chosen-js/chosen-sprite.png',
+        'node_modules/chosen-js/chosen-sprite@2x.png',
+        'node_modules/chosen-js/chosen.css'
+    ])
+    .pipe(dest('assets/chosen/'));
+};
+
 function login(){
     return src([
         'src/models/core.js',
@@ -223,18 +267,53 @@ function login(){
         'src/views/login.js',
         'src/routers/login.js'
     ])
+    .pipe(concat('build.login.js'))
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('build.login.js'))
-    .pipe(minify())
     .pipe(dest('resource/login/'));
 }
 
+function usuarios(){
+    return src([
+        'src/models/core.js',
+        'src/models/usuario.js',
+        'src/collections/usuarios.js',
+        'src/views/core.js',
+        'src/views/usuarios.js',
+        'src/routers/usuarios.js'
+    ])
+    .pipe(concat('build.usuarios.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('resource/usuario/'));
+};
+
+function perfil(){
+    return src([
+        'src/models/core.js',
+        'src/models/usuario.js',
+        'src/views/core.js',
+        'src/views/perfil.js',
+        'src/routers/perfil.js'
+    ])
+    .pipe(concat('build.perfil.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('resource/perfil/'));
+};
+
+
 exports.default = series(
-    // login,
-    clientes
+    login,
+    clientes,
+    usuarios,
+    perfil,
+    copyFileSortable,
+    // copyFileChosen,
+    // copyFileChosenRq
+    // copyFileDatatable
     // copyFileAxios,
-    // copyFileAxiosMap
+    // copyFileAxiosMap,
     // copyFileBootstrap,
     // copyFileBootstrapCss,
     // copyFileJquery,
@@ -248,7 +327,7 @@ exports.default = series(
     // copyFileChart,
     // copyFramework,
     // copyFrameworkMap,
-    // copySweetalert2
+    // copySweetalert2,
     // copySweetalert2Css,
     // copyFontAwesomeCss,
     // copyFontAwesomeFonts

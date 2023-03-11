@@ -16,12 +16,21 @@ class ClienteService
 
 	public function getClients()
 	{
-		return $this->clientModel->whereNotIn('estado',['X'])->findAll();
+		return $this->clientModel->select("clientes.*, municipio, usuarios.nombres as usuario, ".
+		"(CASE clientes.estado WHEN 'A' THEN 'ACTIVO' WHEN 'I' THEN 'INACTIVO' WHEN 'X' THEN 'BORRADO' WHEN 'S' THEN 'SUSPENDIDO' ELSE '' END) as 'estado_detalle'")
+		->join('municipios', 'municipios.id = clientes.id_municipio')
+		->join('usuarios', 'usuarios.id = clientes.usuario_creador')
+		->whereNotIn('clientes.estado', ['X'])
+		->findAll();
 	}
 
 	public function getClientById($id)
 	{
-		return $this->clientModel->find($id);
+		return $this->clientModel->select("clientes.*, municipio, usuarios.nombres as usuario, ".
+		"(CASE clientes.estado WHEN 'A' THEN 'ACTIVO' WHEN 'I' THEN 'INACTIVO' WHEN 'X' THEN 'BORRADO' WHEN 'S' THEN 'SUSPENDIDO' ELSE '' END) as 'estado_detalle'")
+		->join('municipios', 'municipios.id = clientes.id_municipio')
+		->join('usuarios', 'usuarios.id = clientes.usuario_creador')
+		->find($id);
 	}
 
 	public function createClient($data)
