@@ -302,13 +302,28 @@ function perfil(){
     .pipe(dest('resource/perfil/'));
 };
 
+function municipios(){
+    return src([
+        'src/models/core.js',
+        'src/models/municipio.js',
+        'src/collections/municipios.js',
+        'src/views/core.js',
+        'src/views/municipios.js',
+        'src/routers/municipios.js'
+    ])
+    .pipe(concat('build.municipio.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('resource/municipio/'));
+}
 
 exports.default = series(
     login,
     clientes,
     usuarios,
     perfil,
-    copyFileSortable,
+    municipios
+    //copyFileSortable,
     // copyFileChosen,
     // copyFileChosenRq
     // copyFileDatatable

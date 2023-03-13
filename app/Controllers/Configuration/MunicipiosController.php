@@ -22,6 +22,6 @@ class MunicipiosController extends BaseController
         $session = session();
         $auth = $session->get('auth');
         $user = $this->usuarioService->getUsuarioById($auth['id']);
-        return view('inicio/index', ['title'=> 'Inicio',  'usuario'=> json_encode($user)]);
+        return view('municipios_manager/index', ['title'=> 'Municipios',  'usuario'=> json_encode($user)]);
     }
 }
