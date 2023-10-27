@@ -148,3 +148,4 @@ out/
 app/ThirdParty/.gitkeep
 app/ThirdParty/tcpdf/
 public/storage
+public/tmp/

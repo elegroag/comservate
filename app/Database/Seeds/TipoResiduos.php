@@ -8,7 +8,7 @@ class TipoResiduos extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/tiporesiduo.csv';
+        $filepath =  FCPATH .'tmp/tiporesiduo.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

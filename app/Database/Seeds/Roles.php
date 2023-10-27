@@ -8,7 +8,7 @@ class Roles extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/roles.csv';
+        $filepath = FCPATH .'tmp/roles.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

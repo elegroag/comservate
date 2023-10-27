@@ -8,7 +8,7 @@ class Paises extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/pais.csv';
+        $filepath =  FCPATH .'tmp/pais.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

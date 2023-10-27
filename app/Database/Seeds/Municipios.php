@@ -8,7 +8,7 @@ class Municipios extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/municipios.csv';
+        $filepath =  FCPATH .'tmp/municipios.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

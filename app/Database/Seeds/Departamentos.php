@@ -8,7 +8,7 @@ class Departamentos extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/departamentos.csv';
+        $filepath =  FCPATH .'tmp/departamentos.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

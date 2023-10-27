@@ -8,7 +8,7 @@ class Rhps extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/rhps.csv';
+        $filepath =  FCPATH .'tmp/rhps.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

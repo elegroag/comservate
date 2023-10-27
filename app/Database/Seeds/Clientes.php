@@ -9,7 +9,7 @@ class Clientes extends Seeder
     public function run()
     {
         $this->db->query('DELETE FROM clientes WHERE 1=1;');
-        $filepath = 'C:/tmp/clientes.csv';
+        $filepath =  FCPATH .'tmp/clientes.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

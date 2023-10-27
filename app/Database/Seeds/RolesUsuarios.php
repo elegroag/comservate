@@ -17,7 +17,7 @@ class RolesUsuarios extends Seeder
 
     public function useFile()
     {
-        $filepath = 'C:/tmp/roles_usuario.csv';
+        $filepath =  FCPATH .'tmp/roles_usuario.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

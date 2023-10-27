@@ -8,7 +8,7 @@ class TiposIdentificacion extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/tipoidentificacion.csv';
+        $filepath =  FCPATH .'tmp/tipoidentificacion.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

@@ -9,7 +9,7 @@ class Recoleccion extends Seeder
     public function run()
     {
         # $this->db->query('DELETE FROM recoleccion WHERE 1=1;');
-        $filepath = 'C:/tmp/recoleccion.csv';
+        $filepath =  FCPATH .'tmp/recoleccion.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

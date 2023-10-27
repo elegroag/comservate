@@ -19,11 +19,12 @@ class Usuarios extends Seeder
             "password" => $password
         ];
         $this->db->table('usuarios')->where('id', 18)->update($data);
+        /* $this->useFile(); */
     }
 
     public function useFile()
     {
-        $filepath = 'C:/tmp/usuarios.csv';
+        $filepath = FCPATH . 'tmp/usuarios.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

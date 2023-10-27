@@ -8,7 +8,7 @@ class ZonasMunicipios extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/zonas_mun.csv';
+        $filepath =  FCPATH .'tmp/zonas_mun.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;

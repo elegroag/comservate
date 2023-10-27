@@ -8,7 +8,7 @@ class Empleados extends Seeder
 {
     public function run()
     {
-        $filepath = 'C:/tmp/empleados.csv';
+        $filepath =  FCPATH .'tmp/empleados.csv';
         if (!file_exists($filepath)){
             echo 'Error no hay archivo para procesar';
             return false;
