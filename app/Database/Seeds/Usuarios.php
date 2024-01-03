@@ -10,6 +10,8 @@ class Usuarios extends Seeder
     public function run()
     {
         $hashService = new HashService();
+        $this->useFile();
+
         $password = $hashService->getClaveHash('elegroAg$1989.', 'elegroag');
         $data = [
             "nombres" => 'Edwin Andres Legro Agudelo',
@@ -18,8 +20,7 @@ class Usuarios extends Seeder
             "estado" => 'A',
             "password" => $password
         ];
-        $this->db->table('usuarios')->where('id', 18)->update($data);
-        /* $this->useFile(); */
+        $this->db->table('usuarios')->where('id', 16)->update($data);
     }
 
     public function useFile()

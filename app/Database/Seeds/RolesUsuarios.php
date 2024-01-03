@@ -8,11 +8,11 @@ class RolesUsuarios extends Seeder
 {
     public function run()
     {
-        $data = [
-            "id_usuario" => 18,
+        $this->useFile();
+        $this->db->table('roles_usuarios')->insert([
+            "id_usuario" => 16,
             "id_rol" => 1
-        ];
-        $this->db->table('roles_usuarios')->insert($data);
+        ]);
     }
 
     public function useFile()
